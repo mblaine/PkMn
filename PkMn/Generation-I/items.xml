@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<items>
+  <item name="Great Ball" type="ball" />
+  <item name="Master Ball" type="ball" />
+  <item name="Poké Ball" type="ball" />
+  <item name="Safari Ball" type="ball" />
+  <item name="Ultra Ball" type="ball" />
+  <item name="Antidote" type="cure" condition="Poison" />
+  <item name="Awakening" type="cure" condition="Sleep" />
+  <item name="Burn Heal" type="cure" condition="Burn" />
+  <item name="Full Heal" type="cure" condition="all" />
+  <item name="Ice Heal" type="cure" condition="Frozen" />
+  <item name="Parlyz Heal" type="cure" condition="Paralysis" />
+  <item name="Poké Flute" type="cure" condition="Sleep" who="both" reusable="true" />
+  <item name="Dire Hit" type="dire-hit-bug" />
+  <item name="Poké Doll" type="end-wild-battle" />
+  <item name="Calcium" type="ev-up" stat="special" amount="2560" max="25600" />
+  <item name="Carbos" type="ev-up" stat="speed" amount="2560" max="25600" />
+  <item name="HP Up" type="ev-up" stat="hp" amount="2560" max="25600" />
+  <item name="Iron" type="ev-up" stat="defense" amount="2560" max="25600" />
+  <item name="Protein" type="ev-up" stat="attack" amount="2560" max="25600" />
+  <item name="Exp. All" type="exp-all" />
+  <item name="Full Restore" type="full-restore" />
+  <item name="HM01" type="hm" number="1" move="Cut" />
+  <item name="HM02" type="hm" number="2" move="Fly" />
+  <item name="HM03" type="hm" number="3" move="Surf" />
+  <item name="HM04" type="hm" number="4" move="Strength" />
+  <item name="HM05" type="hm" number="5" move="Flash" />
+  <item name="Rare Candy" type="level-up" amount="1" />
+  <item name="X Accuracy" type="perfect-accuracy" />
+  <item name="Fresh Water" type="potion" hp="50" />
+  <item name="Hyper Potion" type="potion" hp="200" />
+  <item name="Lemonade" type="potion" hp="80" />
+  <item name="Max Potion" type="potion" hp-percent="100" />
+  <item name="Potion" type="potion" hp="20" />
+  <item name="Soda Pop" type="potion" hp="60" />
+  <item name="Super Potion" type="potion" hp="50" />
+  <item name="PP Up" type="pp-up" amount="0.2" max="0.6" />
+  <item name="Guard Spec." type="protect-stat-stages" turns="5" />
+  <item name="Elixir" type="restore-pp" amount="10" moves="all" />
+  <item name="Ether" type="restore-pp" amount="10" moves="1" />
+  <item name="Max Elixir" type="restore-pp" amount="max" moves="all" />
+  <item name="Max Ether" type="restore-pp" amount="max" moves="1" />
+  <item name="Max Revive" type="revive" hp-percent="100" />
+  <item name="Revive" type="revive" hp-percent="50" />
+  <item name="X Attack" type="stage-up" stat="attack" amount="1" />
+  <item name="X Defend" type="stage-up" stat="defense" amount="1" />
+  <item name="X Special" type="stage-up" stat="special" amount="1" />
+  <item name="X Speed" type="stage-up" stat="speed" amount="1" />
+  <item name="Fire Stone" type="stone" />
+  <item name="Leaf Stone" type="stone" />
+  <item name="Moon Stone" type="stone" />
+  <item name="Thunder Stone" type="stone" />
+  <item name="Water Stone" type="stone" />
+  <item name="TM01" type="tm" number="1" move="Mega Punch" />
+  <item name="TM02" type="tm" number="2" move="Razor Wind" />
+  <item name="TM03" type="tm" number="3" move="Swords Dance" />
+  <item name="TM04" type="tm" number="4" move="Whirlwind" />
+  <item name="TM05" type="tm" number="5" move="Mega Kick" />
+  <item name="TM06" type="tm" number="6" move="Toxic" />
+  <item name="TM07" type="tm" number="7" move="Horn Drill" />
+  <item name="TM08" type="tm" number="8" move="Body Slam" />
+  <item name="TM09" type="tm" number="9" move="Take Down" />
+  <item name="TM10" type="tm" number="10" move="Double-Edge" />
+  <item name="TM11" type="tm" number="11" move="BubbleBeam" />
+  <item name="TM12" type="tm" number="12" move="Water Gun" />
+  <item name="TM13" type="tm" number="13" move="Ice Beam" />
+  <item name="TM14" type="tm" number="14" move="Blizzard" />
+  <item name="TM15" type="tm" number="15" move="Hyper Beam" />
+  <item name="TM16" type="tm" number="16" move="Pay Day" />
+  <item name="TM17" type="tm" number="17" move="Submission" />
+  <item name="TM18" type="tm" number="18" move="Counter" />
+  <item name="TM19" type="tm" number="19" move="Seismic Toss" />
+  <item name="TM20" type="tm" number="20" move="Rage" />
+  <item name="TM21" type="tm" number="21" move="Mega Drain" />
+  <item name="TM22" type="tm" number="22" move="SolarBeam" />
+  <item name="TM23" type="tm" number="23" move="Dragon Rage" />
+  <item name="TM24" type="tm" number="24" move="Thunderbolt" />
+  <item name="TM25" type="tm" number="25" move="Thunder" />
+  <item name="TM26" type="tm" number="26" move="Earthquake" />
+  <item name="TM27" type="tm" number="27" move="Fissure" />
+  <item name="TM28" type="tm" number="28" move="Dig" />
+  <item name="TM29" type="tm" number="29" move="Psychic" />
+  <item name="TM30" type="tm" number="30" move="Teleport" />
+  <item name="TM31" type="tm" number="31" move="Mimic" />
+  <item name="TM32" type="tm" number="32" move="Double Team" />
+  <item name="TM33" type="tm" number="33" move="Reflect" />
+  <item name="TM34" type="tm" number="34" move="Bide" />
+  <item name="TM35" type="tm" number="35" move="Metronome" />
+  <item name="TM36" type="tm" number="36" move="Selfdestruct" />
+  <item name="TM37" type="tm" number="37" move="Egg Bomb" />
+  <item name="TM38" type="tm" number="38" move="Fire Blast" />
+  <item name="TM39" type="tm" number="39" move="Swift" />
+  <item name="TM40" type="tm" number="40" move="Skull Bash" />
+  <item name="TM41" type="tm" number="41" move="Softboiled" />
+  <item name="TM42" type="tm" number="42" move="Dream Eater" />
+  <item name="TM43" type="tm" number="43" move="Sky Attack" />
+  <item name="TM44" type="tm" number="44" move="Rest" />
+  <item name="TM45" type="tm" number="45" move="Thunder Wave" />
+  <item name="TM46" type="tm" number="46" move="Psywave" />
+  <item name="TM47" type="tm" number="47" move="Explosion" />
+  <item name="TM48" type="tm" number="48" move="Rock Slide" />
+  <item name="TM49" type="tm" number="49" move="Tri Attack" />
+  <item name="TM50" type="tm" number="50" move="Substitute" />
+</items>
