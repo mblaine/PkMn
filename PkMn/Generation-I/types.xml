@@ -29,6 +29,7 @@
     <effectiveness type="Poison" multiplier="0.5" />
     <effectiveness type="Rock" multiplier="0.5" />
     <immunity status="Poison" />
+    <immunity status="BadlyPoisoned" />
   </type>
   <type name="Ground" category="physical">
     <effectiveness type="Electric" multiplier="2" />
@@ -90,7 +91,7 @@
     <effectiveness type="Grass" multiplier="0.5" />
     <effectiveness type="Poison" multiplier="0.5" />
   </type>
-  <type name="Electric" type="special">
+  <type name="Electric" category="special">
     <effectiveness type="Flying" multiplier="2" />
     <effectiveness type="Water" multiplier="2" />
     <effectiveness type="Dragon" multiplier="0.5" />
@@ -111,7 +112,7 @@
     <effectiveness type="Ice" multiplier="0.5" />
     <effectiveness type="Water" multiplier="0.5" />
   </type>
-  <type name="Dragon" type="special">
+  <type name="Dragon" category="special">
     <effectiveness type="Dragon" multiplier="2" />
   </type>
 </types>
