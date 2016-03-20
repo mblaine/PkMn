@@ -43,11 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\Enums.cs" />
+    <Compile Include="Logic\Enums\EvolutionType.cs" />
+    <Compile Include="Logic\Enums\StatusCondition.cs" />
+    <Compile Include="Logic\Enums\TypeCategory.cs" />
+    <Compile Include="Logic\Item.cs" />
+    <Compile Include="Logic\Move.cs" />
+    <Compile Include="Logic\Species.cs" />
+    <Compile Include="Logic\ElementType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Generation-I\items.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Generation-I\moves.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
