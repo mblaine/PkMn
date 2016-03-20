@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logic\Enums.cs" />
     <Compile Include="Logic\Enums\EvolutionType.cs" />
     <Compile Include="Logic\Enums\StatusCondition.cs" />
     <Compile Include="Logic\Enums\TypeCategory.cs" />

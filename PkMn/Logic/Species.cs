@@ -17,8 +17,8 @@ namespace PkMn.Logic
 
         public readonly int Number;
         public readonly string Name;
-        public readonly ElementType Type1;
-        public readonly ElementType Type2;
+        public readonly Element Type1;
+        public readonly Element Type2;
         public readonly string DexEntry;
         public readonly List<Evolution> Evolutions;
 
@@ -26,10 +26,10 @@ namespace PkMn.Logic
         {
             Number = int.Parse(node.Attributes["number"].Value);
             Name = node.Attributes["name"].Value;
-            Type1 = ElementType.Types[node.Attributes["type-1"].Value];
+            Type1 = Element.Types[node.Attributes["type-1"].Value];
             
             if(node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "type-2"))
-                Type2 = ElementType.Types[node.Attributes["type-2"].Value];
+                Type2 = Element.Types[node.Attributes["type-2"].Value];
             
             DexEntry= node.Attributes["dex-entry"].Value;
 
