@@ -11,9 +11,9 @@ namespace PkMn.Logic
 {
     public class Element
     {
-        protected static string XmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Generation-I", "types.xml");
+        protected static string XmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Generation-I", "elements.xml");
 
-        public static readonly Dictionary<String, Element> Types = Load();
+        public static readonly Dictionary<String, Element> Elements = Load();
 
         public readonly string Name;
         public readonly TypeCategory Category;
@@ -29,7 +29,7 @@ namespace PkMn.Logic
 
             foreach (XmlNode node in doc.GetElementsByTagName("type"))
             {
-                Element type = new Element(node.Attributes["name"].Value, (TypeCategory)Enum.Parse(typeof(TypeCategory), node.Attributes["category"].Value, true));
+                Element type = new Element(node);
                 t[type.Name] = type;
             }
 
@@ -48,10 +48,10 @@ namespace PkMn.Logic
             return t;
         }
 
-        protected Element(string name, TypeCategory category)
+        protected Element(XmlNode node)
         {
-            this.Name = name;
-            this.Category = category;
+            this.Name = node.Attributes["name"].Value;
+            this.Category = (TypeCategory)Enum.Parse(typeof(TypeCategory), node.Attributes["category"].Value, true);
             this.Effectiveness = new Dictionary<Element, decimal>();
             this.Immunity = new List<StatusCondition>();
         }

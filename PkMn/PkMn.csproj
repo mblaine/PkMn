@@ -49,7 +49,7 @@
     <Compile Include="Logic\Item.cs" />
     <Compile Include="Logic\Move.cs" />
     <Compile Include="Logic\Species.cs" />
-    <Compile Include="Logic\ElementType.cs" />
+    <Compile Include="Logic\Element.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

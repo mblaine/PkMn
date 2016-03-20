@@ -13,7 +13,7 @@ namespace PkMn.Logic
     {
         protected static string XmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Generation-I", "species.xml");
 
-        public static readonly Dictionary<string, Species> Types = Load();
+        public static readonly Dictionary<string, Species> Spp = Load();
 
         public readonly int Number;
         public readonly string Name;
@@ -26,10 +26,10 @@ namespace PkMn.Logic
         {
             Number = int.Parse(node.Attributes["number"].Value);
             Name = node.Attributes["name"].Value;
-            Type1 = Element.Types[node.Attributes["type-1"].Value];
+            Type1 = Element.Elements[node.Attributes["type-1"].Value];
             
             if(node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "type-2"))
-                Type2 = Element.Types[node.Attributes["type-2"].Value];
+                Type2 = Element.Elements[node.Attributes["type-2"].Value];
             
             DexEntry= node.Attributes["dex-entry"].Value;
 
