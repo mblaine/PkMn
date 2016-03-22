@@ -8,10 +8,14 @@ namespace PkMn.Logic.Enums
     public enum StatusCondition
     {
         Burn,
-        Freze,
-        Paralyis,
+        Freeze,
+        Paralysis,
         Sleep,
         Poison,
-        BadlyPoisoned
+        BadlyPoisoned,
+        Confusion,
+        Flinch,
+        Faint,
+        All
     }
 }

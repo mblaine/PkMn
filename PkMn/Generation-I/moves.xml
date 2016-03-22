@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <moves>
   <move name="Absorb" type="Grass" pp="20" power="20" accuracy="255">
-    <effect type="transfer-health" percent-of-damage="50" />
+    <effect type="transfer-health" percent="50" of="damage" />
   </move>
   <move name="Acid" type="Poison" pp="30" power="40" accuracy="255">
     <effect type="stat" stat="Defense" change="-1" who="foe" chance="26" />
@@ -65,10 +65,10 @@
     <effect type="multi-hit" min="2" max="5" />
   </move>
   <move name="Confuse Ray" type="Ghost" pp="10" accuracy="255">
-    <effect type="status" status="Consusion" who="foe" />
+    <effect type="status" status="Confusion" who="foe" />
   </move>
   <move name="Confusion" type="Psychic" pp="25" power="50" accuracy="255">
-    <effect type="status" status="Consusion" who="foe" chance="26" />
+    <effect type="status" status="Confusion" who="foe" chance="26" />
   </move>
   <move name="Constrict" type="Normal" pp="35" power="10" accuracy="255">
     <effect type="stat" stat="Speed" change="-1" who="foe" chance="26" />
@@ -100,15 +100,15 @@
     <effect type="stat" stat="Evasion" change="1" who="self" />
   </move>
   <move name="Double-Edge" type="Normal" pp="15" power="100" accuracy="255">
-    <effect type="recoil" percent="25" />
+    <effect type="recoil-damage" percent="25" />
   </move>
   <move name="Dragon Rage" type="Dragon" pp="10" accuracy="255">
     <effect type="custom-damage" calculation="constant" value="40" />
     <effect type="ignore-type-effectiveness" />
   </move>
   <move name="Dream Eater" type="Psychic" pp="15" power="100" accuracy="255">
-    <effect type="transfer-health" percent-of-damage="50" />
-    <effect type="requirement" status="Sleep" who="foe" />
+    <effect type="transfer-health" percent="50" of="damage" />
+    <effect type="status-requirement" status="Sleep" who="foe" />
   </move>
   <move name="Drill Peck" type="Flying" pp="20" power="80" accuracy="255" />
   <move name="Earthquake" type="Ground" pp="10" power="100" accuracy="255" />
@@ -138,7 +138,7 @@
     <effect type="status" status="Burn" who="foe" chance="26" />
   </move>
   <move name="Flash" type="Normal" pp="20" accuracy="178">
-    <effect type="stat" stat="accuracy" who="foe" change="-1" />
+    <effect type="stat" stat="Accuracy" who="foe" change="-1" />
   </move>
   <move name="Fly" type="Flying" pp="15" power="70" accuracy="242">
     <effect type="charge" min="1" max="1" when="before" />
@@ -177,7 +177,7 @@
     <effect type="cancel-other-effects" />
   </move>
   <move name="Headbutt" type="Normal" pp="15" power="70" accuracy="255">
-    <effect type="status" status="flinch" chance="76" />
+    <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
   <move name="Hi Jump Kick" type="Fighting" pp="20" power="85" accuracy="229">
     <effect type="miss-damage" value="1" />
@@ -208,14 +208,14 @@
   </move>
   <move name="Karate Chop" type="Normal" pp="25" power="50" accuracy="255" />
   <move name="Kinesis" type="Psychic" pp="15" accuracy="204">
-    <effect type="stat" stat="accuracy" who="foe" change="-1" />
+    <effect type="stat" stat="Accuracy" who="foe" change="-1" />
   </move>
   <move name="Leech Life" type="Bug" pp="15" power="20" accuracy="255">
-    <effect type="transfer-health" percent-of-damage="50" />
+    <effect type="transfer-health" percent="50" of="damage" />
   </move>
   <move name="Leech Seed" type="Grass" pp="10" accuracy="229">
-    <effect type="transfer-health" who="foe" percent-of-current="6.25" />
-    <effect type="immune-to-type" condition="Grass" />
+    <effect type="transfer-health" percent="6.25" of="current" who="foe" />
+    <effect type="no-effect" condition="Grass" />
   </move>
   <move name="Leer" type="Normal" pp="30" accuracy="255">
     <effect type="stat" stat="Defense" change="-1" who="foe" />
@@ -230,13 +230,13 @@
     <effect type="status" status="Sleep" who="foe" />
   </move>
   <move name="Low Kick" type="Fighting" pp="20" power="50" accuracy="229">
-    <effect type="status" status="flinch" chance="76" />
+    <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
   <move name="Meditate" type="Psychic" pp="40" accuracy="255">
     <effect type="stat" stat="Attack" change="1" who="self" />
   </move>
   <move name="Mega Drain" type="Grass" pp="10" power="40" accuracy="255">
-    <effect type="transfer-health" percent-of-damage="50" />
+    <effect type="transfer-health" percent="50" of="damage" />
   </move>
   <move name="Mega Kick" type="Normal" pp="5" power="120" accuracy="191" />
   <move name="Mega Punch" type="Normal" pp="20" power="80" accuracy="216" />
@@ -282,7 +282,7 @@
   </move>
   <move name="Pound" type="Normal" pp="35" power="40" accuracy="255" />
   <move name="Psybeam" type="Psychic" pp="20" power="65" accuracy="255">
-    <effect type="status" status="Consusion" who="foe" chance="26" />
+    <effect type="status" status="Confusion" who="foe" chance="26" />
   </move>
   <move name="Psychic" type="Psychic" pp="10" power="90" accuracy="255">
     <effect type="stat" stat="Special" change="-1" who="foe" chance="76" />
@@ -302,15 +302,13 @@
     <effect type="charge" min="1" max="1" when="before" />
   </move>
   <move name="Recover" type="Normal" pp="20" accuracy="255">
-    <effect type="restore-health" who="self" percent-of-max="50" />
-    <effect type="fail" condition="heal-bug" />
+    <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Reflect" type="Psychic" pp="20" accuracy="255">
     <effect type="stat" stat="Defense" who="self" multiplier="2" condition="defense-only" limit="1024" ignore-if-critical="true" />
   </move>
   <move name="Rest" type="Psychic" pp="10" accuracy="255">
-    <effect type="restore-health" who="self" percent-of-max="100" />
-    <effect type="fail" condition="heal-bug" />
+    <effect type="restore-health" percent="100" of="max" who="self" />
     <effect type="status" status="Sleep" who="self" turn-limit="2" />
   </move>
   <move name="Roar" type="Normal" pp="20" accuracy="255">
@@ -319,7 +317,7 @@
   <move name="Rock Slide" type="Rock" pp="10" power="75" accuracy="229" />
   <move name="Rock Throw" type="Rock" pp="15" power="50" accuracy="165" />
   <move name="Rolling Kick" type="Fighting" pp="15" power="60" accuracy="216">
-    <effect type="status" status="flinch" chance="76" />
+    <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
   <move name="Sand Attack" type="Normal" pp="15" accuracy="255">
     <effect type="stat" stat="accuracy" who="foe" change="-1" />
@@ -364,8 +362,7 @@
     <effect type="stat" stat="accuracy" who="foe" change="-1" />
   </move>
   <move name="Soft-Boiled" type="Normal" pp="10" accuracy="255">
-    <effect type="restore-health" who="self" percent-of-max="50" />
-    <effect type="fail" condition="heal-bug" />
+    <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Solar Beam" type="Grass" pp="10" power="120" accuracy="255">
     <effect type="charge" min="1" max="1" when="before" />
@@ -385,21 +382,21 @@
     <effect type="status" status="Sleep" who="foe" />
   </move>
   <move name="Stomp" type="Normal" pp="20" power="65" accuracy="255">
-    <effect type="status" status="flinch" chance="76" />
+    <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
   <move name="Strength" type="Normal" pp="15" power="80" accuracy="255" />
   <move name="String Shot" type="Bug" pp="40" accuracy="242">
     <effect type="stat" stat="Speed" change="-1" who="foe" />
   </move>
   <move name="Struggle" type="Normal" pp="10" power="50" accuracy="255">
-    <effect type="recoil" percent="50" />
+    <effect type="recoil-damage" percent="50" />
     <effect type="never-deduct-pp" />
   </move>
   <move name="Stun Spore" type="Grass" pp="30" accuracy="191">
     <effect type="status" status="Paralysis" who="foe" />
   </move>
   <move name="Submission" type="Fighting" pp="25" power="80" accuracy="204">
-    <effect type="recoil" percent="25" />
+    <effect type="recoil-damage" percent="25" />
   </move>
   <move name="Substitute" type="Normal" pp="10" accuracy="255">
     <effect type="substitute" hp-percent="25" />
@@ -410,7 +407,7 @@
     <effect type="ignore-type-immunity" />
   </move>
   <move name="Supersonic" type="Normal" pp="20" accuracy="140">
-    <effect type="status" status="Consusion" who="foe" />
+    <effect type="status" status="Confusion" who="foe" />
   </move>
   <move name="Surf" type="Water" pp="15" power="95" accuracy="255" />
   <move name="Swift" type="Normal" pp="20" power="60" accuracy="255">
@@ -418,14 +415,14 @@
     <effect type="ignore-semi-invulnerability" />
   </move>
   <move name="Swords Dance" type="Normal" pp="30" accuracy="255">
-    <effect type="stat" stat="attack" who="self" change="2" />
+    <effect type="stat" stat="Attack" who="self" change="2" />
   </move>
   <move name="Tackle" type="Normal" pp="35" power="35" accuracy="242" />
   <move name="Tail Whip" type="Normal" pp="30" accuracy="255">
     <effect type="stat" stat="Defense" change="-1" who="foe" />
   </move>
   <move name="Take Down" type="Normal" pp="20" power="90" accuracy="216">
-    <effect type="recoil" percent="25" />
+    <effect type="recoil-damage" percent="25" />
   </move>
   <move name="Teleport" type="Psychic" pp="20" accuracy="255">
     <effect type="end-wild-battle" />
@@ -450,7 +447,7 @@
     <effect type="status" status="Paralysis" who="foe" chance="26" />
   </move>
   <move name="Toxic" type="Poison" pp="10" accuracy="216">
-    <effect type="status" status="Badly-Poison" who="foe" />
+    <effect type="status" status="Badly-Poisoned" who="foe" />
   </move>
   <move name="Transform" type="Normal" pp="10" accuracy="255">
     <effect type="copy" what="type" />

@@ -16,7 +16,7 @@ namespace PkMn.Logic
         public static readonly Dictionary<String, Element> Elements = Load();
 
         public readonly string Name;
-        public readonly TypeCategory Category;
+        public readonly ElementCategory Category;
         public readonly Dictionary<Element, decimal> Effectiveness;
         public readonly List<StatusCondition> Immunity;
 
@@ -27,13 +27,13 @@ namespace PkMn.Logic
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlPath);
 
-            foreach (XmlNode node in doc.GetElementsByTagName("type"))
+            foreach (XmlNode node in doc.GetElementsByTagName("element"))
             {
                 Element type = new Element(node);
                 t[type.Name] = type;
             }
 
-            foreach (XmlNode node in doc.GetElementsByTagName("type"))
+            foreach (XmlNode node in doc.GetElementsByTagName("element"))
             {
                 Element type = t[node.Attributes["name"].Value];
                 foreach (XmlNode childNode in node.ChildNodes)
@@ -51,7 +51,7 @@ namespace PkMn.Logic
         protected Element(XmlNode node)
         {
             this.Name = node.Attributes["name"].Value;
-            this.Category = (TypeCategory)Enum.Parse(typeof(TypeCategory), node.Attributes["category"].Value, true);
+            this.Category = (ElementCategory)Enum.Parse(typeof(ElementCategory), node.Attributes["category"].Value, true);
             this.Effectiveness = new Dictionary<Element, decimal>();
             this.Immunity = new List<StatusCondition>();
         }

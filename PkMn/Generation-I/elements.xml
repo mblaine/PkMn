@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<types>
-  <type name="Normal" category="physical">
+<elements>
+  <element name="Normal" category="physical">
     <effectiveness type="Rock" multiplier="0.5" />
     <effectiveness type="Ghost" multiplier="0" />
-  </type>
-  <type name="Fighting" category="physical">
+  </element>
+  <element name="Fighting" category="physical">
     <effectiveness type="Normal" multiplier="2" />
     <effectiveness type="Rock" multiplier="2" />
     <effectiveness type="Ice" multiplier="2" />
@@ -13,15 +13,15 @@
     <effectiveness type="Bug" multiplier="0.5" />
     <effectiveness type="Psychic" multiplier="0.5" />
     <effectiveness type="Ghost" multiplier="0" />
-  </type>
-  <type name="Flying" category="physical">
+  </element>
+  <element name="Flying" category="physical">
     <effectiveness type="Bug" multiplier="2" />
     <effectiveness type="Fighting" multiplier="2" />
     <effectiveness type="Grass" multiplier="2" />
     <effectiveness type="Electric" multiplier="0.5" />
     <effectiveness type="Rock" multiplier="0.5" />
-  </type>
-  <type name="Poison" category="physical">
+  </element>
+  <element name="Poison" category="physical">
     <effectiveness type="Bug" multiplier="2" />
     <effectiveness type="Grass" multiplier="2" />
     <effectiveness type="Ghost" multiplier="0.5" />
@@ -30,8 +30,8 @@
     <effectiveness type="Rock" multiplier="0.5" />
     <immunity status="Poison" />
     <immunity status="BadlyPoisoned" />
-  </type>
-  <type name="Ground" category="physical">
+  </element>
+  <element name="Ground" category="physical">
     <effectiveness type="Electric" multiplier="2" />
     <effectiveness type="Fire" multiplier="2" />
     <effectiveness type="Poison" multiplier="2" />
@@ -39,16 +39,16 @@
     <effectiveness type="Bug" multiplier="0.5" />
     <effectiveness type="Grass" multiplier="0.5" />
     <effectiveness type="Flying" multiplier="0" />
-  </type>
-  <type name="Rock" category="physical">
+  </element>
+  <element name="Rock" category="physical">
     <effectiveness type="Bug" multiplier="2" />
     <effectiveness type="Fire" multiplier="2" />
     <effectiveness type="Flying" multiplier="2" />
     <effectiveness type="Ice" multiplier="2" />
     <effectiveness type="Flying" multiplier="0.5" />
     <effectiveness type="Ground" multiplier="0.5" />
-  </type>
-  <type name="Bug" category="physical">
+  </element>
+  <element name="Bug" category="physical">
     <effectiveness type="Grass" multiplier="2" />
     <effectiveness type="Poison" multiplier="2" />
     <effectiveness type="Psychic" multiplier="2" />
@@ -56,13 +56,13 @@
     <effectiveness type="Fire" multiplier="0.5" />
     <effectiveness type="Flying" multiplier="0.5" />
     <effectiveness type="Ghost" multiplier="0.5" />
-  </type>
-  <type name="Ghost" category="physical">
+  </element>
+  <element name="Ghost" category="physical">
     <effectiveness type="Ghost" multiplier="2" />
     <effectiveness type="Normal" multiplier="0" />
     <effectiveness type="Psychic" multiplier="0" />
-  </type>
-  <type name="Fire" category="special">
+  </element>
+  <element name="Fire" category="special">
     <effectiveness type="Bug" multiplier="2" />
     <effectiveness type="Grass" multiplier="2" />
     <effectiveness type="Ice" multiplier="2" />
@@ -71,16 +71,16 @@
     <effectiveness type="Rock" multiplier="0.5" />
     <effectiveness type="Water" multiplier="0.5" />
     <immunity status="Burn" />
-  </type>
-  <type name="Water" category="special">
+  </element>
+  <element name="Water" category="special">
     <effectiveness type="Fire" multiplier="2" />
     <effectiveness type="Ground" multiplier="2" />
     <effectiveness type="Rock" multiplier="2" />
     <effectiveness type="Dragon" multiplier="0.5" />
     <effectiveness type="Grass" multiplier="0.5" />
     <effectiveness type="Water" multiplier="0.5" />
-  </type>
-  <type name="Grass" category="special">
+  </element>
+  <element name="Grass" category="special">
     <effectiveness type="Ground" multiplier="2" />
     <effectiveness type="Rock" multiplier="2" />
     <effectiveness type="Water" multiplier="2" />
@@ -90,29 +90,29 @@
     <effectiveness type="Flying" multiplier="0.5" />
     <effectiveness type="Grass" multiplier="0.5" />
     <effectiveness type="Poison" multiplier="0.5" />
-  </type>
-  <type name="Electric" category="special">
+  </element>
+  <element name="Electric" category="special">
     <effectiveness type="Flying" multiplier="2" />
     <effectiveness type="Water" multiplier="2" />
     <effectiveness type="Dragon" multiplier="0.5" />
     <effectiveness type="Electric" multiplier="0.5" />
     <effectiveness type="Grass" multiplier="0.5" />
     <effectiveness type="Ground" multiplier="0" />
-  </type>
-  <type name="Psychic" category="special">
+  </element>
+  <element name="Psychic" category="special">
     <effectiveness type="Fighting" multiplier="2" />
     <effectiveness type="Poison" multiplier="2" />
     <effectiveness type="Psychic" multiplier="0.5" />
-  </type>
-  <type name="Ice" category="special">
+  </element>
+  <element name="Ice" category="special">
     <effectiveness type="Dragon" multiplier="2" />
     <effectiveness type="Flying" multiplier="2" />
     <effectiveness type="Grass" multiplier="2" />
     <effectiveness type="Ground" multiplier="2" />
     <effectiveness type="Ice" multiplier="0.5" />
     <effectiveness type="Water" multiplier="0.5" />
-  </type>
-  <type name="Dragon" category="special">
+  </element>
+  <element name="Dragon" category="special">
     <effectiveness type="Dragon" multiplier="2" />
-  </type>
-</types>
+  </element>
+</elements>

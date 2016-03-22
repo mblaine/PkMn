@@ -43,13 +43,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\DexEntry.cs" />
+    <Compile Include="Logic\Enums\Color.cs" />
     <Compile Include="Logic\Enums\EvolutionType.cs" />
+    <Compile Include="Logic\Enums\MoveEffectType.cs" />
+    <Compile Include="Logic\Enums\StatType.cs" />
     <Compile Include="Logic\Enums\StatusCondition.cs" />
-    <Compile Include="Logic\Enums\TypeCategory.cs" />
+    <Compile Include="Logic\Enums\ElementCategory.cs" />
+    <Compile Include="Logic\Enums\When.cs" />
+    <Compile Include="Logic\Enums\Who.cs" />
+    <Compile Include="Logic\Evolution.cs" />
     <Compile Include="Logic\Item.cs" />
     <Compile Include="Logic\Move.cs" />
+    <Compile Include="Logic\Moves\CopyEffect.cs" />
+    <Compile Include="Logic\Moves\CustomDamageEffect.cs" />
+    <Compile Include="Logic\Moves\ExtraDamageEffect.cs" />
+    <Compile Include="Logic\Moves\HealthEffect.cs" />
+    <Compile Include="Logic\Moves\MoveEffect.cs" />
+    <Compile Include="Logic\Moves\MultiEffect.cs" />
+    <Compile Include="Logic\Moves\NoEffectEffect.cs" />
+    <Compile Include="Logic\Moves\PayDayEffect.cs" />
+    <Compile Include="Logic\Moves\StatEffect.cs" />
+    <Compile Include="Logic\Moves\StatStageEffect.cs" />
+    <Compile Include="Logic\Moves\StatusEffect.cs" />
+    <Compile Include="Logic\Moves\StatusRequirementEffect.cs" />
+    <Compile Include="Logic\Moves\SubstituteEffect.cs" />
     <Compile Include="Logic\Species.cs" />
     <Compile Include="Logic\Element.cs" />
+    <Compile Include="Logic\Stats.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,7 +85,7 @@
     <Content Include="Generation-I\species.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Generation-I\types.xml">
+    <Content Include="Generation-I\elements.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

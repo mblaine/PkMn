@@ -12,7 +12,8 @@ namespace PkMn
     {
         static void Main(string[] args)
         {
-          
+            foreach (var mov in Move.Moves)
+                Console.WriteLine(mov.Value);
         }
     }
 }

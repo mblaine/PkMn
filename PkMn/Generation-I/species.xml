@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<pkmn>
-  <species number="1" name="Bulbasaur" species="Seed" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="64" color="Green" dex-entry="A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.">
+<spp>
+  <species number="1" name="Bulbasaur" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="64" color="Green" dex-species="Seed" dex-entry="A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="15.2" metric="6.9" />
     <stats type="base" hp="45" attack="49" defense="49" special="65" speed="45" />
@@ -32,7 +32,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="2" name="Ivysaur" species="Seed" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="141" color="Green" dex-entry="When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.">
+  <species number="2" name="Ivysaur" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="141" color="Green" dex-species="Seed" dex-entry="When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.">
     <measurement type="height" imperial="3'03″" metric="1.0" />
     <measurement type="weight" imperial="28.7" metric="13.0" />
     <stats type="base" hp="60" attack="62" defense="63" special="80" speed="60" />
@@ -65,7 +65,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="3" name="Venusaur" species="Seed" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="208" color="Green" dex-entry="The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.">
+  <species number="3" name="Venusaur" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="208" color="Green" dex-species="Seed" dex-entry="The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.">
     <measurement type="height" imperial="6'07&quot;" metric="2.0" />
     <measurement type="weight" imperial="220.5" metric="100.0" />
     <stats type="base" hp="80" attack="82" defense="83" special="100" speed="80" />
@@ -99,7 +99,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="4" name="Charmander" species="Lizard" type-1="Fire" catch-rate="45" base-exp="65" color="Red" dex-entry="Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.">
+  <species number="4" name="Charmander" type-1="Fire" catch-rate="45" base-exp="65" color="Red" dex-species="Lizard" dex-entry="Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="18.7" metric="8.5" />
     <stats type="base" hp="39" attack="52" defense="43" special="50" speed="65" />
@@ -139,7 +139,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="5" name="Charmeleon" species="Flame" type-1="Fire" catch-rate="45" base-exp="142" color="Red" dex-entry="When it swings its burning tail, it elevates the temperature to unbearably high levels.">
+  <species number="5" name="Charmeleon" type-1="Fire" catch-rate="45" base-exp="142" color="Red" dex-species="Flame" dex-entry="When it swings its burning tail, it elevates the temperature to unbearably high levels.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="41.9" metric="19.0" />
     <stats type="base" hp="58" attack="64" defense="58" special="65" speed="80" />
@@ -180,7 +180,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="6" name="Charizard" species="Flame" type-1="Fire" type-2="Flying" catch-rate="45" base-exp="209" color="Red" dex-entry="It spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.">
+  <species number="6" name="Charizard" type-1="Fire" type-2="Flying" catch-rate="45" base-exp="209" color="Red" dex-species="Flame" dex-entry="It spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="199.5" metric="90.5" />
     <stats type="base" hp="78" attack="84" defense="78" special="85" speed="100" />
@@ -225,7 +225,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="7" name="Squirtle" species="Tiny Turtle" type-1="Water" catch-rate="45" base-exp="66" color="Blue" dex-entry="After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.">
+  <species number="7" name="Squirtle" type-1="Water" catch-rate="45" base-exp="66" color="Blue" dex-species="Tiny Turtle" dex-entry="After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="19.8" metric="9.0" />
     <stats type="base" hp="44" attack="48" defense="65" special="50" speed="43" />
@@ -265,7 +265,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="8" name="Wartortle" species="Turtle" type-1="Water" catch-rate="45" base-exp="143" color="Blue" dex-entry="Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance.">
+  <species number="8" name="Wartortle" type-1="Water" catch-rate="45" base-exp="143" color="Blue" dex-species="Turtle" dex-entry="Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="49.6" metric="22.5" />
     <stats type="base" hp="59" attack="63" defense="80" special="65" speed="58" />
@@ -306,7 +306,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="9" name="Blastoise" species="Shellfish" type-1="Water" catch-rate="45" base-exp="210" color="Blue" dex-entry="A brutal Pokémon with pressurized water jets on its shell. They are used for high speed tackles.">
+  <species number="9" name="Blastoise" type-1="Water" catch-rate="45" base-exp="210" color="Blue" dex-species="Shellfish" dex-entry="A brutal Pokémon with pressurized water jets on its shell. They are used for high speed tackles.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="188.5" metric="85.5" />
     <stats type="base" hp="79" attack="83" defense="100" special="85" speed="78" />
@@ -350,7 +350,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="10" name="Caterpie" species="Worm" type-1="Bug" catch-rate="255" base-exp="53" color="Green" dex-entry="Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.">
+  <species number="10" name="Caterpie" type-1="Bug" catch-rate="255" base-exp="53" color="Green" dex-species="Worm" dex-entry="Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="6.4" metric="2.9" />
     <stats type="base" hp="45" attack="30" defense="35" special="20" speed="45" />
@@ -360,7 +360,7 @@
       <move name="String Shot" by="level" condition="1" />
     </moves>
   </species>
-  <species number="11" name="Metapod" species="Cocoon" type-1="Bug" catch-rate="120" base-exp="72" color="Green" dex-entry="This Pokémon is vulnerable to attack while its shell is soft, exposing its weak and tender body.">
+  <species number="11" name="Metapod" type-1="Bug" catch-rate="120" base-exp="72" color="Green" dex-species="Cocoon" dex-entry="This Pokémon is vulnerable to attack while its shell is soft, exposing its weak and tender body.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="21.8" metric="9.9" />
     <stats type="base" hp="50" attack="20" defense="55" special="25" speed="30" />
@@ -370,7 +370,7 @@
       <move name="Harden" by="level" condition="7" />
     </moves>
   </species>
-  <species number="12" name="Butterfree" species="Butterfly" type-1="Bug" type-2="Flying" catch-rate="45" base-exp="160" color="White" dex-entry="In battle, it flaps its wings at high speed, releasing highly toxic dust into the air.">
+  <species number="12" name="Butterfree" type-1="Bug" type-2="Flying" catch-rate="45" base-exp="160" color="White" dex-species="Butterfly" dex-entry="In battle, it flaps its wings at high speed, releasing highly toxic dust into the air.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="70.5" metric="32.0" />
     <stats type="base" hp="60" attack="45" defense="50" special="80" speed="70" />
@@ -413,7 +413,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="13" name="Weedle" species="Hairy Bug" type-1="Bug" type-2="Poison" catch-rate="255" base-exp="52" color="Brown" dex-entry="Often found in forests, eating leaves. It has a sharp, venomous stinger on its head.">
+  <species number="13" name="Weedle" type-1="Bug" type-2="Poison" catch-rate="255" base-exp="52" color="Brown" dex-species="Hairy Bug" dex-entry="Often found in forests, eating leaves. It has a sharp, venomous stinger on its head.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="7.1" metric="3.2" />
     <stats type="base" hp="40" attack="35" defense="30" special="20" speed="50" />
@@ -423,7 +423,7 @@
       <move name="String Shot" by="level" condition="1" />
     </moves>
   </species>
-  <species number="14" name="Kakuna" species="Cocoon" type-1="Bug" type-2="Poison" catch-rate="120" base-exp="71" color="Yellow" dex-entry="Almost incapable of moving, this Pokémon can only harden its shell to protect itself from predators.">
+  <species number="14" name="Kakuna" type-1="Bug" type-2="Poison" catch-rate="120" base-exp="71" color="Yellow" dex-species="Cocoon" dex-entry="Almost incapable of moving, this Pokémon can only harden its shell to protect itself from predators.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="22.0" metric="10.0" />
     <stats type="base" hp="45" attack="25" defense="50" special="25" speed="35" />
@@ -432,7 +432,7 @@
       <move name="Harden" by="level" condition="1" />
     </moves>
   </species>
-  <species number="15" name="Beedrill" species="Poison Bee" type-1="Bug" type-2="Poison" catch-rate="45" base-exp="159" color="Yellow" dex-entry="Flies at high speed and attacks using its large venomous stingers on its forelegs and tail.">
+  <species number="15" name="Beedrill" type-1="Bug" type-2="Poison" catch-rate="45" base-exp="159" color="Yellow" dex-species="Poison Bee" dex-entry="Flies at high speed and attacks using its large venomous stingers on its forelegs and tail.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="65.0" metric="29.5" />
     <stats type="base" hp="65" attack="80" defense="40" special="45" speed="75" />
@@ -462,7 +462,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="16" name="Pidgey" species="Tiny Bird" type-1="Normal" type-2="Flying" catch-rate="255" base-exp="55" color="Brown" dex-entry="A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.">
+  <species number="16" name="Pidgey" type-1="Normal" type-2="Flying" catch-rate="255" base-exp="55" color="Brown" dex-species="Tiny Bird" dex-entry="A common sight in forests and woods. It flaps its wings at ground level to kick up blinding sand.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="4.0" metric="1.8" />
     <stats type="base" hp="40" attack="45" defense="40" special="35" speed="56" />
@@ -492,7 +492,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="17" name="Pidgeotto" species="Bird" type-1="Normal" type-2="Flying" catch-rate="120" base-exp="113" color="Brown" dex-entry="Very protective of its sprawling territory, this Pokémon will fiercely peck at any intruder.">
+  <species number="17" name="Pidgeotto" type-1="Normal" type-2="Flying" catch-rate="120" base-exp="113" color="Brown" dex-species="Bird" dex-entry="Very protective of its sprawling territory, this Pokémon will fiercely peck at any intruder.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="63" attack="60" defense="55" special="50" speed="71" />
@@ -523,7 +523,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="18" name="Pidgeot" species="Bird" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="172" color="Brown" dex-entry="When hunting, it skims the surface of water at high speed to pick off unwary prey such as Magikarp.">
+  <species number="18" name="Pidgeot" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="172" color="Brown" dex-species="Bird" dex-entry="When hunting, it skims the surface of water at high speed to pick off unwary prey such as Magikarp.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="87.1" metric="39.5" />
     <stats type="base" hp="83" attack="80" defense="75" special="70" speed="91" />
@@ -555,7 +555,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="19" name="Rattata" species="Mouse" type-1="Normal" catch-rate="255" base-exp="57" color="Purple" dex-entry="Bites anything when it attacks. Small and very quick, it is a common sight in many places.">
+  <species number="19" name="Rattata" type-1="Normal" catch-rate="255" base-exp="57" color="Purple" dex-species="Mouse" dex-entry="Bites anything when it attacks. Small and very quick, it is a common sight in many places.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="7.7" metric="3.5" />
     <stats type="base" hp="30" attack="56" defense="35" special="25" speed="72" />
@@ -587,7 +587,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="20" name="Raticate" species="Mouse" type-1="Normal" catch-rate="127" base-exp="116" color="Brown" dex-entry="It uses its whiskers to maintain its balance and will slow down if they are cut off.">
+  <species number="20" name="Raticate" type-1="Normal" catch-rate="127" base-exp="116" color="Brown" dex-species="Mouse" dex-entry="It uses its whiskers to maintain its balance and will slow down if they are cut off.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="40.8" metric="18.5" />
     <stats type="base" hp="55" attack="81" defense="60" special="50" speed="97" />
@@ -621,7 +621,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="21" name="Spearow" species="Tiny Bird" type-1="Normal" type-2="Flying" catch-rate="255" base-exp="58" color="Brown" dex-entry="Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne.">
+  <species number="21" name="Spearow" type-1="Normal" type-2="Flying" catch-rate="255" base-exp="58" color="Brown" dex-species="Tiny Bird" dex-entry="Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="4.4" metric="2.0" />
     <stats type="base" hp="40" attack="60" defense="30" special="31" speed="70" />
@@ -650,7 +650,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="22" name="Fearow" species="Beak" type-1="Normal" type-2="Flying" catch-rate="90" base-exp="162" color="Brown" dex-entry="With its huge and magnificent wings, it can keep aloft without ever having to land for rest.">
+  <species number="22" name="Fearow" type-1="Normal" type-2="Flying" catch-rate="90" base-exp="162" color="Brown" dex-species="Beak" dex-entry="With its huge and magnificent wings, it can keep aloft without ever having to land for rest.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="83.8" metric="38.0" />
     <stats type="base" hp="65" attack="90" defense="65" special="61" speed="100" />
@@ -680,7 +680,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="23" name="Ekans" species="Snake" type-1="Poison" catch-rate="255" base-exp="62" color="Purple" dex-entry="Moves silently and stealthily. Eats the eggs of birds, such as Pidgey and Spearow, whole.">
+  <species number="23" name="Ekans" type-1="Poison" catch-rate="255" base-exp="62" color="Purple" dex-species="Snake" dex-entry="Moves silently and stealthily. Eats the eggs of birds, such as Pidgey and Spearow, whole.">
     <measurement type="height" imperial="6'07&quot;" metric="2.0" />
     <measurement type="weight" imperial="15.2" metric="6.9" />
     <stats type="base" hp="35" attack="60" defense="44" special="40" speed="55" />
@@ -712,7 +712,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="24" name="Arbok" species="Cobra" type-1="Poison" catch-rate="90" base-exp="147" color="Purple" dex-entry="It is rumored that the ferocious warning markings on its belly differ from area to area.">
+  <species number="24" name="Arbok" type-1="Poison" catch-rate="90" base-exp="147" color="Purple" dex-species="Cobra" dex-entry="It is rumored that the ferocious warning markings on its belly differ from area to area.">
     <measurement type="height" imperial="11'06&quot;" metric="3.5" />
     <measurement type="weight" imperial="143.3" metric="65.0" />
     <stats type="base" hp="60" attack="85" defense="69" special="65" speed="80" />
@@ -745,7 +745,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="25" name="Pikachu" species="Mouse" type-1="Electric" catch-rate="190" base-exp="82" color="Yellow" dex-entry="When several of these Pokémon gather, their electricity could build and cause lightning storms.">
+  <species number="25" name="Pikachu" type-1="Electric" catch-rate="190" base-exp="82" color="Yellow" dex-species="Mouse" dex-entry="When several of these Pokémon gather, their electricity could build and cause lightning storms.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="13.2" metric="6.0" />
     <stats type="base" hp="35" attack="55" defense="30" special="50" speed="90" />
@@ -790,7 +790,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="26" name="Raichu" species="Mouse" type-1="Electric" catch-rate="75" base-exp="122" color="Yellow" dex-entry="Its long tail serves as a ground to protect itself from its own high voltage power.">
+  <species number="26" name="Raichu" type-1="Electric" catch-rate="75" base-exp="122" color="Yellow" dex-species="Mouse" dex-entry="Its long tail serves as a ground to protect itself from its own high voltage power.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="60" attack="90" defense="55" special="90" speed="100" />
@@ -823,7 +823,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="27" name="Sandshrew" species="Mouse" type-1="Ground" catch-rate="255" base-exp="93" color="Yellow" dex-entry="Burrows deep underground in arid locations far from water. It only emerges to hunt for food.">
+  <species number="27" name="Sandshrew" type-1="Ground" catch-rate="255" base-exp="93" color="Yellow" dex-species="Mouse" dex-entry="Burrows deep underground in arid locations far from water. It only emerges to hunt for food.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="26.5" metric="12.0" />
     <stats type="base" hp="50" attack="75" defense="85" special="30" speed="40" />
@@ -858,7 +858,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="28" name="Sandslash" species="Mouse" type-1="Ground" catch-rate="90" base-exp="163" color="Yellow" dex-entry="Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape.">
+  <species number="28" name="Sandslash" type-1="Ground" catch-rate="90" base-exp="163" color="Yellow" dex-species="Mouse" dex-entry="Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="65.0" metric="29.5" />
     <stats type="base" hp="75" attack="100" defense="110" special="55" speed="65" />
@@ -894,7 +894,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="29" name="Nidoran♀" species="Poison Pin" type-1="Poison" catch-rate="235" base-exp="59" color="Blue" dex-entry="Although small, its venomous barbs render this Pokémon dangerous. The female has smaller horns.">
+  <species number="29" name="Nidoran♀" type-1="Poison" catch-rate="235" base-exp="59" color="Blue" dex-species="Poison Pin" dex-entry="Although small, its venomous barbs render this Pokémon dangerous. The female has smaller horns.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="15.4" metric="7.0" />
     <stats type="base" hp="55" attack="47" defense="52" special="40" speed="41" />
@@ -930,7 +930,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="30" name="Nidorina" species="Poison Pin" type-1="Poison" catch-rate="120" base-exp="117" color="Blue" dex-entry="The female's horn develops slowly. Prefers physical attacks such as clawing and biting.">
+  <species number="30" name="Nidorina" type-1="Poison" catch-rate="120" base-exp="117" color="Blue" dex-species="Poison Pin" dex-entry="The female's horn develops slowly. Prefers physical attacks such as clawing and biting.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="44.1" metric="20.0" />
     <stats type="base" hp="70" attack="62" defense="67" special="55" speed="56" />
@@ -971,7 +971,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="31" name="Nidoqueen" species="Drill" type-1="Poison" type-2="Ground" catch-rate="45" base-exp="194" color="Blue" dex-entry="Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves.">
+  <species number="31" name="Nidoqueen" type-1="Poison" type-2="Ground" catch-rate="45" base-exp="194" color="Blue" dex-species="Drill" dex-entry="Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="132.3" metric="60.0" />
     <stats type="base" hp="90" attack="82" defense="87" special="75" speed="76" />
@@ -1018,7 +1018,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="32" name="Nidoran♂" species="Poison Pin" type-1="Poison" catch-rate="235" base-exp="60" color="Purple" dex-entry="Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom.">
+  <species number="32" name="Nidoran♂" type-1="Poison" catch-rate="235" base-exp="60" color="Purple" dex-species="Poison Pin" dex-entry="Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="19.8" metric="9.0" />
     <stats type="base" hp="46" attack="57" defense="40" special="40" speed="50" />
@@ -1055,7 +1055,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="33" name="Nidorino" species="Poison Pin" type-1="Poison" catch-rate="120" base-exp="118" color="Purple" dex-entry="An aggressive Pokémon that is quick to attack. The horn on its head secretes a powerful venom.">
+  <species number="33" name="Nidorino" type-1="Poison" catch-rate="120" base-exp="118" color="Purple" dex-species="Poison Pin" dex-entry="An aggressive Pokémon that is quick to attack. The horn on its head secretes a powerful venom.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="43.0" metric="19.5" />
     <stats type="base" hp="61" attack="72" defense="57" special="55" speed="65" />
@@ -1096,7 +1096,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="34" name="Nidoking" species="Drill" type-1="Poison" type-2="Ground" catch-rate="45" base-exp="195" color="Purple" dex-entry="It uses its powerful tail in battle to smash, constrict, then break the prey's bones.">
+  <species number="34" name="Nidoking" type-1="Poison" type-2="Ground" catch-rate="45" base-exp="195" color="Purple" dex-species="Drill" dex-entry="It uses its powerful tail in battle to smash, constrict, then break the prey's bones.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="136.7" metric="62.0" />
     <stats type="base" hp="81" attack="92" defense="77" special="75" speed="85" />
@@ -1143,7 +1143,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="35" name="Clefairy" species="Fairy" type-1="Normal" catch-rate="150" base-exp="68" color="Pink" dex-entry="Its magical and cute appeal has many admirers. It is rare and found only in certain areas.">
+  <species number="35" name="Clefairy" type-1="Normal" catch-rate="150" base-exp="68" color="Pink" dex-species="Fairy" dex-entry="Its magical and cute appeal has many admirers. It is rare and found only in certain areas.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="16.5" metric="7.5" />
     <stats type="base" hp="70" attack="45" defense="48" special="60" speed="35" />
@@ -1192,7 +1192,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="36" name="Clefable" species="Fairy" type-1="Normal" catch-rate="25" base-exp="129" color="Pink" dex-entry="A timid fairy Pokémon that is rarely seen. It will run and hide the moment it senses people.">
+  <species number="36" name="Clefable" type-1="Normal" catch-rate="25" base-exp="129" color="Pink" dex-species="Fairy" dex-entry="A timid fairy Pokémon that is rarely seen. It will run and hide the moment it senses people.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="88.2" metric="40.0" />
     <stats type="base" hp="95" attack="70" defense="73" special="85" speed="60" />
@@ -1237,7 +1237,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="37" name="Vulpix" species="Fox" type-1="Fire" catch-rate="190" base-exp="63" color="Brown" dex-entry="At the time of birth, it has just one tail. The tail splits from its tip as it grows older.">
+  <species number="37" name="Vulpix" type-1="Fire" catch-rate="190" base-exp="63" color="Brown" dex-species="Fox" dex-entry="At the time of birth, it has just one tail. The tail splits from its tip as it grows older.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="21.8" metric="9.9" />
     <stats type="base" hp="38" attack="41" defense="40" special="65" speed="65" />
@@ -1267,7 +1267,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="38" name="Ninetales" species="Fox" type-1="Fire" catch-rate="75" base-exp="178" color="Yellow" dex-entry="Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse.">
+  <species number="38" name="Ninetales" type-1="Fire" catch-rate="75" base-exp="178" color="Yellow" dex-species="Fox" dex-entry="Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="43.9" metric="19.9" />
     <stats type="base" hp="73" attack="76" defense="75" special="100" speed="100" />
@@ -1294,7 +1294,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="39" name="Jigglypuff" species="Balloon" type-1="Normal" catch-rate="170" base-exp="76" color="Pink" dex-entry="When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.">
+  <species number="39" name="Jigglypuff" type-1="Normal" catch-rate="170" base-exp="76" color="Pink" dex-species="Balloon" dex-entry="When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="12.1" metric="5.5" />
     <stats type="base" hp="115" attack="45" defense="20" special="25" speed="20" />
@@ -1342,7 +1342,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="40" name="Wigglytuff" species="Balloon" type-1="Normal" catch-rate="50" base-exp="109" color="Pink" dex-entry="The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size.">
+  <species number="40" name="Wigglytuff" type-1="Normal" catch-rate="50" base-exp="109" color="Pink" dex-species="Balloon" dex-entry="The body is soft and rubbery. When angered, it will suck in air and inflate itself to an enormous size.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="26.5" metric="12.0" />
     <stats type="base" hp="140" attack="70" defense="45" special="50" speed="45" />
@@ -1386,7 +1386,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="41" name="Zubat" species="Bat" type-1="Poison" type-2="Flying" catch-rate="255" base-exp="54" color="Purple" dex-entry="Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets.">
+  <species number="41" name="Zubat" type-1="Poison" type-2="Flying" catch-rate="255" base-exp="54" color="Purple" dex-species="Bat" dex-entry="Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="16.5" metric="7.5" />
     <stats type="base" hp="40" attack="45" defense="35" special="40" speed="55" />
@@ -1413,7 +1413,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="42" name="Golbat" species="Bat" type-1="Poison" type-2="Flying" catch-rate="90" base-exp="171" color="Purple" dex-entry="Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly.">
+  <species number="42" name="Golbat" type-1="Poison" type-2="Flying" catch-rate="90" base-exp="171" color="Purple" dex-species="Bat" dex-entry="Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="121.3" metric="55.0" />
     <stats type="base" hp="75" attack="80" defense="70" special="75" speed="90" />
@@ -1442,7 +1442,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="43" name="Oddish" species="Weed" type-1="Grass" type-2="Poison" catch-rate="255" base-exp="78" color="Blue" dex-entry="During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.">
+  <species number="43" name="Oddish" type-1="Grass" type-2="Poison" catch-rate="255" base-exp="78" color="Blue" dex-species="Weed" dex-entry="During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="11.9" metric="5.4" />
     <stats type="base" hp="45" attack="50" defense="55" special="75" speed="30" />
@@ -1471,7 +1471,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="44" name="Gloom" species="Weed" type-1="Grass" type-2="Poison" catch-rate="120" base-exp="132" color="Blue" dex-entry="The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey.">
+  <species number="44" name="Gloom" type-1="Grass" type-2="Poison" catch-rate="120" base-exp="132" color="Blue" dex-species="Weed" dex-entry="The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="19.0" metric="8.6" />
     <stats type="base" hp="60" attack="65" defense="70" special="85" speed="40" />
@@ -1502,7 +1502,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="45" name="Vileplume" species="Flower" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="184" color="Red" dex-entry="The larger its petals, the more toxic pollen it contains. Its big head is heavy and hard to hold up.">
+  <species number="45" name="Vileplume" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="184" color="Red" dex-species="Flower" dex-entry="The larger its petals, the more toxic pollen it contains. Its big head is heavy and hard to hold up.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="41.0" metric="18.6" />
     <stats type="base" hp="75" attack="80" defense="85" special="100" speed="50" />
@@ -1532,7 +1532,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="46" name="Paras" species="Mushroom" type-1="Bug" type-2="Grass" catch-rate="190" base-exp="70" color="Red" dex-entry="Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host.">
+  <species number="46" name="Paras" type-1="Bug" type-2="Grass" catch-rate="190" base-exp="70" color="Red" dex-species="Mushroom" dex-entry="Burrows to suck tree roots. The mushrooms on its back grow by drawing nutrients from the bug host.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="11.9" metric="5.4" />
     <stats type="base" hp="35" attack="70" defense="55" special="55" speed="25" />
@@ -1563,7 +1563,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="47" name="Parasect" species="Mushroom" type-1="Bug" type-2="Grass" catch-rate="75" base-exp="128" color="Red" dex-entry="A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places.">
+  <species number="47" name="Parasect" type-1="Bug" type-2="Grass" catch-rate="75" base-exp="128" color="Red" dex-species="Mushroom" dex-entry="A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="65.0" metric="29.5" />
     <stats type="base" hp="60" attack="95" defense="80" special="80" speed="30" />
@@ -1596,7 +1596,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="48" name="Venonat" species="Insect" type-1="Bug" type-2="Poison" catch-rate="190" base-exp="75" color="Purple" dex-entry="Lives in the shadows of tall trees where it eats bugs. It is attracted by light at night.">
+  <species number="48" name="Venonat" type-1="Bug" type-2="Poison" catch-rate="190" base-exp="75" color="Purple" dex-species="Insect" dex-entry="Lives in the shadows of tall trees where it eats bugs. It is attracted by light at night.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="60" attack="55" defense="50" special="40" speed="45" />
@@ -1630,7 +1630,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="49" name="Venomoth" species="Poison Moth" type-1="Bug" type-2="Poison" catch-rate="75" base-exp="138" color="Purple" dex-entry="The dustlike scales covering its wings are color-coded to indicate the kinds of poison it has.">
+  <species number="49" name="Venomoth" type-1="Bug" type-2="Poison" catch-rate="75" base-exp="138" color="Purple" dex-species="Poison Moth" dex-entry="The dustlike scales covering its wings are color-coded to indicate the kinds of poison it has.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="27.6" metric="12.5" />
     <stats type="base" hp="70" attack="65" defense="60" special="90" speed="90" />
@@ -1670,7 +1670,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="50" name="Diglett" species="Mole" type-1="Ground" catch-rate="255" base-exp="81" color="Brown" dex-entry="Lives about one yard underground where it feeds on plant roots. It sometimes appears aboveground.">
+  <species number="50" name="Diglett" type-1="Ground" catch-rate="255" base-exp="81" color="Brown" dex-species="Mole" dex-entry="Lives about one yard underground where it feeds on plant roots. It sometimes appears aboveground.">
     <measurement type="height" imperial="0'08&quot;" metric="0.2" />
     <measurement type="weight" imperial="1.8" metric="0.8" />
     <stats type="base" hp="10" attack="55" defense="25" special="45" speed="95" />
@@ -1699,7 +1699,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="51" name="Dugtrio" species="Mole" type-1="Ground" catch-rate="50" base-exp="153" color="Brown" dex-entry="A team of Diglett triplets. It triggers huge earthquakes by burrowing 60 miles underground.">
+  <species number="51" name="Dugtrio" type-1="Ground" catch-rate="50" base-exp="153" color="Brown" dex-species="Mole" dex-entry="A team of Diglett triplets. It triggers huge earthquakes by burrowing 60 miles underground.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="73.4" metric="33.3" />
     <stats type="base" hp="35" attack="80" defense="50" special="70" speed="120" />
@@ -1730,7 +1730,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="52" name="Meowth" species="Scratch Cat" type-1="Normal" catch-rate="255" base-exp="69" color="Yellow" dex-entry="Adores circular objects. Wanders the street on a nightly basis to look for dropped loose change.">
+  <species number="52" name="Meowth" type-1="Normal" catch-rate="255" base-exp="69" color="Yellow" dex-species="Scratch Cat" dex-entry="Adores circular objects. Wanders the street on a nightly basis to look for dropped loose change.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="9.3" metric="4.2" />
     <stats type="base" hp="40" attack="45" defense="35" special="40" speed="90" />
@@ -1762,7 +1762,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="53" name="Persian" species="Classy Cat" type-1="Normal" catch-rate="90" base-exp="148" color="Yellow" dex-entry="Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness.">
+  <species number="53" name="Persian" type-1="Normal" catch-rate="90" base-exp="148" color="Yellow" dex-species="Classy Cat" dex-entry="Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="70.5" metric="32.0" />
     <stats type="base" hp="65" attack="70" defense="60" special="65" speed="115" />
@@ -1796,7 +1796,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="54" name="Psyduck" species="Duck" type-1="Water" catch-rate="190" base-exp="80" color="Yellow" dex-entry="While lulling its enemies with its vacant look, this wily Pokémon will use psychokinetic powers.">
+  <species number="54" name="Psyduck" type-1="Water" catch-rate="190" base-exp="80" color="Yellow" dex-species="Duck" dex-entry="While lulling its enemies with its vacant look, this wily Pokémon will use psychokinetic powers.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="43.2" metric="19.6" />
     <stats type="base" hp="50" attack="52" defense="48" special="50" speed="55" />
@@ -1835,7 +1835,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="55" name="Golduck" species="Duck" type-1="Water" catch-rate="75" base-exp="174" color="Blue" dex-entry="Often seen swimming elegantly by lakeshores. It is often mistaken for the Japanese monster Kappa.">
+  <species number="55" name="Golduck" type-1="Water" catch-rate="75" base-exp="174" color="Blue" dex-species="Duck" dex-entry="Often seen swimming elegantly by lakeshores. It is often mistaken for the Japanese monster Kappa.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="168.9" metric="76.6" />
     <stats type="base" hp="80" attack="82" defense="78" special="80" speed="85" />
@@ -1876,7 +1876,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="56" name="Mankey" species="Pig Monkey" type-1="Fighting" catch-rate="190" base-exp="74" color="Brown" dex-entry="Extremely quick to anger. It could be docile one moment then thrashing away the next instant.">
+  <species number="56" name="Mankey" type-1="Fighting" catch-rate="190" base-exp="74" color="Brown" dex-species="Pig Monkey" dex-entry="Extremely quick to anger. It could be docile one moment then thrashing away the next instant.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="61.7" metric="28.0" />
     <stats type="base" hp="40" attack="80" defense="35" special="35" speed="70" />
@@ -1917,7 +1917,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="57" name="Primeape" species="Pig Monkey" type-1="Fighting" catch-rate="75" base-exp="149" color="Brown" dex-entry="Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught.">
+  <species number="57" name="Primeape" type-1="Fighting" catch-rate="75" base-exp="149" color="Brown" dex-species="Pig Monkey" dex-entry="Always furious and tenacious to boot. It will not abandon chasing its quarry until it is caught.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="70.5" metric="32.0" />
     <stats type="base" hp="65" attack="105" defense="60" special="60" speed="95" />
@@ -1962,7 +1962,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="58" name="Growlithe" species="Puppy" type-1="Fire" catch-rate="190" base-exp="91" color="Brown" dex-entry="Very protective of its territory. It will bark and bite to repel intruders from its space.">
+  <species number="58" name="Growlithe" type-1="Fire" catch-rate="190" base-exp="91" color="Brown" dex-species="Puppy" dex-entry="Very protective of its territory. It will bark and bite to repel intruders from its space.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="41.9" metric="19.0" />
     <stats type="base" hp="55" attack="70" defense="45" special="50" speed="60" />
@@ -1993,7 +1993,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="59" name="Arcanine" species="Legendary" type-1="Fire" catch-rate="75" base-exp="213" color="Brown" dex-entry="A Pokémon that has been admired since the past for its beauty. It runs agilely as if on wings.">
+  <species number="59" name="Arcanine" type-1="Fire" catch-rate="75" base-exp="213" color="Brown" dex-species="Legendary" dex-entry="A Pokémon that has been admired since the past for its beauty. It runs agilely as if on wings.">
     <measurement type="height" imperial="6'03&quot;" metric="1.9" />
     <measurement type="weight" imperial="341.7" metric="155.0" />
     <stats type="base" hp="90" attack="110" defense="80" special="80" speed="95" />
@@ -2022,7 +2022,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="60" name="Poliwag" species="Tadpole" type-1="Water" catch-rate="255" base-exp="77" color="Blue" dex-entry="Its newly grown legs prevent it from walking well. It appears to prefer swimming over walking.">
+  <species number="60" name="Poliwag" type-1="Water" catch-rate="255" base-exp="77" color="Blue" dex-species="Tadpole" dex-entry="Its newly grown legs prevent it from walking well. It appears to prefer swimming over walking.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="27.3" metric="12.4" />
     <stats type="base" hp="40" attack="50" defense="40" special="40" speed="90" />
@@ -2055,7 +2055,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="61" name="Poliwhirl" species="Tadpole" type-1="Water" catch-rate="120" base-exp="131" color="Blue" dex-entry="It can live in or out of water. When out of water, it constantly sweats to keep its body slimy.">
+  <species number="61" name="Poliwhirl" type-1="Water" catch-rate="120" base-exp="131" color="Blue" dex-species="Tadpole" dex-entry="It can live in or out of water. When out of water, it constantly sweats to keep its body slimy.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="44.1" metric="20.0" />
     <stats type="base" hp="65" attack="65" defense="65" special="50" speed="90" />
@@ -2099,7 +2099,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="62" name="Poliwrath" species="Tadpole" type-1="Water" type-2="Fighting" catch-rate="45" base-exp="185" color="Blue" dex-entry="A swimmer adept at both the front crawl and breaststroke. Easily overtakes the best human swimmers.">
+  <species number="62" name="Poliwrath" type-1="Water" type-2="Fighting" catch-rate="45" base-exp="185" color="Blue" dex-species="Tadpole" dex-entry="A swimmer adept at both the front crawl and breaststroke. Easily overtakes the best human swimmers.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="119.0" metric="54.0" />
     <stats type="base" hp="90" attack="85" defense="95" special="70" speed="70" />
@@ -2140,7 +2140,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="63" name="Abra" species="Psi" type-1="Psychic" catch-rate="200" base-exp="73" color="Brown" dex-entry="Using its ability to read minds, it will sense impending danger and teleport to safety.">
+  <species number="63" name="Abra" type-1="Psychic" catch-rate="200" base-exp="73" color="Brown" dex-species="Psi" dex-entry="Using its ability to read minds, it will sense impending danger and teleport to safety.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="43.0" metric="19.5" />
     <stats type="base" hp="25" attack="20" defense="15" special="105" speed="90" />
@@ -2173,7 +2173,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="64" name="Kadabra" species="Psi" type-1="Psychic" catch-rate="100" base-exp="145" color="Brown" dex-entry="It emits special alpha waves from its body that induce headaches just by being close by.">
+  <species number="64" name="Kadabra" type-1="Psychic" catch-rate="100" base-exp="145" color="Brown" dex-species="Psi" dex-entry="It emits special alpha waves from its body that induce headaches just by being close by.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="124.6" metric="56.5" />
     <stats type="base" hp="40" attack="35" defense="30" special="120" speed="105" />
@@ -2216,7 +2216,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="65" name="Alakazam" species="Psi" type-1="Psychic" catch-rate="50" base-exp="186" color="Brown" dex-entry="Its brain can outperform a super-computer. Its intelligence quotient is said to be 5,000.">
+  <species number="65" name="Alakazam" type-1="Psychic" catch-rate="50" base-exp="186" color="Brown" dex-species="Psi" dex-entry="Its brain can outperform a super-computer. Its intelligence quotient is said to be 5,000.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="105.8" metric="48.0" />
     <stats type="base" hp="55" attack="50" defense="45" special="135" speed="120" />
@@ -2259,7 +2259,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="66" name="Machop" species="Superpower" type-1="Fighting" catch-rate="180" base-exp="88" color="Gray" dex-entry="Loves to build its muscles. It trains in all styles of martial arts to become even stronger.">
+  <species number="66" name="Machop" type-1="Fighting" catch-rate="180" base-exp="88" color="Gray" dex-species="Superpower" dex-entry="Loves to build its muscles. It trains in all styles of martial arts to become even stronger.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="43.0" metric="19.5" />
     <stats type="base" hp="70" attack="80" defense="50" special="35" speed="35" />
@@ -2296,7 +2296,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="67" name="Machoke" species="Superpower" type-1="Fighting" catch-rate="90" base-exp="146" color="Gray" dex-entry="Its muscular body is so powerful, it must wear a power-save belt to be able to regulate its motions.">
+  <species number="67" name="Machoke" type-1="Fighting" catch-rate="90" base-exp="146" color="Gray" dex-species="Superpower" dex-entry="Its muscular body is so powerful, it must wear a power-save belt to be able to regulate its motions.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="155.4" metric="70.5" />
     <stats type="base" hp="80" attack="100" defense="70" special="50" speed="45" />
@@ -2335,7 +2335,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="68" name="Machamp" species="Superpower" type-1="Fighting" catch-rate="45" base-exp="193" color="Gray" dex-entry="Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon.">
+  <species number="68" name="Machamp" type-1="Fighting" catch-rate="45" base-exp="193" color="Gray" dex-species="Superpower" dex-entry="Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="286.6" metric="130.0" />
     <stats type="base" hp="90" attack="130" defense="80" special="65" speed="55" />
@@ -2374,7 +2374,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="69" name="Bellsprout" species="Flower" type-1="Grass" type-2="Poison" catch-rate="255" base-exp="84" color="Green" dex-entry="A carnivorous Pokémon that traps and eats bugs. It appears to use its root feet to replenish moisture.">
+  <species number="69" name="Bellsprout" type-1="Grass" type-2="Poison" catch-rate="255" base-exp="84" color="Green" dex-species="Flower" dex-entry="A carnivorous Pokémon that traps and eats bugs. It appears to use its root feet to replenish moisture.">
     <measurement type="height" imperial="2'04&quot;" metric="0.7" />
     <measurement type="weight" imperial="8.8" metric="4.0" />
     <stats type="base" hp="50" attack="75" defense="35" special="70" speed="40" />
@@ -2405,7 +2405,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="70" name="Weepinbell" species="Flycatcher" type-1="Grass" type-2="Poison" catch-rate="120" base-exp="151" color="Green" dex-entry="It spits out poisonpowder to immobilize the enemy and then finishes it with a spray of acid.">
+  <species number="70" name="Weepinbell" type-1="Grass" type-2="Poison" catch-rate="120" base-exp="151" color="Green" dex-species="Flycatcher" dex-entry="It spits out poisonpowder to immobilize the enemy and then finishes it with a spray of acid.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="14.1" metric="6.4" />
     <stats type="base" hp="65" attack="90" defense="50" special="85" speed="55" />
@@ -2437,7 +2437,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="71" name="Victreebel" species="Flycatcher" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="191" color="Green" dex-entry="Said to live in huge colonies deep in jungles, although no one has ever returned from there.">
+  <species number="71" name="Victreebel" type-1="Grass" type-2="Poison" catch-rate="45" base-exp="191" color="Green" dex-species="Flycatcher" dex-entry="Said to live in huge colonies deep in jungles, although no one has ever returned from there.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="34.2" metric="15.5" />
     <stats type="base" hp="80" attack="105" defense="65" special="100" speed="70" />
@@ -2467,7 +2467,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="72" name="Tentacool" species="Jellyfish" type-1="Water" type-2="Poison" catch-rate="190" base-exp="105" color="Blue" dex-entry="Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid.">
+  <species number="72" name="Tentacool" type-1="Water" type-2="Poison" catch-rate="190" base-exp="105" color="Blue" dex-species="Jellyfish" dex-entry="Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="100.3" metric="45.5" />
     <stats type="base" hp="40" attack="40" defense="35" special="100" speed="70" />
@@ -2503,7 +2503,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="73" name="Tentacruel" species="Jellyfish" type-1="Water" type-2="Poison" catch-rate="60" base-exp="205" color="Blue" dex-entry="The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey.">
+  <species number="73" name="Tentacruel" type-1="Water" type-2="Poison" catch-rate="60" base-exp="205" color="Blue" dex-species="Jellyfish" dex-entry="The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="121.3" metric="55.0" />
     <stats type="base" hp="80" attack="70" defense="65" special="120" speed="100" />
@@ -2541,7 +2541,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="74" name="Geodude" species="Rock" type-1="Rock" type-2="Ground" catch-rate="255" base-exp="86" color="Brown" dex-entry="Found in fields and mountains. Mistaking them for boulders, people often step or trip on them.">
+  <species number="74" name="Geodude" type-1="Rock" type-2="Ground" catch-rate="255" base-exp="86" color="Brown" dex-species="Rock" dex-entry="Found in fields and mountains. Mistaking them for boulders, people often step or trip on them.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="44.1" metric="20.0" />
     <stats type="base" hp="40" attack="80" defense="100" special="30" speed="20" />
@@ -2579,7 +2579,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="75" name="Graveler" species="Rock" type-1="Rock" type-2="Ground" catch-rate="120" base-exp="134" color="Brown" dex-entry="Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction.">
+  <species number="75" name="Graveler" type-1="Rock" type-2="Ground" catch-rate="120" base-exp="134" color="Brown" dex-species="Rock" dex-entry="Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="231.5" metric="105.0" />
     <stats type="base" hp="55" attack="95" defense="115" special="45" speed="35" />
@@ -2618,7 +2618,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="76" name="Golem" species="Megaton" type-1="Rock" type-2="Ground" catch-rate="45" base-exp="177" color="Brown" dex-entry="Its boulder-like body is extremely hard. It can easily withstand dynamite blasts without taking damage.">
+  <species number="76" name="Golem" type-1="Rock" type-2="Ground" catch-rate="45" base-exp="177" color="Brown" dex-species="Megaton" dex-entry="Its boulder-like body is extremely hard. It can easily withstand dynamite blasts without taking damage.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="661.4" metric="300.0" />
     <stats type="base" hp="80" attack="110" defense="130" special="55" speed="45" />
@@ -2658,7 +2658,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="77" name="Ponyta" species="Fire Horse" type-1="Fire" catch-rate="190" base-exp="152" color="Yellow" dex-entry="Its hooves are 10 times harder than diamonds. It can trample anything completely flat in moments.">
+  <species number="77" name="Ponyta" type-1="Fire" catch-rate="190" base-exp="152" color="Yellow" dex-species="Fire Horse" dex-entry="Its hooves are 10 times harder than diamonds. It can trample anything completely flat in moments.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="50" attack="85" defense="55" special="65" speed="90" />
@@ -2688,7 +2688,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="78" name="Rapidash" species="Fire Horse" type-1="Fire" catch-rate="60" base-exp="192" color="Yellow" dex-entry="Very competitive, this Pokémon will chase anything that moves fast in the hopes of racing it.">
+  <species number="78" name="Rapidash" type-1="Fire" catch-rate="60" base-exp="192" color="Yellow" dex-species="Fire Horse" dex-entry="Very competitive, this Pokémon will chase anything that moves fast in the hopes of racing it.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="209.4" metric="95.0" />
     <stats type="base" hp="65" attack="100" defense="70" special="80" speed="105" />
@@ -2721,7 +2721,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="79" name="Slowpoke" species="Dopey" type-1="Water" type-2="Psychic" catch-rate="190" base-exp="99" color="Pink" dex-entry="Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack.">
+  <species number="79" name="Slowpoke" type-1="Water" type-2="Psychic" catch-rate="190" base-exp="99" color="Pink" dex-species="Dopey" dex-entry="Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="79.4" metric="36.0" />
     <stats type="base" hp="90" attack="65" defense="65" special="40" speed="15" />
@@ -2766,7 +2766,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="80" name="Slowbro" species="Hermit Crab" type-1="Water" type-2="Psychic" catch-rate="75" base-exp="164" color="Pink" dex-entry="The Shellder that latches onto Slowpoke's tail is said to feed on the host's leftover scraps.">
+  <species number="80" name="Slowbro" type-1="Water" type-2="Psychic" catch-rate="75" base-exp="164" color="Pink" dex-species="Hermit Crab" dex-entry="The Shellder that latches onto Slowpoke's tail is said to feed on the host's leftover scraps.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="173.1" metric="78.5" />
     <stats type="base" hp="95" attack="75" defense="110" special="80" speed="30" />
@@ -2819,7 +2819,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="81" name="Magnemite" species="Magnet" type-1="Electric" catch-rate="190" base-exp="89" color="Gray" dex-entry="Uses antigravity to stay suspended. Appears without warning and uses Thunder Wave and similar moves.">
+  <species number="81" name="Magnemite" type-1="Electric" catch-rate="190" base-exp="89" color="Gray" dex-species="Magnet" dex-entry="Uses antigravity to stay suspended. Appears without warning and uses Thunder Wave and similar moves.">
     <measurement type="height" imperial="1' 00&quot;" metric="0.3" />
     <measurement type="weight" imperial="13.2" metric="6.0" />
     <stats type="base" hp="25" attack="35" defense="70" special="95" speed="45" />
@@ -2850,7 +2850,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="82" name="Magneton" species="Magnet" type-1="Electric" catch-rate="60" base-exp="161" color="Gray" dex-entry="Formed by several Magnemite linked together. They frequently appear when sunspots flare up.">
+  <species number="82" name="Magneton" type-1="Electric" catch-rate="60" base-exp="161" color="Gray" dex-species="Magnet" dex-entry="Formed by several Magnemite linked together. They frequently appear when sunspots flare up.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="132.3" metric="60.0" />
     <stats type="base" hp="50" attack="60" defense="95" special="120" speed="70" />
@@ -2883,7 +2883,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="83" name="Farfetch'd" species="Wild Duck" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="94" color="Brown" dex-entry="The sprig of green onions it holds is its weapon. It is used much like a metal sword.">
+  <species number="83" name="Farfetch'd" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="94" color="Brown" dex-species="Wild Duck" dex-entry="The sprig of green onions it holds is its weapon. It is used much like a metal sword.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="33.1" metric="15.0" />
     <stats type="base" hp="52" attack="65" defense="55" special="58" speed="60" />
@@ -2915,7 +2915,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="84" name="Doduo" species="Twin Bird" type-1="Normal" type-2="Flying" catch-rate="190" base-exp="96" color="Brown" dex-entry="A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints.">
+  <species number="84" name="Doduo" type-1="Normal" type-2="Flying" catch-rate="190" base-exp="96" color="Brown" dex-species="Twin Bird" dex-entry="A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="86.4" metric="39.2" />
     <stats type="base" hp="35" attack="85" defense="45" special="35" speed="75" />
@@ -2946,7 +2946,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="85" name="Dodrio" species="Triple Bird" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="158" color="Brown" dex-entry="Uses its three brains to execute complex plans. While two heads sleep, one head is said to stay awake.">
+  <species number="85" name="Dodrio" type-1="Normal" type-2="Flying" catch-rate="45" base-exp="158" color="Brown" dex-species="Triple Bird" dex-entry="Uses its three brains to execute complex plans. While two heads sleep, one head is said to stay awake.">
     <measurement type="height" imperial="5'11&quot;" metric="1.8" />
     <measurement type="weight" imperial="187.8" metric="85.2" />
     <stats type="base" hp="60" attack="110" defense="70" special="60" speed="100" />
@@ -2979,7 +2979,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="86" name="Seel" species="Sea Lion" type-1="Water" catch-rate="190" base-exp="100" color="White" dex-entry="The protruding horn on its head is very hard. It is used for bashing through thick ice.">
+  <species number="86" name="Seel" type-1="Water" catch-rate="190" base-exp="100" color="White" dex-species="Sea Lion" dex-entry="The protruding horn on its head is very hard. It is used for bashing through thick ice.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="198.4" metric="90.0" />
     <stats type="base" hp="65" attack="45" defense="55" special="70" speed="45" />
@@ -3012,7 +3012,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="87" name="Dewgong" species="Sea Lion" type-1="Water" type-2="Ice" catch-rate="75" base-exp="176" color="White" dex-entry="Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters.">
+  <species number="87" name="Dewgong" type-1="Water" type-2="Ice" catch-rate="75" base-exp="176" color="White" dex-species="Sea Lion" dex-entry="Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="264.6" metric="120.0" />
     <stats type="base" hp="90" attack="70" defense="80" special="95" speed="70" />
@@ -3047,7 +3047,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="88" name="Grimer" species="Sludge" type-1="Poison" catch-rate="190" base-exp="90" color="Purple" dex-entry="Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories.">
+  <species number="88" name="Grimer" type-1="Poison" catch-rate="190" base-exp="90" color="Purple" dex-species="Sludge" dex-entry="Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="80" attack="80" defense="50" special="40" speed="25" />
@@ -3077,7 +3077,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="89" name="Muk" species="Sludge" type-1="Poison" catch-rate="75" base-exp="157" color="Purple" dex-entry="Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison.">
+  <species number="89" name="Muk" type-1="Poison" catch-rate="75" base-exp="157" color="Purple" dex-species="Sludge" dex-entry="Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="105" attack="105" defense="75" special="65" speed="50" />
@@ -3108,7 +3108,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="90" name="Shellder" species="Bivalve" type-1="Water" catch-rate="190" base-exp="97" color="Purple" dex-entry="Its hard shell repels any kind of attack. It is vulnerable only when its shell is open.">
+  <species number="90" name="Shellder" type-1="Water" catch-rate="190" base-exp="97" color="Purple" dex-species="Bivalve" dex-entry="Its hard shell repels any kind of attack. It is vulnerable only when its shell is open.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="8.8" metric="4.0" />
     <stats type="base" hp="30" attack="65" defense="100" special="45" speed="40" />
@@ -3143,7 +3143,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="91" name="Cloyster" species="Bivalve" type-1="Water" type-2="Ice" catch-rate="60" base-exp="203" color="Purple" dex-entry="When attacked, it launches its horns in quick volleys. Its innards have never been seen.">
+  <species number="91" name="Cloyster" type-1="Water" type-2="Ice" catch-rate="60" base-exp="203" color="Purple" dex-species="Bivalve" dex-entry="When attacked, it launches its horns in quick volleys. Its innards have never been seen.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="292.1" metric="132.5" />
     <stats type="base" hp="50" attack="95" defense="180" special="85" speed="70" />
@@ -3176,7 +3176,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="92" name="Gastly" species="Gas" type-1="Ghost" type-2="Poison" catch-rate="190" base-exp="95" color="Purple" dex-entry="Almost invisible, this gaseous Pokémon cloaks the target and puts it to sleep without notice.">
+  <species number="92" name="Gastly" type-1="Ghost" type-2="Poison" catch-rate="190" base-exp="95" color="Purple" dex-species="Gas" dex-entry="Almost invisible, this gaseous Pokémon cloaks the target and puts it to sleep without notice.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="0.2" metric="0.1" />
     <stats type="base" hp="30" attack="35" defense="30" special="100" speed="80" />
@@ -3204,7 +3204,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="93" name="Haunter" species="Gas" type-1="Ghost" type-2="Poison" catch-rate="90" base-exp="126" color="Purple" dex-entry="Because of its ability to slip through block walls, it is said to be from another dimension.">
+  <species number="93" name="Haunter" type-1="Ghost" type-2="Poison" catch-rate="90" base-exp="126" color="Purple" dex-species="Gas" dex-entry="Because of its ability to slip through block walls, it is said to be from another dimension.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="0.2" metric="0.1" />
     <stats type="base" hp="45" attack="50" defense="45" special="115" speed="95" />
@@ -3232,7 +3232,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="94" name="Gengar" species="Shadow" type-1="Ghost" type-2="Poison" catch-rate="45" base-exp="190" color="Purple" dex-entry="Under a full moon, this Pokémon likes to mimic the shadows of people and laugh at their fright.">
+  <species number="94" name="Gengar" type-1="Ghost" type-2="Poison" catch-rate="45" base-exp="190" color="Purple" dex-species="Shadow" dex-entry="Under a full moon, this Pokémon likes to mimic the shadows of people and laugh at their fright.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="89.3" metric="40.5" />
     <stats type="base" hp="60" attack="65" defense="60" special="130" speed="110" />
@@ -3271,7 +3271,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="95" name="Onix" species="Rock Snake" type-1="Rock" type-2="Ground" catch-rate="45" base-exp="108" color="Gray" dex-entry="As it grows, the stone portions of its body harden to become similar to a diamond, but colored black.">
+  <species number="95" name="Onix" type-1="Rock" type-2="Ground" catch-rate="45" base-exp="108" color="Gray" dex-species="Rock Snake" dex-entry="As it grows, the stone portions of its body harden to become similar to a diamond, but colored black.">
     <measurement type="height" imperial="28'10&quot;" metric="8.8" />
     <measurement type="weight" imperial="463.0" metric="210.0" />
     <stats type="base" hp="35" attack="45" defense="160" special="30" speed="70" />
@@ -3303,7 +3303,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="96" name="Drowzee" species="Hypnosis" type-1="Psychic" catch-rate="190" base-exp="102" color="Yellow" dex-entry="Puts enemies to sleep, then eats their dreams. Occasionally gets sick from eating bad dreams.">
+  <species number="96" name="Drowzee" type-1="Psychic" catch-rate="190" base-exp="102" color="Yellow" dex-species="Hypnosis" dex-entry="Puts enemies to sleep, then eats their dreams. Occasionally gets sick from eating bad dreams.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="71.4" metric="32.4" />
     <stats type="base" hp="60" attack="48" defense="45" special="90" speed="42" />
@@ -3344,7 +3344,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="97" name="Hypno" species="Hypnosis" type-1="Psychic" catch-rate="75" base-exp="165" color="Yellow" dex-entry="When it locks eyes with an enemy, it will use a mix of PSI moves such as Hypnosis and Confusion.">
+  <species number="97" name="Hypno" type-1="Psychic" catch-rate="75" base-exp="165" color="Yellow" dex-species="Hypnosis" dex-entry="When it locks eyes with an enemy, it will use a mix of PSI moves such as Hypnosis and Confusion.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="166.7" metric="75.6" />
     <stats type="base" hp="85" attack="73" defense="70" special="115" speed="67" />
@@ -3387,7 +3387,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="98" name="Krabby" species="River Crab" type-1="Water" catch-rate="225" base-exp="115" color="Red" dex-entry="Its pincers are not only powerful weapons, they are used for balance when walking sideways.">
+  <species number="98" name="Krabby" type-1="Water" catch-rate="225" base-exp="115" color="Red" dex-species="River Crab" dex-entry="Its pincers are not only powerful weapons, they are used for balance when walking sideways.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="14.3" metric="6.5" />
     <stats type="base" hp="30" attack="105" defense="90" special="25" speed="50" />
@@ -3420,7 +3420,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="99" name="Kingler" species="Pincer" type-1="Water" catch-rate="60" base-exp="206" color="Red" dex-entry="The large pincer has 10,000-horsepower crushing force. However, its huge size makes it unwieldy to use.">
+  <species number="99" name="Kingler" type-1="Water" catch-rate="60" base-exp="206" color="Red" dex-species="Pincer" dex-entry="The large pincer has 10,000-horsepower crushing force. However, its huge size makes it unwieldy to use.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="132.3" metric="60.0" />
     <stats type="base" hp="55" attack="130" defense="115" special="50" speed="75" />
@@ -3454,7 +3454,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="100" name="Voltorb" species="Ball" type-1="Electric" catch-rate="190" base-exp="103" color="Red" dex-entry="Usually found in power plants. Easily mistaken for a [[Poké Ball]], it has zapped many people.">
+  <species number="100" name="Voltorb" type-1="Electric" catch-rate="190" base-exp="103" color="Red" dex-species="Ball" dex-entry="Usually found in power plants. Easily mistaken for a [[Poké Ball]], it has zapped many people.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="22.9" metric="10.4" />
     <stats type="base" hp="40" attack="30" defense="50" special="55" speed="100" />
@@ -3486,7 +3486,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="101" name="Electrode" species="Ball" type-1="Electric" catch-rate="60" base-exp="150" color="Red" dex-entry="It stores electric energy under very high pressure. It often explodes with little or no provocation.">
+  <species number="101" name="Electrode" type-1="Electric" catch-rate="60" base-exp="150" color="Red" dex-species="Ball" dex-entry="It stores electric energy under very high pressure. It often explodes with little or no provocation.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="146.8" metric="66.6" />
     <stats type="base" hp="60" attack="50" defense="70" special="80" speed="140" />
@@ -3520,7 +3520,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="102" name="Exeggcute" species="Egg" type-1="Grass" type-2="Psychic" catch-rate="90" base-exp="98" color="Pink" dex-entry="It is often mistaken for eggs. When disturbed, they gather quickly and attack in swarms.">
+  <species number="102" name="Exeggcute" type-1="Grass" type-2="Psychic" catch-rate="90" base-exp="98" color="Pink" dex-species="Egg" dex-entry="It is often mistaken for eggs. When disturbed, they gather quickly and attack in swarms.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="5.5" metric="2.5" />
     <stats type="base" hp="60" attack="40" defense="80" special="60" speed="40" />
@@ -3552,7 +3552,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="103" name="Exeggutor" species="Coconut" type-1="Grass" type-2="Psychic" catch-rate="45" base-exp="212" color="Yellow" dex-entry="Legend has it that on rare occasions, one of its heads will drop off and continue on as an Exeggcute.">
+  <species number="103" name="Exeggutor" type-1="Grass" type-2="Psychic" catch-rate="45" base-exp="212" color="Yellow" dex-species="Coconut" dex-entry="Legend has it that on rare occasions, one of its heads will drop off and continue on as an Exeggcute.">
     <measurement type="height" imperial="6'07&quot;" metric="2.0" />
     <measurement type="weight" imperial="264.6" metric="120.0" />
     <stats type="base" hp="95" attack="95" defense="85" special="125" speed="55" />
@@ -3582,7 +3582,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="104" name="Cubone" species="Lonely" type-1="Ground" catch-rate="190" base-exp="87" color="Brown" dex-entry="Because it never removes its skull helmet, no one has ever seen this Pokémon's real face.">
+  <species number="104" name="Cubone" type-1="Ground" catch-rate="190" base-exp="87" color="Brown" dex-species="Lonely" dex-entry="Because it never removes its skull helmet, no one has ever seen this Pokémon's real face.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="14.3" metric="6.5" />
     <stats type="base" hp="50" attack="50" defense="95" special="40" speed="35" />
@@ -3625,7 +3625,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="105" name="Marowak" species="Bone Keeper" type-1="Ground" catch-rate="75" base-exp="124" color="Brown" dex-entry="The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets.">
+  <species number="105" name="Marowak" type-1="Ground" catch-rate="75" base-exp="124" color="Brown" dex-species="Bone Keeper" dex-entry="The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="99.2" metric="45.0" />
     <stats type="base" hp="60" attack="80" defense="110" special="50" speed="45" />
@@ -3671,7 +3671,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="106" name="Hitmonlee" species="Kicking" type-1="Fighting" catch-rate="45" base-exp="139" color="Brown" dex-entry="When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides.">
+  <species number="106" name="Hitmonlee" type-1="Fighting" catch-rate="45" base-exp="139" color="Brown" dex-species="Kicking" dex-entry="When in a hurry, its legs lengthen progressively. It runs smoothly with extra long, loping strides.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="109.8" metric="49.8" />
     <stats type="base" hp="50" attack="120" defense="53" special="35" speed="87" />
@@ -3704,7 +3704,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="107" name="Hitmonchan" species="Punching" type-1="Fighting" catch-rate="45" base-exp="140" color="Brown" dex-entry="While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see.">
+  <species number="107" name="Hitmonchan" type-1="Fighting" catch-rate="45" base-exp="140" color="Brown" dex-species="Punching" dex-entry="While apparently doing nothing, it fires punches in lightning fast volleys that are impossible to see.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="110.7" metric="50.2" />
     <stats type="base" hp="50" attack="105" defense="79" special="35" speed="76" />
@@ -3737,7 +3737,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="108" name="Lickitung" species="Licking" type-1="Normal" catch-rate="45" base-exp="127" color="Pink" dex-entry="Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies.">
+  <species number="108" name="Lickitung" type-1="Normal" catch-rate="45" base-exp="127" color="Pink" dex-species="Licking" dex-entry="Its tongue can be extended like a chameleon's. It leaves a tingling sensation when it licks enemies.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="144.4" metric="65.5" />
     <stats type="base" hp="90" attack="55" defense="75" special="60" speed="30" />
@@ -3781,7 +3781,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="109" name="Koffing" species="Poison Gas" type-1="Poison" catch-rate="190" base-exp="114" color="Purple" dex-entry="Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning.">
+  <species number="109" name="Koffing" type-1="Poison" catch-rate="190" base-exp="114" color="Purple" dex-species="Poison Gas" dex-entry="Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning.">
     <measurement type="height" imperial="2'00&quot;" metric="0.6" />
     <measurement type="weight" imperial="2.2" metric="1.0" />
     <stats type="base" hp="40" attack="65" defense="95" special="60" speed="35" />
@@ -3808,7 +3808,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="110" name="Weezing" species="Poison Gas" type-1="Poison" catch-rate="60" base-exp="173" color="Purple" dex-entry="Where two kinds of poison gases meet, two Koffings can fuse into a Weezing over many years.">
+  <species number="110" name="Weezing" type-1="Poison" catch-rate="60" base-exp="173" color="Purple" dex-species="Poison Gas" dex-entry="Where two kinds of poison gases meet, two Koffings can fuse into a Weezing over many years.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="20.9" metric="9.5" />
     <stats type="base" hp="65" attack="90" defense="120" special="85" speed="60" />
@@ -3836,7 +3836,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="111" name="Rhyhorn" species="Spikes" type-1="Ground" type-2="Rock" catch-rate="120" base-exp="135" color="Gray" dex-entry="Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying.">
+  <species number="111" name="Rhyhorn" type-1="Ground" type-2="Rock" catch-rate="120" base-exp="135" color="Gray" dex-species="Spikes" dex-entry="Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="253.5" metric="115.0" />
     <stats type="base" hp="80" attack="85" defense="95" special="30" speed="25" />
@@ -3871,7 +3871,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="112" name="Rhydon" species="Drill" type-1="Ground" type-2="Rock" catch-rate="60" base-exp="204" color="Gray" dex-entry="Protected by an armor-like hide, it is capable of living in molten lava of 3,600 degrees.">
+  <species number="112" name="Rhydon" type-1="Ground" type-2="Rock" catch-rate="60" base-exp="204" color="Gray" dex-species="Drill" dex-entry="Protected by an armor-like hide, it is capable of living in molten lava of 3,600 degrees.">
     <measurement type="height" imperial="6'03&quot;" metric="1.9" />
     <measurement type="weight" imperial="264.6" metric="120.0" />
     <stats type="base" hp="105" attack="130" defense="120" special="45" speed="40" />
@@ -3920,7 +3920,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="113" name="Chansey" species="Egg" type-1="Normal" catch-rate="30" base-exp="255" color="Pink" dex-entry="A rare and elusive Pokémon that is said to bring happiness to those who manage to get it.">
+  <species number="113" name="Chansey" type-1="Normal" catch-rate="30" base-exp="255" color="Pink" dex-species="Egg" dex-entry="A rare and elusive Pokémon that is said to bring happiness to those who manage to get it.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="76.3" metric="34.6" />
     <stats type="base" hp="250" attack="5" defense="5" special="105" speed="50" />
@@ -3973,7 +3973,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="114" name="Tangela" species="Vine" type-1="Grass" catch-rate="45" base-exp="166" color="Blue" dex-entry="The whole body is swathed with wide vines that are similar to seaweed. The vines sway as it walks.">
+  <species number="114" name="Tangela" type-1="Grass" catch-rate="45" base-exp="166" color="Blue" dex-species="Vine" dex-entry="The whole body is swathed with wide vines that are similar to seaweed. The vines sway as it walks.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="77.2" metric="35.0" />
     <stats type="base" hp="65" attack="55" defense="115" special="100" speed="60" />
@@ -4008,7 +4008,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="115" name="Kangaskhan" species="Parent" type-1="Normal" catch-rate="45" base-exp="175" color="Brown" dex-entry="The infant rarely ventures out of its mother's protective pouch until it is 3 years old.">
+  <species number="115" name="Kangaskhan" type-1="Normal" catch-rate="45" base-exp="175" color="Brown" dex-species="Parent" dex-entry="The infant rarely ventures out of its mother's protective pouch until it is 3 years old.">
     <measurement type="height" imperial="7'03&quot;" metric="2.2" />
     <measurement type="weight" imperial="176.4" metric="80.0" />
     <stats type="base" hp="105" attack="95" defense="80" special="40" speed="90" />
@@ -4051,7 +4051,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="116" name="Horsea" species="Dragon" type-1="Water" catch-rate="225" base-exp="83" color="Blue" dex-entry="Known to shoot down flying bugs with precision blasts of ink from the surface of the water.">
+  <species number="116" name="Horsea" type-1="Water" catch-rate="225" base-exp="83" color="Blue" dex-species="Dragon" dex-entry="Known to shoot down flying bugs with precision blasts of ink from the surface of the water.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="17.6" metric="8.0" />
     <stats type="base" hp="30" attack="40" defense="70" special="70" speed="60" />
@@ -4081,7 +4081,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="117" name="Seadra" species="Dragon" type-1="Water" catch-rate="75" base-exp="155" color="Blue" dex-entry="Capable of swimming backwards by rapidly flapping its wing-like pectoral fins and stout tail.">
+  <species number="117" name="Seadra" type-1="Water" catch-rate="75" base-exp="155" color="Blue" dex-species="Dragon" dex-entry="Capable of swimming backwards by rapidly flapping its wing-like pectoral fins and stout tail.">
     <measurement type="height" imperial="3'11&quot;" metric="1.2" />
     <measurement type="weight" imperial="55.1" metric="25.0" />
     <stats type="base" hp="55" attack="65" defense="95" special="95" speed="85" />
@@ -4112,7 +4112,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="118" name="Goldeen" species="Goldfish" type-1="Water" catch-rate="225" base-exp="111" color="Red" dex-entry="Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen.">
+  <species number="118" name="Goldeen" type-1="Water" catch-rate="225" base-exp="111" color="Red" dex-species="Goldfish" dex-entry="Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen.">
     <measurement type="height" imperial="2′00″" metric="0.6" />
     <measurement type="weight" imperial="33.1" metric="15.0" />
     <stats type="base" hp="45" attack="67" defense="60" special="50" speed="63" />
@@ -4145,7 +4145,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="119" name="Seaking" species="Goldfish" type-1="Water" catch-rate="60" base-exp="170" color="Red" dex-entry="In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks.">
+  <species number="119" name="Seaking" type-1="Water" catch-rate="60" base-exp="170" color="Red" dex-species="Goldfish" dex-entry="In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="86.0" metric="39.0" />
     <stats type="base" hp="80" attack="92" defense="65" special="80" speed="68" />
@@ -4179,7 +4179,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="120" name="Staryu" species="Star Shape" type-1="Water" catch-rate="225" base-exp="106" color="Brown" dex-entry="An enigmatic Pokémon that can effortlessly regenerate any appendage it loses in battle.">
+  <species number="120" name="Staryu" type-1="Water" catch-rate="225" base-exp="106" color="Brown" dex-species="Star Shape" dex-entry="An enigmatic Pokémon that can effortlessly regenerate any appendage it loses in battle.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="76.1" metric="34.5" />
     <stats type="base" hp="30" attack="45" defense="55" special="70" speed="85" />
@@ -4220,7 +4220,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="121" name="Starmie" species="Mysterious" type-1="Water" type-2="Psychic" catch-rate="60" base-exp="207" color="Purple" dex-entry="Its central core glows with the seven colors of the rainbow. Some people value the core as a gem.">
+  <species number="121" name="Starmie" type-1="Water" type-2="Psychic" catch-rate="60" base-exp="207" color="Purple" dex-species="Mysterious" dex-entry="Its central core glows with the seven colors of the rainbow. Some people value the core as a gem.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="176.4" metric="80.0" />
     <stats type="base" hp="60" attack="75" defense="85" special="100" speed="115" />
@@ -4256,7 +4256,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="122" name="Mr. Mime" species="Barrier" type-1="Psychic" catch-rate="45" base-exp="136" color="Pink" dex-entry="If interrupted while it is miming, it will slap around the offender with its broad hands.">
+  <species number="122" name="Mr. Mime" type-1="Psychic" catch-rate="45" base-exp="136" color="Pink" dex-species="Barrier" dex-entry="If interrupted while it is miming, it will slap around the offender with its broad hands.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="120.1" metric="54.5" />
     <stats type="base" hp="40" attack="45" defense="65" special="100" speed="90" />
@@ -4296,7 +4296,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="123" name="Scyther" species="Mantis" type-1="Bug" type-2="Flying" catch-rate="45" base-exp="187" color="Green" dex-entry="With ninja-like agility and speed, it can create the illusion that there is more than one.">
+  <species number="123" name="Scyther" type-1="Bug" type-2="Flying" catch-rate="45" base-exp="187" color="Green" dex-species="Mantis" dex-entry="With ninja-like agility and speed, it can create the illusion that there is more than one.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="123.5" metric="56.0" />
     <stats type="base" hp="70" attack="110" defense="80" special="55" speed="105" />
@@ -4325,7 +4325,7 @@
       <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
-  <species number="124" name="Jynx" species="Human Shape" type-1="Ice" type-2="Psychic" catch-rate="45" base-exp="137" color="Red" dex-entry="It seductively wiggles its hips as it walks. It can cause people to dance in unison with it.">
+  <species number="124" name="Jynx" type-1="Ice" type-2="Psychic" catch-rate="45" base-exp="137" color="Red" dex-species="Human Shape" dex-entry="It seductively wiggles its hips as it walks. It can cause people to dance in unison with it.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="89.5" metric="40.6" />
     <stats type="base" hp="65" attack="50" defense="35" special="95" speed="95" />
@@ -4366,7 +4366,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="125" name="Electabuzz" species="Electric" type-1="Electric" catch-rate="45" base-exp="156" color="Yellow" dex-entry="Normally found near power plants, they can wander away and cause major blackouts in cities.">
+  <species number="125" name="Electabuzz" type-1="Electric" catch-rate="45" base-exp="156" color="Yellow" dex-species="Electric" dex-entry="Normally found near power plants, they can wander away and cause major blackouts in cities.">
     <measurement type="height" imperial="3'07&quot;" metric="1.1" />
     <measurement type="weight" imperial="66.1" metric="30.0" />
     <stats type="base" hp="65" attack="83" defense="57" special="85" speed="105" />
@@ -4408,7 +4408,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="126" name="Magmar" species="Spitfire" type-1="Fire" catch-rate="45" base-exp="167" color="Red" dex-entry="Its body always burns with an orange glow that enables it to hide perfectly among flames.">
+  <species number="126" name="Magmar" type-1="Fire" catch-rate="45" base-exp="167" color="Red" dex-species="Spitfire" dex-entry="Its body always burns with an orange glow that enables it to hide perfectly among flames.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="98.1" metric="44.5" />
     <stats type="base" hp="65" attack="95" defense="57" special="85" speed="93" />
@@ -4445,7 +4445,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="127" name="Pinsir" species="Stag Beetle" type-1="Bug" catch-rate="45" base-exp="200" color="Brown" dex-entry="If it fails to crush the victim in its pincers, it will swing it around and toss it hard.">
+  <species number="127" name="Pinsir" type-1="Bug" catch-rate="45" base-exp="200" color="Brown" dex-species="Stag Beetle" dex-entry="If it fails to crush the victim in its pincers, it will swing it around and toss it hard.">
     <measurement type="height" imperial="4'11&quot;" metric="1.5" />
     <measurement type="weight" imperial="121.3" metric="55.0" />
     <stats type="base" hp="65" attack="125" defense="100" special="55" speed="85" />
@@ -4476,7 +4476,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="128" name="Tauros" species="Wild Bull" type-1="Normal" catch-rate="45" base-exp="211" color="Brown" dex-entry="When it targets an enemy, it charges furiously while whipping its body with its long tails.">
+  <species number="128" name="Tauros" type-1="Normal" catch-rate="45" base-exp="211" color="Brown" dex-species="Wild Bull" dex-entry="When it targets an enemy, it charges furiously while whipping its body with its long tails.">
     <measurement type="height" imperial="4'07&quot;" metric="1.4" />
     <measurement type="weight" imperial="194.9" metric="88.4" />
     <stats type="base" hp="75" attack="100" defense="95" special="70" speed="110" />
@@ -4510,7 +4510,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="129" name="Magikarp" species="Fish" type-1="Water" catch-rate="255" base-exp="20" color="Red" dex-entry="In the distant past, it was somewhat stronger than the horribly weak descendants that exist today.">
+  <species number="129" name="Magikarp" type-1="Water" catch-rate="255" base-exp="20" color="Red" dex-species="Fish" dex-entry="In the distant past, it was somewhat stronger than the horribly weak descendants that exist today.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="22.0" metric="10.0" />
     <stats type="base" hp="20" attack="10" defense="55" special="20" speed="80" />
@@ -4520,7 +4520,7 @@
       <move name="Tackle" by="level" condition="15" />
     </moves>
   </species>
-  <species number="130" name="Gyarados" species="Atrocious" type-1="Water" type-2="Flying" catch-rate="45" base-exp="214" color="Blue" dex-entry="Rarely seen in the wild. Huge and vicious, it is capable of destroying entire cities in a rage.">
+  <species number="130" name="Gyarados" type-1="Water" type-2="Flying" catch-rate="45" base-exp="214" color="Blue" dex-species="Atrocious" dex-entry="Rarely seen in the wild. Huge and vicious, it is capable of destroying entire cities in a rage.">
     <measurement type="height" imperial="21'04&quot;" metric="6.5" />
     <measurement type="weight" imperial="518.1" metric="235.0" />
     <stats type="base" hp="95" attack="125" defense="79" special="100" speed="81" />
@@ -4560,7 +4560,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="131" name="Lapras" species="Transport" type-1="Water" type-2="Ice" catch-rate="45" base-exp="219" color="Blue" dex-entry="A Pokémon that has been overhunted almost to extinction. It can ferry people across the water.">
+  <species number="131" name="Lapras" type-1="Water" type-2="Ice" catch-rate="45" base-exp="219" color="Blue" dex-species="Transport" dex-entry="A Pokémon that has been overhunted almost to extinction. It can ferry people across the water.">
     <measurement type="height" imperial="8'02&quot;" metric="2.5" />
     <measurement type="weight" imperial="485.0" metric="220.0" />
     <stats type="base" hp="130" attack="85" defense="80" special="95" speed="60" />
@@ -4601,7 +4601,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="132" name="Ditto" species="Transform" type-1="Normal" catch-rate="35" base-exp="61" color="Purple" dex-entry="Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy.">
+  <species number="132" name="Ditto" type-1="Normal" catch-rate="35" base-exp="61" color="Purple" dex-species="Transform" dex-entry="Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy.">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="8.8" metric="4.0" />
     <stats type="base" hp="48" attack="48" defense="48" special="48" speed="48" />
@@ -4609,7 +4609,7 @@
       <move name="Transform" by="level" condition="1" />
     </moves>
   </species>
-  <species number="133" name="Eevee" species="Evolution" type-1="Normal" catch-rate="45" base-exp="92" color="Brown" dex-entry="Its genetic code is irregular. It may mutate if it is exposed to radiation from [[evolutionary stone">
+  <species number="133" name="Eevee" type-1="Normal" catch-rate="45" base-exp="92" color="Brown" dex-species="Evolution" dex-entry="Its genetic code is irregular. It may mutate if it is exposed to radiation from [[evolutionary stone">
     <measurement type="height" imperial="1'00&quot;" metric="0.3" />
     <measurement type="weight" imperial="14.3" metric="6.5" />
     <stats type="base" hp="55" attack="55" defense="50" special="65" speed="55" />
@@ -4645,7 +4645,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="134" name="Vaporeon" species="Bubble Jet" type-1="Water" catch-rate="45" base-exp="196" color="Blue" dex-entry="Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's.">
+  <species number="134" name="Vaporeon" type-1="Water" catch-rate="45" base-exp="196" color="Blue" dex-species="Bubble Jet" dex-entry="Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="63.9" metric="29.0" />
     <stats type="base" hp="130" attack="65" defense="60" special="110" speed="65" />
@@ -4692,7 +4692,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="135" name="Jolteon" species="Lightning" type-1="Electric" catch-rate="45" base-exp="197" color="Yellow" dex-entry="It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts.">
+  <species number="135" name="Jolteon" type-1="Electric" catch-rate="45" base-exp="197" color="Yellow" dex-species="Lightning" dex-entry="It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts.">
     <measurement type="height" imperial="2'07&quot;" metric="0.8" />
     <measurement type="weight" imperial="54.0" metric="24.5" />
     <stats type="base" hp="65" attack="65" defense="60" special="110" speed="130" />
@@ -4738,7 +4738,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="136" name="Flareon" species="Flame" type-1="Fire" catch-rate="45" base-exp="198" color="Red" dex-entry="When storing thermal energy in its body, its temperature could soar to over 1,600 degrees.">
+  <species number="136" name="Flareon" type-1="Fire" catch-rate="45" base-exp="198" color="Red" dex-species="Flame" dex-entry="When storing thermal energy in its body, its temperature could soar to over 1,600 degrees.">
     <measurement type="height" imperial="2'11&quot;" metric="0.9" />
     <measurement type="weight" imperial="55.1" metric="25.0" />
     <stats type="base" hp="65" attack="130" defense="60" special="110" speed="65" />
@@ -4781,7 +4781,7 @@
       <move name="Substitute" by="tm" condition="50" />
     </moves>
   </species>
-  <species number="137" name="Porygon" species="Virtual" type-1="Normal" catch-rate="45" base-exp="130" color="Pink" dex-entry="A Pokémon that consists entirely of programming code. Capable of moving freely in cyberspace.">
+  <species number="137" name="Porygon" type-1="Normal" catch-rate="45" base-exp="130" color="Pink" dex-species="Virtual" dex-entry="A Pokémon that consists entirely of programming code. Capable of moving freely in cyberspace.">
     <measurement type="height" imperial="2′07″" metric="0.8" />
     <measurement type="weight" imperial="80.5" metric="36.5" />
     <stats type="base" hp="65" attack="60" defense="70" special="75" speed="40" />
@@ -4818,7 +4818,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="138" name="Omanyte" species="Spiral" type-1="Rock" type-2="Water" catch-rate="45" base-exp="120" color="Blue" dex-entry="Although long extinct, in rare cases, it can be genetically resurrected from fossils.">
+  <species number="138" name="Omanyte" type-1="Rock" type-2="Water" catch-rate="45" base-exp="120" color="Blue" dex-species="Spiral" dex-entry="Although long extinct, in rare cases, it can be genetically resurrected from fossils.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="16.5" metric="7.5" />
     <stats type="base" hp="35" attack="40" defense="100" special="90" speed="35" />
@@ -4848,7 +4848,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="139" name="Omastar" species="Spiral" type-1="Rock" type-2="Water" catch-rate="45" base-exp="199" color="Blue" dex-entry="A prehistoric Pokémon that died out when its heavy shell made it impossible to catch prey.">
+  <species number="139" name="Omastar" type-1="Rock" type-2="Water" catch-rate="45" base-exp="199" color="Blue" dex-species="Spiral" dex-entry="A prehistoric Pokémon that died out when its heavy shell made it impossible to catch prey.">
     <measurement type="height" imperial="3'03&quot;" metric="1.0" />
     <measurement type="weight" imperial="77.2" metric="35.0" />
     <stats type="base" hp="70" attack="60" defense="125" special="115" speed="55" />
@@ -4883,7 +4883,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="140" name="Kabuto" species="Shellfish" type-1="Rock" type-2="Water" catch-rate="45" base-exp="119" color="Brown" dex-entry="A Pokémon that was resurrected from a fossil found in what was once the ocean floor eons ago.">
+  <species number="140" name="Kabuto" type-1="Rock" type-2="Water" catch-rate="45" base-exp="119" color="Brown" dex-species="Shellfish" dex-entry="A Pokémon that was resurrected from a fossil found in what was once the ocean floor eons ago.">
     <measurement type="height" imperial="1'08&quot;" metric="0.5" />
     <measurement type="weight" imperial="25.4" metric="11.5" />
     <stats type="base" hp="30" attack="80" defense="90" special="45" speed="55" />
@@ -4913,7 +4913,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="141" name="Kabutops" species="Shellfish" type-1="Rock" type-2="Water" catch-rate="45" base-exp="201" color="Brown" dex-entry="Its sleek shape is perfect for swimming. It slashes prey with its claws and drains the body fluids.">
+  <species number="141" name="Kabutops" type-1="Rock" type-2="Water" catch-rate="45" base-exp="201" color="Brown" dex-species="Shellfish" dex-entry="Its sleek shape is perfect for swimming. It slashes prey with its claws and drains the body fluids.">
     <measurement type="height" imperial="4'03&quot;" metric="1.3" />
     <measurement type="weight" imperial="89.3" metric="40.5" />
     <stats type="base" hp="60" attack="115" defense="105" special="70" speed="80" />
@@ -4951,7 +4951,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="142" name="Aerodactyl" species="Fossil" type-1="Rock" type-2="Flying" catch-rate="45" base-exp="202" color="Purple" dex-entry="A ferocious, prehistoric Pokémon that goes for the enemy's throat with its serrated saw-like fangs.">
+  <species number="142" name="Aerodactyl" type-1="Rock" type-2="Flying" catch-rate="45" base-exp="202" color="Purple" dex-species="Fossil" dex-entry="A ferocious, prehistoric Pokémon that goes for the enemy's throat with its serrated saw-like fangs.">
     <measurement type="height" imperial="5'11&quot;" metric="1.8" />
     <measurement type="weight" imperial="130.1" metric="59.0" />
     <stats type="base" hp="80" attack="105" defense="65" special="60" speed="130" />
@@ -4982,7 +4982,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="143" name="Snorlax" species="Sleeping" type-1="Normal" catch-rate="25" base-exp="154" color="Black" dex-entry="Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful.">
+  <species number="143" name="Snorlax" type-1="Normal" catch-rate="25" base-exp="154" color="Black" dex-species="Sleeping" dex-entry="Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful.">
     <measurement type="height" imperial="6'11&quot;" metric="2.1" />
     <measurement type="weight" imperial="1014.1" metric="460.0" />
     <stats type="base" hp="160" attack="110" defense="65" special="65" speed="30" />
@@ -5032,7 +5032,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="144" name="Articuno" species="Freeze" type-1="Ice" type-2="Flying" catch-rate="3" base-exp="215" color="Blue" dex-entry="A legendary bird Pokémon said to appear to doomed people who are lost in icy mountains.">
+  <species number="144" name="Articuno" type-1="Ice" type-2="Flying" catch-rate="3" base-exp="215" color="Blue" dex-species="Freeze" dex-entry="A legendary bird Pokémon said to appear to doomed people who are lost in icy mountains.">
     <measurement type="height" imperial="5'07&quot;" metric="1.7" />
     <measurement type="weight" imperial="122.1" metric="55.4" />
     <stats type="base" hp="90" attack="85" defense="100" special="125" speed="85" />
@@ -5064,7 +5064,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="145" name="Zapdos" species="Electric" type-1="Electric" type-2="Flying" catch-rate="3" base-exp="216" color="Yellow" dex-entry="A legendary bird Pokémon that is said to appear from clouds while dropping enormous lightning bolts.">
+  <species number="145" name="Zapdos" type-1="Electric" type-2="Flying" catch-rate="3" base-exp="216" color="Yellow" dex-species="Electric" dex-entry="A legendary bird Pokémon that is said to appear from clouds while dropping enormous lightning bolts.">
     <measurement type="height" imperial="5'03&quot;" metric="1.6" />
     <measurement type="weight" imperial="116.0" metric="52.6" />
     <stats type="base" hp="90" attack="90" defense="85" special="125" speed="100" />
@@ -5096,7 +5096,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="146" name="Moltres" species="Flame" type-1="Fire" type-2="Flying" catch-rate="3" base-exp="217" color="Yellow" dex-entry="Known as the legendary bird of fire. Every flap of its wings creates a giant dazzle of flashing flames.">
+  <species number="146" name="Moltres" type-1="Fire" type-2="Flying" catch-rate="3" base-exp="217" color="Yellow" dex-species="Flame" dex-entry="Known as the legendary bird of fire. Every flap of its wings creates a giant dazzle of flashing flames.">
     <measurement type="height" imperial="6'07&quot;" metric="2.0" />
     <measurement type="weight" imperial="132.3" metric="60.0" />
     <stats type="base" hp="90" attack="100" defense="90" special="125" speed="90" />
@@ -5125,7 +5125,7 @@
       <move name="Fly" by="hm" condition="2" />
     </moves>
   </species>
-  <species number="147" name="Dratini" species="Dragon" type-1="Dragon" catch-rate="45" base-exp="67" color="Blue" dex-entry="Long considered a mythical Pokémon until recently, when a small colony was found living underwater.">
+  <species number="147" name="Dratini" type-1="Dragon" catch-rate="45" base-exp="67" color="Blue" dex-species="Dragon" dex-entry="Long considered a mythical Pokémon until recently, when a small colony was found living underwater.">
     <measurement type="height" imperial="5'11&quot;" metric="1.8" />
     <measurement type="weight" imperial="7.3" metric="3.3" />
     <stats type="base" hp="41" attack="64" defense="45" special="50" speed="50" />
@@ -5163,7 +5163,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="148" name="Dragonair" species="Dragon" type-1="Dragon" catch-rate="45" base-exp="144" color="Blue" dex-entry="A mystical Pokémon that exudes a gentle aura. Has the ability to change climate conditions.">
+  <species number="148" name="Dragonair" type-1="Dragon" catch-rate="45" base-exp="144" color="Blue" dex-species="Dragon" dex-entry="A mystical Pokémon that exudes a gentle aura. Has the ability to change climate conditions.">
     <measurement type="height" imperial="13'01&quot;" metric="4.0" />
     <measurement type="weight" imperial="36.4" metric="16.5" />
     <stats type="base" hp="61" attack="84" defense="65" special="70" speed="70" />
@@ -5203,7 +5203,7 @@
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
-  <species number="149" name="Dragonite" species="Dragon" type-1="Dragon" type-2="Flying" catch-rate="45" base-exp="218" color="Brown" dex-entry="An extremely rarely seen marine Pokémon. Its intelligence is said to match that of humans.">
+  <species number="149" name="Dragonite" type-1="Dragon" type-2="Flying" catch-rate="45" base-exp="218" color="Brown" dex-species="Dragon" dex-entry="An extremely rarely seen marine Pokémon. Its intelligence is said to match that of humans.">
     <measurement type="height" imperial="7'03&quot;" metric="2.2" />
     <measurement type="weight" imperial="463.0" metric="210.0" />
     <stats type="base" hp="91" attack="134" defense="95" special="100" speed="80" />
@@ -5246,7 +5246,7 @@
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
-  <species number="150" name="Mewtwo" species="Genetic" type-1="Psychic" catch-rate="3" base-exp="220" color="Purple" dex-entry="It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.">
+  <species number="150" name="Mewtwo" type-1="Psychic" catch-rate="3" base-exp="220" color="Purple" dex-species="Genetic" dex-entry="It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.">
     <measurement type="height" imperial="6'07&quot;" metric="2.0" />
     <measurement type="weight" imperial="269.0" metric="122.0" />
     <stats type="base" hp="106" attack="110" defense="90" special="154" speed="130" />
@@ -5298,7 +5298,7 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-  <species number="151" name="Mew" species="New Species" type-1="Psychic" catch-rate="45" base-exp="64" color="Pink" dex-entry="So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.">
+  <species number="151" name="Mew" type-1="Psychic" catch-rate="45" base-exp="64" color="Pink" dex-species="New Species" dex-entry="So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.">
     <measurement type="height" imperial="1'04&quot;" metric="0.4" />
     <measurement type="weight" imperial="8.8" metric="4.0" />
     <stats type="base" hp="100" attack="100" defense="100" special="100" speed="100" />
@@ -5365,4 +5365,4 @@
       <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
-</pkmn>
+</spp>
