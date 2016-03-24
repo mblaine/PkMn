@@ -46,6 +46,8 @@
     <Compile Include="Logic\DexEntry.cs" />
     <Compile Include="Logic\Enums\Color.cs" />
     <Compile Include="Logic\Enums\EvolutionType.cs" />
+    <Compile Include="Logic\Enums\ExpGrowthRate.cs" />
+    <Compile Include="Logic\Enums\LearnBy.cs" />
     <Compile Include="Logic\Enums\MoveEffectType.cs" />
     <Compile Include="Logic\Enums\StatType.cs" />
     <Compile Include="Logic\Enums\StatusCondition.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="Logic\Enums\Who.cs" />
     <Compile Include="Logic\Evolution.cs" />
     <Compile Include="Logic\Item.cs" />
+    <Compile Include="Logic\Learnset.cs" />
     <Compile Include="Logic\Move.cs" />
     <Compile Include="Logic\Moves\CopyEffect.cs" />
     <Compile Include="Logic\Moves\CustomDamageEffect.cs" />

@@ -319,7 +319,7 @@
   <move name="Rolling Kick" type="Fighting" pp="15" power="60" accuracy="216">
     <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
-  <move name="Sand Attack" type="Normal" pp="15" accuracy="255">
+  <move name="Sand-Attack" type="Normal" pp="15" accuracy="255">
     <effect type="stat" stat="accuracy" who="foe" change="-1" />
   </move>
   <move name="Scratch" type="Normal" pp="35" power="40" accuracy="255" />
@@ -358,10 +358,10 @@
   <move name="Smog" type="Poison" pp="20" power="20" accuracy="178">
     <effect type="status" status="Poison" who="foe" chance="102" />
   </move>
-  <move name="Smokescreen" type="Normal" pp="20" accuracy="255">
+  <move name="SmokeScreen" type="Normal" pp="20" accuracy="255">
     <effect type="stat" stat="accuracy" who="foe" change="-1" />
   </move>
-  <move name="Soft-Boiled" type="Normal" pp="10" accuracy="255">
+  <move name="Softboiled" type="Normal" pp="10" accuracy="255">
     <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Solar Beam" type="Grass" pp="10" power="120" accuracy="255">

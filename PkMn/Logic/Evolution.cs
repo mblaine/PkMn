@@ -13,6 +13,11 @@ namespace PkMn.Logic
         public readonly EvolutionType Type;
         public readonly string Condition;
 
+        public Species Species
+        {
+            get { return Species.Spp[Name]; }
+        }
+
         public Evolution(XmlNode node)
         {
             Name = node.Attributes["name"].Value;

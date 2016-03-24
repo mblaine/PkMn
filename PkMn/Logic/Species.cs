@@ -22,8 +22,10 @@ namespace PkMn.Logic
 
         public readonly int CatchRate;
         public readonly int BaseExp;
+        public readonly ExpGrowthRate ExpGrowthRate;
 
         public readonly List<Evolution> Evolutions;
+        public readonly List<Learnset> Learnset;
 
         public readonly Stats BaseStats;
 
@@ -56,6 +58,7 @@ namespace PkMn.Logic
 
             CatchRate = int.Parse(node.Attributes["catch-rate"].Value);
             BaseExp = int.Parse(node.Attributes["base-exp"].Value);
+            ExpGrowthRate = (ExpGrowthRate)Enum.Parse(typeof(ExpGrowthRate), node.Attributes["exp-growth-rate"].Value.Replace("-", ""), true);
 
             DexEntry = new DexEntry(this, node);
 
@@ -63,6 +66,12 @@ namespace PkMn.Logic
             foreach (var e in node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "evolution"))
             {
                 Evolutions.Add(new Evolution(e));
+            }
+
+            Learnset = new List<Learnset>();
+            foreach (var m in node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "moves").First().ChildNodes.Cast<XmlNode>())
+            {
+                Learnset.Add(new Learnset(m));
             }
 
             BaseStats = new Stats(node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "stats").First());
