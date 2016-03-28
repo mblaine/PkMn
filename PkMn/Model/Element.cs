@@ -56,6 +56,14 @@ namespace PkMn.Model
             this.Immunity = new List<StatusCondition>();
         }
 
+        public decimal GetEffectiveness(Element e)
+        {
+            if (this.Effectiveness.ContainsKey(e))
+                return this.Effectiveness[e];
+            else
+                return 1m;
+        }
+
         public override string ToString()
         {
             return Name;

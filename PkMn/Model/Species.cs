@@ -15,6 +15,8 @@ namespace PkMn.Model
 
         public static readonly Dictionary<string, Species> Spp = Load();
 
+        public static readonly Dictionary<ExpGrowthRate, int[]> ExpRequired = Calculate();
+
         public readonly int Number;
         public readonly string Name;
         public readonly Element Type1;
@@ -47,6 +49,26 @@ namespace PkMn.Model
             return t;
         }
 
+        protected static Dictionary<ExpGrowthRate, int[]> Calculate()
+        {
+            Dictionary<ExpGrowthRate, int[]> ret = new Dictionary<ExpGrowthRate, int[]>();
+
+            ret[ExpGrowthRate.Slow] = new int[101];
+            ret[ExpGrowthRate.Fast] = new int[101];
+            ret[ExpGrowthRate.MediumSlow] = new int[101];
+            ret[ExpGrowthRate.MediumFast] = new int[101];
+
+            for (int i = 0; i <= 100; i++)
+            {
+                ret[ExpGrowthRate.Slow][i] = (int)(5m * i * i * i / 4m);
+                ret[ExpGrowthRate.Fast][i] = (int)(4m * i * i * i / 5m);
+                ret[ExpGrowthRate.MediumSlow][i] = (int)(6m/5m * i * i * i - 15m * i * i + 100m * i - 140m);
+                ret[ExpGrowthRate.MediumFast][i] = i * i * i;
+            }
+
+            return ret;
+        }
+
         protected Species(XmlNode node)
         {
             Number = int.Parse(node.Attributes["number"].Value);
@@ -75,8 +97,6 @@ namespace PkMn.Model
             }
 
             BaseStats = new Stats(node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "stats").First());
-            if (BaseStats.Type != "base")
-                throw new Exception(string.Format("Can't find base stats for {0}", Name));
         }
 
         public override string ToString()
@@ -87,8 +107,6 @@ namespace PkMn.Model
                 sb.AppendFormat(" / {0})", Type2.Name);
             else
                 sb.Append(")");
-
-            sb.AppendFormat(" - {0}", DexEntry.EntryText);
 
             return sb.ToString();
         }
