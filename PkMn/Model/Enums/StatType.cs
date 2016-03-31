@@ -12,7 +12,7 @@ namespace PkMn.Model.Enums
         Special,
         Speed,
         Accuracy,
-        Evasion,
+        Evade,
         CritRatio,
         HP
     }

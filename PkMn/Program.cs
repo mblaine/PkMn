@@ -7,6 +7,7 @@ using System.IO;
 using PkMn.Model;
 using PkMn.Instance;
 using PkMn.Model.Enums;
+using PkMn.Model.Moves;
 
 namespace PkMn
 {
@@ -28,6 +29,9 @@ namespace PkMn
                 Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Geodude", 30), new Monster("Mewtwo", 20), null, null, null }
             };
 
+            player.Party[0].Moves[2] = Move.Moves["Headbutt"];
+            rival.Party[0].Moves[1] = Move.Moves["Body Slam"];
+
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
             battle.SendMessage += Battle_SendMessage;
@@ -35,7 +39,7 @@ namespace PkMn
 
             do
             {
-                Console.WriteLine("-----------------------------------");
+                Console.WriteLine("------------------------------------------------------------");
                 Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
                 Console.WriteLine("{0,60}", battle.FoeCurrent.Monster);
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -50,9 +54,11 @@ namespace PkMn
                 Console.WriteLine("Stages: " + battle.PlayerCurrent.StatStages);
                 Console.WriteLine("Effective: " + battle.PlayerCurrent.EffectiveStats);
 
-                Console.WriteLine("-----------------------------------");
+                Console.WriteLine("------------------------------------------------------------");
             }
             while (battle.Step());
+
+            Console.ReadLine();
         }
 
         public static BattleAction Battle_ChooseAction(Monster current, Trainer trainer)
@@ -67,6 +73,8 @@ namespace PkMn
 
         public static void Battle_SendMessage(string message)
         {
+            //if (message.ToLower().Contains("para"))
+                //Console.ReadLine();
             Console.WriteLine(message);
         }
 

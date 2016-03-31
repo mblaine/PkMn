@@ -13,6 +13,10 @@ namespace PkMn.Instance
         public BattleStats StatStages;
         public BattleStats EffectiveStats;
         public int MoveIndex;
+        public bool IsConfused;
+        public bool IsSemiInvulnerable;
+        public bool Flinched;
+        public Move QueuedMove;
 
         public Move SelectedMove
         {
@@ -20,6 +24,8 @@ namespace PkMn.Instance
             {
                 if (Monster == null)
                     return null;
+                if (QueuedMove != null)
+                    return QueuedMove;
                 if (MoveIndex < 0 || MoveIndex > 3)
                     return null;
                 return Monster.Moves[MoveIndex];
@@ -33,6 +39,10 @@ namespace PkMn.Instance
             StatStages = new BattleStats();
             EffectiveStats = new BattleStats();
             MoveIndex = -1;
+            IsConfused = false;
+            Flinched = false;
+            IsSemiInvulnerable = false;
+            QueuedMove = null;
             Recalc();
         }
 
@@ -40,7 +50,11 @@ namespace PkMn.Instance
         {
             StatStages = new BattleStats();
             EffectiveStats = new BattleStats();
+            IsConfused = false;
+            IsSemiInvulnerable = false;
+            Flinched = false;
             MoveIndex = -1;
+            QueuedMove = null;
         }
 
         public void Recalc()

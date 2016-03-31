@@ -23,8 +23,14 @@ namespace PkMn.Instance
         public int Experience;
         public int Level;
         public StatusCondition Status;
+        public string Nickname;
 
         public int CurrentHP;
+
+        public string Name
+        {
+            get { return !string.IsNullOrWhiteSpace(Nickname) ? Nickname : Species.Name.ToUpper(); }
+        }
 
         public int ExpToLevelUp
         {
@@ -120,7 +126,28 @@ namespace PkMn.Instance
 
         public override string ToString()
         {
-            return string.Format(":L{0} {1} ({2} / {3})", Level, Species.Name, CurrentHP, Stats.HP);
+            string status = "";
+            switch (Status)
+            {
+                case StatusCondition.Burn:
+                    status = " BRN";
+                    break;
+                case StatusCondition.Freeze:
+                    status = " FRZ";
+                    break;
+                case StatusCondition.Paralysis:
+                    status = " PAR";
+                    break;
+                case StatusCondition.Poison:
+                case StatusCondition.BadlyPoisoned:
+                    status = " PSN";
+                    break;
+                case StatusCondition.Sleep:
+                    status = " SLP";
+                    break;
+            }
+
+            return string.Format(":L{0} {1} ({2} / {3}){4}", Level, Name, CurrentHP, Stats.HP, status);
         }
 
     }
