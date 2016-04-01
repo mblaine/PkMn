@@ -29,8 +29,8 @@ namespace PkMn
                 Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Geodude", 30), new Monster("Mewtwo", 20), null, null, null }
             };
 
-            player.Party[0].Moves[2] = Move.Moves["Headbutt"];
-            rival.Party[0].Moves[1] = Move.Moves["Body Slam"];
+            player.Party[0].Moves[2] = Move.Moves["Slash"];
+            //rival.Party[0].Moves[1] = Move.Moves["Fly"];
 
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
@@ -73,9 +73,9 @@ namespace PkMn
 
         public static void Battle_SendMessage(string message)
         {
-            //if (message.ToLower().Contains("para"))
-                //Console.ReadLine();
             Console.WriteLine(message);
+            if (message.ToLower().Contains("missed"))
+                ;// Console.ReadLine();
         }
 
         public static Monster Battle_ChooseMon(Trainer trainer)

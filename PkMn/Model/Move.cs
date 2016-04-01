@@ -21,6 +21,7 @@ namespace PkMn.Model
         public readonly int PP;
         public readonly int Power;
         public readonly int Accuracy;
+        public readonly int CritRatio;
         public readonly ElementCategory Category;
 
         public readonly List<MoveEffect> Effects;
@@ -55,6 +56,11 @@ namespace PkMn.Model
                 Category = (ElementCategory)Enum.Parse(typeof(ElementCategory), node.Attributes["category"].Value, true);
             else
                 Category = Type.Category;
+
+            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "crit-ratio"))
+                CritRatio = int.Parse(node.Attributes["crit-ratio"].Value);
+            else
+                CritRatio = 1;
 
             Effects = new List<MoveEffect>();
             foreach (XmlNode effect in node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "effect"))

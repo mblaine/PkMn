@@ -77,7 +77,7 @@
     <effect type="copy" what="type" />
   </move>
   <move name="Counter" type="Fighting" pp="20" accuracy="255" />
-  <move name="Crabhammer" type="Water" pp="10" power="90" accuracy="216" />
+  <move name="Crabhammer" type="Water" pp="10" power="90" accuracy="216" crit-ratio="8" />
   <move name="Cut" type="Normal" pp="30" power="50" accuracy="242" />
   <move name="Defense Curl" type="Normal" pp="40" accuracy="255" category="status">
     <effect type="stat" stat="Defense" change="1" who="self" />
@@ -206,7 +206,7 @@
   <move name="Jump Kick" type="Fighting" pp="25" power="70" accuracy="242">
     <effect type="miss-damage" value="1" />
   </move>
-  <move name="Karate Chop" type="Normal" pp="25" power="50" accuracy="255" />
+  <move name="Karate Chop" type="Normal" pp="25" power="50" accuracy="255" crit-ratio="8" />
   <move name="Kinesis" type="Psychic" pp="15" accuracy="204" category="status">
     <effect type="stat" stat="Accuracy" who="foe" change="-1" />
   </move>
@@ -297,7 +297,7 @@
     <effect type="lock-in-move" />
     <effect type="stat" stat="Attack" change="1" who="self" condition="on-damaged" limit="999" message="{0}{1}'s rage is building!" />
   </move>
-  <move name="Razor Leaf" type="Grass" pp="25" power="55" accuracy="242" />
+  <move name="Razor Leaf" type="Grass" pp="25" power="55" accuracy="242" crit-ratio="8" />
   <move name="Razor Wind" type="Normal" pp="10" power="80" accuracy="191">
     <effect type="charge" min="1" max="1" when="before" message="{0}{1} made a whirlwind!" />
   </move>
@@ -348,7 +348,7 @@
     <effect type="charge" min="1" max="1" when="before" message="{0}{1} is glowing!"/>
   </move>
   <move name="Slam" type="Normal" pp="20" power="80" accuracy="191" />
-  <move name="Slash" type="Normal" pp="20" power="70" accuracy="255" />
+  <move name="Slash" type="Normal" pp="20" power="70" accuracy="255" crit-ratio="8" />
   <move name="Sleep Powder" type="Grass" pp="15" accuracy="191" category="status">
     <effect type="status" status="Sleep" who="foe" />
   </move>

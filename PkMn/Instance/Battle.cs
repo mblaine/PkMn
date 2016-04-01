@@ -269,18 +269,18 @@ namespace PkMn.Instance
 
             OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
 
+            bool moveHit = Rng.Next(0, 255) < current.SelectedMove.Accuracy * current.EffectiveStats.Accuracy / opponent.EffectiveStats.Evade;
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.PerfectAccuracy))
+                moveHit = true;
+            else if (opponent.IsSemiInvulnerable && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreSemiInvulnerability))
+                moveHit = false;
+
             current.IsSemiInvulnerable = false;
 
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
+            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
                 current.QueuedMove = current.SelectedMove;
             else
                 current.QueuedMove = null;
-
-            if (opponent.IsSemiInvulnerable && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreSemiInvulnerability))
-            {
-                OnSendMessage("It missed!");
-                return true;
-            }
 
             bool triedStatusEffect = false;
             bool actuallyDidStatusEffect = false;
@@ -289,12 +289,31 @@ namespace PkMn.Instance
             {
                 triedStatusEffect = true;
 
-                if(HandleStatEffect(current, opponent, eff))
+                if(HandleStatEffect(current, opponent, eff, moveHit))
                     actuallyDidStatusEffect = true;
             }
 
-            int att = current.SelectedMove.Type.Category == ElementCategory.Physical ? current.EffectiveStats.Attack : current.EffectiveStats.Special;
-            int def = current.SelectedMove.Type.Category == ElementCategory.Physical ? opponent.EffectiveStats.Defense : opponent.EffectiveStats.Special;
+            int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio));
+
+            int r = Rng.Next(0, 255);
+            bool isCriticalHit = r < Math.Min(255, critRatio);
+
+            int att;
+            int def;
+
+            if (isCriticalHit)
+            {
+                att = current.SelectedMove.Type.Category == ElementCategory.Physical ? current.Monster.Stats.Attack : current.Monster.Stats.Special;
+                def = current.SelectedMove.Type.Category == ElementCategory.Physical ? opponent.Monster.Stats.Defense : opponent.Monster.Stats.Special;
+            }
+            else
+            {
+                att = current.SelectedMove.Type.Category == ElementCategory.Physical ? current.EffectiveStats.Attack : current.EffectiveStats.Special;
+                def = current.SelectedMove.Type.Category == ElementCategory.Physical ? opponent.EffectiveStats.Defense : opponent.EffectiveStats.Special;
+            }
+
+            if (def == 0)
+                def = 1;
 
             decimal STAB = 1m;
             if (current.SelectedMove.Type == current.Monster.Species.Type1 || current.SelectedMove.Type == current.Monster.Species.Type2)
@@ -305,11 +324,11 @@ namespace PkMn.Instance
             if(opponent.Monster.Species.Type2 != null)
                 effectiveness2 = current.SelectedMove.Type.GetEffectiveness(opponent.Monster.Species.Type2);
 
-            decimal critical = 1m;
+            decimal critical = isCriticalHit ? 2m : 1m;
 
-            decimal modifier = STAB * effectiveness1 * effectiveness2 * critical * ((decimal)Rng.Next(85, 100)) / 100m;
+            decimal modifier = STAB * effectiveness1 * effectiveness2 * ((decimal)Rng.Next(217, 255)) / 255m;
 
-            int damage = (int)(((2m * current.Monster.Level + 10m) / 250m * att / def * current.SelectedMove.Power + 2m) * modifier);
+            int damage = (int)(((2m * current.Monster.Level * critical / 5m + 2m) / 50m * att / def * current.SelectedMove.Power + 2m) * modifier);
             if (current.SelectedMove.Power == 0)
                 damage = 0;
 
@@ -355,7 +374,7 @@ namespace PkMn.Instance
                             OnSendMessage("It didn't affect {0}{1}.", current.Trainer.MonNamePrefix, current.Monster.Name);
                     }
 
-                    if (eff.Who == Who.Foe || eff.Who == Who.Both)
+                    if ((eff.Who == Who.Foe || eff.Who == Who.Both) && moveHit)
                     {
                         if (eff.Status == StatusCondition.Faint)
                             opponent.Monster.CurrentHP = 0;
@@ -394,19 +413,28 @@ namespace PkMn.Instance
                 }
             }
 
+            if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && actuallyDidStatusEffect))
+            {
+                OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                return true;
+            }
+
             opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
 
             if (damage > 0 && opponent.QueuedMove != null)
             {
                 foreach (StatEffect eff in opponent.QueuedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => e.Condition == "on-damaged"))
                 {
-                    HandleStatEffect(opponent, current, eff, false);
+                    HandleStatEffect(opponent, current, eff, moveHit, false);
                 }
             }
 
             if (damage != 0 || !triedStatusEffect)
             {
                 OnSendMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
+                if (isCriticalHit)
+                    OnSendMessage("Critical hit!");
 
                 if (effectiveness1 * effectiveness2 == 0m)
                     OnSendMessage("It doesn't effect {0}{1}.", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -431,8 +459,10 @@ namespace PkMn.Instance
             return true;
         }
 
-        protected bool HandleStatEffect(ActiveMonster current, ActiveMonster opponent, StatEffect eff, bool showFailMessage = true)
+        protected bool HandleStatEffect(ActiveMonster current, ActiveMonster opponent, StatEffect eff, bool hitOpponent, bool showFailMessage = true)
         {
+            bool ret = false;
+
             if (Rng.Next(0, 255) < eff.Chance)
             {
                 if (eff.Who == Who.Self || eff.Who == Who.Both)
@@ -454,13 +484,18 @@ namespace PkMn.Instance
                         else
                         {
                             current.StatStages[eff.Stat] += eff.Change;
-                            OnSendMessage("{0}{1}'s {2} {3}{4}!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Stat.ToString().ToLower(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                            if (current.StatStages[eff.Stat] > 6)
+                                current.StatStages[eff.Stat] = 6;
+                            else if (current.StatStages[eff.Stat] < -6)
+                                current.StatStages[eff.Stat] = -6;
+                            OnSendMessage("{0}{1}'s {2} {3}{4}!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
                             current.Recalc();
+                            ret = true;
                         }
                     }
                 }
 
-                if (eff.Who == Who.Foe || eff.Who == Who.Both)
+                if ((eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
                 {
                     if (eff.Temporary)
                     {
@@ -476,16 +511,19 @@ namespace PkMn.Instance
                         else
                         {
                             opponent.StatStages[eff.Stat] += eff.Change;
-                            OnSendMessage("{0}{1}'s {2} {3}{4}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Stat.ToString().ToLower(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                            if (opponent.StatStages[eff.Stat] > 6)
+                                opponent.StatStages[eff.Stat] = 6;
+                            else if (opponent.StatStages[eff.Stat] < -6)
+                                opponent.StatStages[eff.Stat] = -6;
+                            OnSendMessage("{0}{1}'s {2} {3}{4}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
                             opponent.Recalc();
+                            ret = true;
                         }
                     }
                 }
-
-                return true;
             }
 
-            return false;
+            return ret;
         }
 
     }
