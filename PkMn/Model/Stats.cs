@@ -15,6 +15,52 @@ namespace PkMn.Model
         public int Special;
         public int Speed;
 
+        public int this[StatType s]
+        {
+            get
+            {
+                switch (s)
+                {
+                    case StatType.HP:
+                        return HP;
+                    case StatType.Attack:
+                        return Attack;
+                    case StatType.Defense:
+                        return Defense;
+                    case StatType.Speed:
+                        return Speed;
+                    case StatType.Special:
+                        return Special;
+                    default:
+                        throw new Exception();
+                }
+            }
+
+            set
+            {
+                switch (s)
+                {
+                    case StatType.HP:
+                        HP = value;
+                        break;
+                    case StatType.Attack:
+                        Attack = value;
+                        break;
+                    case StatType.Defense:
+                        Defense = value;
+                        break;
+                    case StatType.Speed:
+                        Speed = value;
+                        break;
+                    case StatType.Special:
+                        Special = value;
+                        break;
+                    default:
+                        throw new Exception();
+                }
+            }
+        }
+
         public Stats()
         {
             HP = 0;

@@ -99,6 +99,11 @@ namespace PkMn.Model
             BaseStats = new Stats(node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "stats").First());
         }
 
+        public bool IsImmuneToStatus(StatusCondition status)
+        {
+            return Type1.Immunity.Contains(status) || (Type2 != null && Type2.Immunity.Contains(status));
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

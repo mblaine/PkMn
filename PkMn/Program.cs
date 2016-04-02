@@ -19,18 +19,22 @@ namespace PkMn
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = new Monster[] { new Monster("Charizard", 36), new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 25), null, null }
+                Party = new Monster[] { new Monster("Charizard", 36), new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null }
             };
 
             Trainer rival = new Trainer()
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Geodude", 30), new Monster("Mewtwo", 20), null, null, null }
+                Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Diglett", 30), new Monster("Mewtwo", 20), null, null, null }
             };
 
-            player.Party[0].Moves[2] = Move.Moves["Slash"];
+            //player.Party[0].Moves[0] = Move.Moves["Supersonic"];
+            //player.Party[0].Moves[1] = Move.Moves["Supersonic"];
+            //player.Party[0].Moves[2] = Move.Moves["Supersonic"];
+            //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[1] = Move.Moves["Fly"];
+            //rival.Party[0].Moves[2] = Move.Moves["Fly"];
 
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
@@ -66,7 +70,7 @@ namespace PkMn
             BattleAction ret = new BattleAction();
 
             ret.Type = BattleActionType.UseMove;
-            ret.WhichMove = Rng.Next(0, current.Moves.Count(m => m != null) - 1);
+            ret.WhichMove = Rng.Next(0, current.Moves.Count(m => m != null));
 
             return ret;
         }

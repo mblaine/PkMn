@@ -21,7 +21,7 @@ namespace PkMn.Instance
             CritRatio = 0;
         }
 
-        public int this[StatType s]
+        public new int this[StatType s]
         {
             get
             {

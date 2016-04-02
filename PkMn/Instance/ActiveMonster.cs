@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PkMn.Model;
+using PkMn.Model.Enums;
 
 namespace PkMn.Instance
 {
@@ -13,9 +14,10 @@ namespace PkMn.Instance
         public BattleStats StatStages;
         public BattleStats EffectiveStats;
         public int MoveIndex;
-        public bool IsConfused;
         public bool IsSemiInvulnerable;
         public bool Flinched;
+        public int BadlyPoisonedCount;
+        public int ConfusedCount;
         public Move QueuedMove;
 
         public Move SelectedMove
@@ -32,6 +34,14 @@ namespace PkMn.Instance
             }
         }
 
+        public bool IsConfused
+        {
+            get
+            {
+                return ConfusedCount > 0;
+            }
+        }
+
         public ActiveMonster(Trainer trainer, Monster monster)
         {
             Trainer = trainer;
@@ -39,9 +49,10 @@ namespace PkMn.Instance
             StatStages = new BattleStats();
             EffectiveStats = new BattleStats();
             MoveIndex = -1;
-            IsConfused = false;
             Flinched = false;
+            ConfusedCount = 0;
             IsSemiInvulnerable = false;
+            BadlyPoisonedCount = 1;
             QueuedMove = null;
             Recalc();
         }
@@ -50,22 +61,33 @@ namespace PkMn.Instance
         {
             StatStages = new BattleStats();
             EffectiveStats = new BattleStats();
-            IsConfused = false;
             IsSemiInvulnerable = false;
             Flinched = false;
+            ConfusedCount = 0;
+            BadlyPoisonedCount = 1;
             MoveIndex = -1;
             QueuedMove = null;
         }
 
-        public void Recalc()
+        public void Recalc(StatType? stat = null)
         {
-            EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
-            EffectiveStats.Defense = RecalcStat(Monster.Stats.Defense, StatStages.Defense);
-            EffectiveStats.Special = RecalcStat(Monster.Stats.Special, StatStages.Special);
-            EffectiveStats.Speed = RecalcStat(Monster.Stats.Speed, StatStages.Speed);
-            EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
-            EffectiveStats.Evade = RecalcStat(100, StatStages.Evade);
-            EffectiveStats.Accuracy = RecalcStat(100, StatStages.Accuracy);
+            if (stat != null)
+            {
+                if(stat == StatType.Evade || stat == StatType.Accuracy)
+                    EffectiveStats[(StatType)stat] = RecalcStat(100, StatStages[(StatType)stat]);
+                else if (stat != StatType.CritRatio)
+                    EffectiveStats[(StatType)stat] = RecalcStat(Monster.Stats[(StatType)stat], StatStages[(StatType)stat]);
+            }
+            else
+            {
+                EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
+                EffectiveStats.Defense = RecalcStat(Monster.Stats.Defense, StatStages.Defense);
+                EffectiveStats.Special = RecalcStat(Monster.Stats.Special, StatStages.Special);
+                EffectiveStats.Speed = RecalcStat(Monster.Stats.Speed, StatStages.Speed);
+                EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
+                EffectiveStats.Evade = RecalcStat(100, StatStages.Evade);
+                EffectiveStats.Accuracy = RecalcStat(100, StatStages.Accuracy);
+            }
         }
 
         protected int RecalcStat(int value, int stage)
