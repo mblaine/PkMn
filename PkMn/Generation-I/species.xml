@@ -221,7 +221,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Substitute" by="tm" condition="50" />
       <move name="Cut" by="hm" condition="1" />
-      <move name="Fly" by="hm" condition="2" />
       <move name="Strength" by="hm" condition="4" />
     </moves>
   </species>
@@ -367,7 +366,6 @@
     <evolution name="Butterfree" type="level" condition="10" />
     <moves>
       <move name="Harden" by="level" condition="1" />
-      <move name="Harden" by="level" condition="7" />
     </moves>
   </species>
   <species number="12" name="Butterfree" type-1="Bug" type-2="Flying" catch-rate="45" base-exp="160" exp-growth-rate="medium-fast" color="White" dex-species="Butterfly" dex-entry="In battle, it flaps its wings at high speed, releasing highly toxic dust into the air.">
@@ -376,21 +374,13 @@
     <stats type="base" hp="60" attack="45" defense="50" special="80" speed="70" />
     <moves>
       <move name="Confusion" by="level" condition="1" />
-      <move name="Confusion" by="level" condition="10" />
       <move name="Confusion" by="level" condition="12" />
-      <move name="Poison Powder" by="level" condition="13" />
-      <move name="Stun Spore" by="level" condition="14" />
       <move name="Poison Powder" by="level" condition="15" />
-      <move name="Sleep Powder" by="level" condition="15" />
       <move name="Stun Spore" by="level" condition="16" />
       <move name="Sleep Powder" by="level" condition="17" />
-      <move name="Supersonic" by="level" condition="18" />
       <move name="Supersonic" by="level" condition="21" />
-      <move name="Whirlwind" by="level" condition="23" />
       <move name="Whirlwind" by="level" condition="26" />
-      <move name="Gust" by="level" condition="28" />
       <move name="Psybeam" by="level" condition="32" />
-      <move name="Psybeam" by="level" condition="34" />
       <move name="Razor Wind" by="tm" condition="2" />
       <move name="Whirlwind" by="tm" condition="4" />
       <move name="Toxic" by="tm" condition="6" />
@@ -410,7 +400,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Psywave" by="tm" condition="46" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
   <species number="13" name="Weedle" type-1="Bug" type-2="Poison" catch-rate="255" base-exp="52" exp-growth-rate="medium-fast" color="Brown" dex-species="Hairy Bug" dex-entry="Often found in forests, eating leaves. It has a sharp, venomous stinger on its head.">
@@ -753,19 +742,11 @@
     <moves>
       <move name="Thunder Shock" by="level" condition="1" />
       <move name="Growl" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="6" />
-      <move name="Thunder Wave" by="level" condition="8" />
       <move name="Thunder Wave" by="level" condition="9" />
-      <move name="Quick Attack" by="level" condition="11" />
-      <move name="Double Team" by="level" condition="15" />
       <move name="Quick Attack" by="level" condition="16" />
-      <move name="Slam" by="level" condition="20" />
       <move name="Swift" by="level" condition="26" />
-      <move name="Thunderbolt" by="level" condition="26" />
       <move name="Agility" by="level" condition="33" />
-      <move name="Thunder" by="level" condition="41" />
       <move name="Thunder" by="level" condition="43" />
-      <move name="Light Screen" by="level" condition="50" />
       <move name="Mega Punch" by="tm" condition="1" />
       <move name="Mega Kick" by="tm" condition="5" />
       <move name="Toxic" by="tm" condition="6" />
@@ -903,15 +884,10 @@
       <move name="Growl" by="level" condition="1" />
       <move name="Tackle" by="level" condition="1" />
       <move name="Scratch" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
-      <move name="Poison Sting" by="level" condition="17" />
       <move name="Tail Whip" by="level" condition="21" />
-      <move name="Tail Whip" by="level" condition="23" />
       <move name="Bite" by="level" condition="29" />
-      <move name="Bite" by="level" condition="30" />
       <move name="Fury Swipes" by="level" condition="36" />
-      <move name="Fury Swipes" by="level" condition="38" />
       <move name="Double Kick" by="level" condition="43" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />
@@ -940,15 +916,10 @@
       <move name="Tackle" by="level" condition="1" />
       <move name="Scratch" by="level" condition="1" />
       <move name="Scratch" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
-      <move name="Poison Sting" by="level" condition="19" />
       <move name="Tail Whip" by="level" condition="23" />
-      <move name="Tail Whip" by="level" condition="27" />
       <move name="Bite" by="level" condition="32" />
-      <move name="Bite" by="level" condition="36" />
       <move name="Fury Swipes" by="level" condition="41" />
-      <move name="Fury Swipes" by="level" condition="46" />
       <move name="Double Kick" by="level" condition="50" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Horn Drill" by="tm" condition="7" />
@@ -981,7 +952,6 @@
       <move name="Tail Whip" by="level" condition="1" />
       <move name="Body Slam" by="level" condition="1" />
       <move name="Scratch" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
       <move name="Body Slam" by="level" condition="23" />
       <move name="Mega Punch" by="tm" condition="1" />
@@ -1027,15 +997,10 @@
       <move name="Leer" by="level" condition="1" />
       <move name="Tackle" by="level" condition="1" />
       <move name="Horn Attack" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
-      <move name="Poison Sting" by="level" condition="17" />
       <move name="Focus Energy" by="level" condition="21" />
-      <move name="Focus Energy" by="level" condition="23" />
       <move name="Fury Attack" by="level" condition="29" />
-      <move name="Fury Attack" by="level" condition="30" />
       <move name="Horn Drill" by="level" condition="36" />
-      <move name="Horn Drill" by="level" condition="38" />
       <move name="Double Kick" by="level" condition="43" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Horn Drill" by="tm" condition="7" />
@@ -1065,15 +1030,10 @@
       <move name="Tackle" by="level" condition="1" />
       <move name="Horn Attack" by="level" condition="1" />
       <move name="Horn Attack" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
-      <move name="Poison Sting" by="level" condition="19" />
       <move name="Focus Energy" by="level" condition="23" />
-      <move name="Focus Energy" by="level" condition="27" />
       <move name="Fury Attack" by="level" condition="32" />
-      <move name="Fury Attack" by="level" condition="36" />
       <move name="Horn Drill" by="level" condition="41" />
-      <move name="Horn Drill" by="level" condition="46" />
       <move name="Double Kick" by="level" condition="50" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Horn Drill" by="tm" condition="7" />
@@ -1106,7 +1066,6 @@
       <move name="Poison Sting" by="level" condition="1" />
       <move name="Thrash" by="level" condition="1" />
       <move name="Horn Attack" by="level" condition="8" />
-      <move name="Double Kick" by="level" condition="12" />
       <move name="Poison Sting" by="level" condition="14" />
       <move name="Thrash" by="level" condition="23" />
       <move name="Mega Punch" by="tm" condition="1" />
@@ -1604,9 +1563,6 @@
     <moves>
       <move name="Tackle" by="level" condition="1" />
       <move name="Disable" by="level" condition="1" />
-      <move name="Supersonic" by="level" condition="11" />
-      <move name="Confusion" by="level" condition="19" />
-      <move name="Poison Powder" by="level" condition="22" />
       <move name="Poison Powder" by="level" condition="24" />
       <move name="Leech Life" by="level" condition="27" />
       <move name="Stun Spore" by="level" condition="30" />
@@ -1627,7 +1583,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Psywave" by="tm" condition="46" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
   <species number="49" name="Venomoth" type-1="Bug" type-2="Poison" catch-rate="75" base-exp="138" exp-growth-rate="medium-fast" color="Purple" dex-species="Poison Moth" dex-entry="The dustlike scales covering its wings are color-coded to indicate the kinds of poison it has.">
@@ -1639,9 +1594,6 @@
       <move name="Disable" by="level" condition="1" />
       <move name="Poison Powder" by="level" condition="1" />
       <move name="Leech Life" by="level" condition="1" />
-      <move name="Supersonic" by="level" condition="1" />
-      <move name="Confusion" by="level" condition="1" />
-      <move name="Poison Powder" by="level" condition="22" />
       <move name="Poison Powder" by="level" condition="24" />
       <move name="Leech Life" by="level" condition="27" />
       <move name="Stun Spore" by="level" condition="30" />
@@ -1667,7 +1619,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Psywave" by="tm" condition="46" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Flash" by="hm" condition="5" />
     </moves>
   </species>
   <species number="50" name="Diglett" type-1="Ground" catch-rate="255" base-exp="81" exp-growth-rate="medium-fast" color="Brown" dex-species="Mole" dex-entry="Lives about one yard underground where it feeds on plant roots. It sometimes appears aboveground.">
@@ -1696,7 +1647,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Rock Slide" by="tm" condition="48" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
   <species number="51" name="Dugtrio" type-1="Ground" catch-rate="50" base-exp="153" exp-growth-rate="medium-fast" color="Brown" dex-species="Mole" dex-entry="A team of Diglett triplets. It triggers huge earthquakes by burrowing 60 miles underground.">
@@ -1727,7 +1677,6 @@
       <move name="Rest" by="tm" condition="44" />
       <move name="Rock Slide" by="tm" condition="48" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Cut" by="hm" condition="1" />
     </moves>
   </species>
   <species number="52" name="Meowth" type-1="Normal" catch-rate="255" base-exp="69" exp-growth-rate="medium-fast" color="Yellow" dex-species="Scratch Cat" dex-entry="Adores circular objects. Wanders the street on a nightly basis to look for dropped loose change.">
@@ -1884,13 +1833,11 @@
     <moves>
       <move name="Scratch" by="level" condition="1" />
       <move name="Leer" by="level" condition="1" />
-      <move name="Low Kick" by="level" condition="9" />
       <move name="Karate Chop" by="level" condition="15" />
       <move name="Fury Swipes" by="level" condition="21" />
       <move name="Focus Energy" by="level" condition="27" />
       <move name="Seismic Toss" by="level" condition="33" />
       <move name="Thrash" by="level" condition="39" />
-      <move name="Screech" by="level" condition="45" />
       <move name="Mega Punch" by="tm" condition="1" />
       <move name="Mega Kick" by="tm" condition="5" />
       <move name="Toxic" by="tm" condition="6" />
@@ -1924,16 +1871,12 @@
     <moves>
       <move name="Scratch" by="level" condition="1" />
       <move name="Leer" by="level" condition="1" />
-      <move name="Low Kick" by="level" condition="1" />
       <move name="Karate Chop" by="level" condition="1" />
       <move name="Fury Swipes" by="level" condition="1" />
-      <move name="Low Kick" by="level" condition="9" />
       <move name="Karate Chop" by="level" condition="15" />
       <move name="Fury Swipes" by="level" condition="21" />
       <move name="Focus Energy" by="level" condition="27" />
-      <move name="Rage" by="level" condition="28" />
       <move name="Seismic Toss" by="level" condition="37" />
-      <move name="Screech" by="level" condition="45" />
       <move name="Thrash" by="level" condition="46" />
       <move name="Mega Punch" by="tm" condition="1" />
       <move name="Mega Kick" by="tm" condition="5" />
@@ -2182,7 +2125,6 @@
       <move name="Teleport" by="level" condition="1" />
       <move name="Confusion" by="level" condition="1" />
       <move name="Disable" by="level" condition="1" />
-      <move name="Kinesis" by="level" condition="1" />
       <move name="Confusion" by="level" condition="16" />
       <move name="Disable" by="level" condition="20" />
       <move name="Psybeam" by="level" condition="27" />
@@ -2224,7 +2166,6 @@
       <move name="Teleport" by="level" condition="1" />
       <move name="Confusion" by="level" condition="1" />
       <move name="Disable" by="level" condition="1" />
-      <move name="Kinesis" by="level" condition="1" />
       <move name="Confusion" by="level" condition="16" />
       <move name="Disable" by="level" condition="20" />
       <move name="Psybeam" by="level" condition="27" />
@@ -3138,7 +3079,7 @@
       <move name="Swift" by="tm" condition="39" />
       <move name="Rest" by="tm" condition="44" />
       <move name="Explosion" by="tm" condition="47" />
-      <move name="Tri Attack" by="tm" condition="8" />
+      <move name="Tri Attack" by="tm" condition="49" />
       <move name="Substitute" by="tm" condition="50" />
       <move name="Surf" by="hm" condition="3" />
     </moves>
@@ -3590,9 +3531,6 @@
     <moves>
       <move name="Bone Club" by="level" condition="1" />
       <move name="Growl" by="level" condition="1" />
-      <move name="Bone Club" by="level" condition="10" />
-      <move name="Tail Whip" by="level" condition="13" />
-      <move name="Headbutt" by="level" condition="18" />
       <move name="Leer" by="level" condition="25" />
       <move name="Focus Energy" by="level" condition="31" />
       <move name="Thrash" by="level" condition="38" />
@@ -3634,10 +3572,6 @@
       <move name="Growl" by="level" condition="1" />
       <move name="Leer" by="level" condition="1" />
       <move name="Focus Energy" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
-      <move name="Bone Club" by="level" condition="10" />
-      <move name="Tail Whip" by="level" condition="13" />
-      <move name="Headbutt" by="level" condition="18" />
       <move name="Leer" by="level" condition="25" />
       <move name="Focus Energy" by="level" condition="33" />
       <move name="Thrash" by="level" condition="41" />
@@ -3927,8 +3861,6 @@
     <moves>
       <move name="Pound" by="level" condition="1" />
       <move name="Double Slap" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
-      <move name="Double Slap" by="level" condition="12" />
       <move name="Sing" by="level" condition="24" />
       <move name="Growl" by="level" condition="30" />
       <move name="Minimize" by="level" condition="38" />
@@ -3980,15 +3912,11 @@
     <moves>
       <move name="Constrict" by="level" condition="1" />
       <move name="Bind" by="level" condition="1" />
-      <move name="Bind" by="level" condition="24" />
-      <move name="Absorb" by="level" condition="27" />
       <move name="Absorb" by="level" condition="29" />
-      <move name="Vine Whip" by="level" condition="29" />
       <move name="Poison Powder" by="level" condition="32" />
       <move name="Stun Spore" by="level" condition="36" />
       <move name="Sleep Powder" by="level" condition="39" />
       <move name="Slam" by="level" condition="45" />
-      <move name="Growth" by="level" condition="48" />
       <move name="Growth" by="level" condition="49" />
       <move name="Swords Dance" by="tm" condition="3" />
       <move name="Toxic" by="tm" condition="6" />
@@ -4261,6 +4189,7 @@
     <measurement type="weight" imperial="120.1" metric="54.5" />
     <stats type="base" hp="40" attack="45" defense="65" special="100" speed="90" />
     <moves>
+      <move name="Confusion" by="level" condition="1" />
       <move name="Barrier" by="level" condition="1" />
       <move name="Confusion" by="level" condition="15" />
       <move name="Light Screen" by="level" condition="23" />
@@ -4308,7 +4237,6 @@
       <move name="Slash" by="level" condition="29" />
       <move name="Swords Dance" by="level" condition="35" />
       <move name="Agility" by="level" condition="42" />
-      <move name="Wing Attack" by="level" condition="50" />
       <move name="Swords Dance" by="tm" condition="3" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Take Down" by="tm" condition="9" />
@@ -4451,7 +4379,6 @@
     <stats type="base" hp="65" attack="125" defense="100" special="55" speed="85" />
     <moves>
       <move name="Vice Grip" by="level" condition="1" />
-      <move name="Bind" by="level" condition="21" />
       <move name="Seismic Toss" by="level" condition="25" />
       <move name="Guillotine" by="level" condition="30" />
       <move name="Focus Energy" by="level" condition="36" />
@@ -4529,7 +4456,6 @@
       <move name="Dragon Rage" by="level" condition="1" />
       <move name="Leer" by="level" condition="1" />
       <move name="Hydro Pump" by="level" condition="1" />
-      <move name="Tackle" by="level" condition="1" />
       <move name="Bite" by="level" condition="20" />
       <move name="Dragon Rage" by="level" condition="25" />
       <move name="Leer" by="level" condition="32" />
@@ -4619,16 +4545,9 @@
     <moves>
       <move name="Tackle" by="level" condition="1" />
       <move name="Sand-Attack" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
-      <move name="Sand-Attack" by="level" condition="8" />
-      <move name="Growl" by="level" condition="16" />
-      <move name="Quick Attack" by="level" condition="23" />
       <move name="Quick Attack" by="level" condition="27" />
-      <move name="Bite" by="level" condition="30" />
       <move name="Tail Whip" by="level" condition="31" />
-      <move name="Focus Energy" by="level" condition="36" />
       <move name="Bite" by="level" condition="37" />
-      <move name="Take Down" by="level" condition="42" />
       <move name="Take Down" by="level" condition="45" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />
@@ -4652,24 +4571,15 @@
     <moves>
       <move name="Tackle" by="level" condition="1" />
       <move name="Sand-Attack" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
       <move name="Quick Attack" by="level" condition="1" />
       <move name="Water Gun" by="level" condition="1" />
-      <move name="Sand-Attack" by="level" condition="8" />
-      <move name="Water Gun" by="level" condition="16" />
-      <move name="Quick Attack" by="level" condition="23" />
       <move name="Quick Attack" by="level" condition="27" />
-      <move name="Bite" by="level" condition="30" />
       <move name="Water Gun" by="level" condition="31" />
-      <move name="Aurora Beam" by="level" condition="36" />
       <move name="Tail Whip" by="level" condition="37" />
       <move name="Bite" by="level" condition="40" />
       <move name="Acid Armor" by="level" condition="42" />
-      <move name="Haze" by="level" condition="42" />
       <move name="Haze" by="level" condition="44" />
-      <move name="Acid Armor" by="level" condition="47" />
       <move name="Mist" by="level" condition="48" />
-      <move name="Hydro Pump" by="level" condition="52" />
       <move name="Hydro Pump" by="level" condition="54" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />
@@ -4699,24 +4609,15 @@
     <moves>
       <move name="Tackle" by="level" condition="1" />
       <move name="Sand-Attack" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
       <move name="Quick Attack" by="level" condition="1" />
       <move name="Thunder Shock" by="level" condition="1" />
-      <move name="Sand-Attack" by="level" condition="8" />
-      <move name="Thunder Shock" by="level" condition="16" />
-      <move name="Quick Attack" by="level" condition="23" />
       <move name="Quick Attack" by="level" condition="27" />
-      <move name="Double Kick" by="level" condition="30" />
       <move name="Thunder Shock" by="level" condition="31" />
-      <move name="Pin Missile" by="level" condition="36" />
       <move name="Tail Whip" by="level" condition="37" />
       <move name="Thunder Wave" by="level" condition="40" />
       <move name="Double Kick" by="level" condition="42" />
-      <move name="Thunder Wave" by="level" condition="42" />
       <move name="Agility" by="level" condition="44" />
-      <move name="Agility" by="level" condition="47" />
       <move name="Pin Missile" by="level" condition="48" />
-      <move name="Thunder" by="level" condition="52" />
       <move name="Thunder" by="level" condition="54" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />
@@ -4745,24 +4646,15 @@
     <moves>
       <move name="Tackle" by="level" condition="1" />
       <move name="Sand-Attack" by="level" condition="1" />
-      <move name="Tail Whip" by="level" condition="1" />
       <move name="Quick Attack" by="level" condition="1" />
       <move name="Ember" by="level" condition="1" />
-      <move name="Sand-Attack" by="level" condition="8" />
-      <move name="Ember" by="level" condition="16" />
-      <move name="Quick Attack" by="level" condition="23" />
       <move name="Quick Attack" by="level" condition="27" />
-      <move name="Bite" by="level" condition="30" />
       <move name="Ember" by="level" condition="31" />
-      <move name="Fire Spin" by="level" condition="36" />
       <move name="Tail Whip" by="level" condition="37" />
       <move name="Bite" by="level" condition="40" />
       <move name="Leer" by="level" condition="42" />
-      <move name="Smog" by="level" condition="42" />
       <move name="Fire Spin" by="level" condition="44" />
-      <move name="Leer" by="level" condition="47" />
-      <move name="Rage" by="level" condition="48" />
-      <move name="Flamethrower" by="level" condition="52" />
+      <move name="Rage" by="level" condition="48" />	
       <move name="Flamethrower" by="level" condition="54" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />
@@ -4947,7 +4839,6 @@
       <move name="Skull Bash" by="tm" condition="40" />
       <move name="Rest" by="tm" condition="44" />
       <move name="Substitute" by="tm" condition="50" />
-      <move name="Cut" by="hm" condition="1" />
       <move name="Surf" by="hm" condition="3" />
     </moves>
   </species>
