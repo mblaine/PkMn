@@ -54,6 +54,8 @@ namespace PkMn.Instance
             IsSemiInvulnerable = false;
             BadlyPoisonedCount = 1;
             QueuedMove = null;
+            if (monster.Status == StatusCondition.BadlyPoisoned)
+                monster.Status = StatusCondition.Poison;
             Recalc();
         }
 

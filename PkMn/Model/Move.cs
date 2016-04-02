@@ -119,6 +119,12 @@ namespace PkMn.Model
             }
         }
 
+        public bool CanCauseStatus(StatusCondition status, Who who)
+        {
+            StatusEffect[] effs = Effects.Where(e => e is StatusEffect).Cast<StatusEffect>().ToArray();
+            return effs.Any(e => e.Status == status && (e.Who == who || e.Who == Who.Both));
+        }
+
         public override string ToString()
         {
             return string.Format("{0} ({1}) - PP: {2} Power: {3} Accuracy: {4}", Name, Type.Name, PP, Power, Accuracy);

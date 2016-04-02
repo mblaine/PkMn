@@ -27,6 +27,8 @@ namespace PkMn.Instance
 
         public int CurrentHP;
 
+        public int SleepCounter;
+
         public string Name
         {
             get { return !string.IsNullOrWhiteSpace(Nickname) ? Nickname : Species.Name.ToUpper(); }
@@ -62,6 +64,7 @@ namespace PkMn.Instance
 
             CurrentHP = Stats.HP;
             Status = StatusCondition.None;
+            SleepCounter = 0;
 
             Moves = new Move[4];
 

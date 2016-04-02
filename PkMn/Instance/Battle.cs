@@ -270,11 +270,29 @@ namespace PkMn.Instance
         {
             if (current.Monster.Status == StatusCondition.Sleep)
             {
-                OnSendMessage("{0}{1} is fast asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                return true;
+                if (current.QueuedMove != null && !current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
+                    current.QueuedMove = null;
+                current.IsSemiInvulnerable = false;
+
+                current.Monster.SleepCounter--;
+                if (current.Monster.SleepCounter <= 0)
+                {
+                    current.Monster.Status = StatusCondition.None;
+                    OnSendMessage("{0}{1} woke up!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                    return true;
+                }
+                else
+                {
+                    OnSendMessage("{0}{1} is fast asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                    return true;
+                }
             }
             else if (current.Monster.Status == StatusCondition.Freeze)
             {
+                if (current.QueuedMove != null && !current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
+                    current.QueuedMove = null;
+                current.IsSemiInvulnerable = false;
+
                 OnSendMessage("{0}{1} is frozen solid!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 return true;
             }
@@ -298,7 +316,8 @@ namespace PkMn.Instance
                     if (Rng.Next(0, 256) < 128)
                     {
                         OnSendMessage("It hurt itself in its confusion!");
-                        current.QueuedMove = null;
+                        if (current.QueuedMove != null && !current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
+                            current.QueuedMove = null;
                         current.IsSemiInvulnerable = false;
 
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
@@ -435,6 +454,7 @@ namespace PkMn.Instance
                                         break;
                                     case StatusCondition.Sleep:
                                         OnSendMessage("{0}{1} fell asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                        current.Monster.SleepCounter = Rng.Next(1, 8);
                                         break;
                                     case StatusCondition.Burn:
                                         OnSendMessage("{0}{1} was burned!", current.Trainer.MonNamePrefix, current.Monster.Name);
@@ -442,6 +462,9 @@ namespace PkMn.Instance
                                         break;
                                     case StatusCondition.BadlyPoisoned:
                                         OnSendMessage("{0}{1} was badly poisoned!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                        break;
+                                    case StatusCondition.Freeze:
+                                        OnSendMessage("{0}{1} was frozen!", current.Trainer.MonNamePrefix, current.Monster.Name);
                                         break;
                                     default:
                                         OnSendMessage("{0}{1} was {2}ed!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Status.ToString().ToLower());
@@ -483,6 +506,7 @@ namespace PkMn.Instance
                                         break;
                                     case StatusCondition.Sleep:
                                         OnSendMessage("{0}{1} fell asleep!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                        opponent.Monster.SleepCounter = Rng.Next(1, 8);
                                         break;
                                     case StatusCondition.Burn:
                                         OnSendMessage("{0}{1} was burned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -490,6 +514,9 @@ namespace PkMn.Instance
                                         break;
                                     case StatusCondition.BadlyPoisoned:
                                         OnSendMessage("{0}{1} was badly poisoned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                        break;
+                                    case StatusCondition.Freeze:
+                                        OnSendMessage("{0}{1} was frozen!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                                         break;
                                     default:
                                         OnSendMessage("{0}{1} was {2}ed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Status.ToString().ToLower());
@@ -511,6 +538,12 @@ namespace PkMn.Instance
             }
 
             opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
+
+            if (moveHit && current.SelectedMove.CanCauseStatus(StatusCondition.Burn, Who.Foe) && opponent.Monster.Status == StatusCondition.Freeze)
+            {
+                OnSendMessage("Fire defrosted {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                opponent.Monster.Status = StatusCondition.None;
+            }
 
             if (damage > 0 && opponent.QueuedMove != null)
             {

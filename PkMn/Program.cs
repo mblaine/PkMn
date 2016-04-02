@@ -29,12 +29,12 @@ namespace PkMn
                 Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Diglett", 30), new Monster("Mewtwo", 20), null, null, null }
             };
 
-            //player.Party[0].Moves[0] = Move.Moves["Supersonic"];
-            //player.Party[0].Moves[1] = Move.Moves["Supersonic"];
+            //player.Party[0].Moves[2] = Move.Moves["Ice Beam"];
+            //player.Party[0].Moves[3] = Move.Moves["Flamethrower"];
             //player.Party[0].Moves[2] = Move.Moves["Supersonic"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //rival.Party[0].Moves[1] = Move.Moves["Fly"];
-            //rival.Party[0].Moves[2] = Move.Moves["Fly"];
+            //rival.Party[0].Moves[1] = Move.Moves["Sleep Powder"];
+            //rival.Party[0].Moves[2] = Move.Moves["Sleep Powder"];
 
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
