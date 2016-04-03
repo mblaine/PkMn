@@ -36,7 +36,7 @@ namespace PkMn
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[2] = Move.Moves["Supersonic"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //rival.Party[0].Moves[1] = Move.Moves["Disable"];
+            //rival.Party[0].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[2] = Move.Moves["Disable"];
 
             Battle battle = new Battle(player, rival, true);
@@ -86,8 +86,8 @@ namespace PkMn
                 Console.WriteLine("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (message.ToLower().Contains("was disable") || message.ToLower().Contains("disabled no more"))
-                ;//Console.WriteLine(message + " <----------------------------------------------");
+            if (false && (message.ToLower().Contains("was disable") || message.ToLower().Contains("disabled no more")))
+                Console.WriteLine(message + " <----------------------------------------------");
             else
                 Console.WriteLine(message);
 

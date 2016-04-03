@@ -458,7 +458,7 @@
   </move>
   <move name="Tri Attack" type="Normal" pp="10" power="80" accuracy="255" />
   <move name="Twineedle" type="Bug" pp="20" power="25" accuracy="255">
-    <effect type="multi-turn" min="2" max="2" />
+    <effect type="multi-hit" min="2" max="2" />
     <effect type="status" status="Poison" who="foe" chance="52" />
   </move>
   <move name="Vice Grip" type="Normal" pp="30" power="55" accuracy="255" />

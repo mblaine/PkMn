@@ -56,12 +56,20 @@ namespace PkMn.Model
             this.Immunity = new List<StatusCondition>();
         }
 
-        public decimal GetEffectiveness(Element e)
+        public decimal GetEffectiveness(Element e1, Element e2 = null)
         {
-            if (this.Effectiveness.ContainsKey(e))
-                return this.Effectiveness[e];
-            else
-                return 1m;
+            decimal multiplier1 = 1m;
+            decimal multiplier2 = 1m;
+            if (this.Effectiveness.ContainsKey(e1))
+                multiplier1 = this.Effectiveness[e1];
+            if (e2 != null && this.Effectiveness.ContainsKey(e2))
+                multiplier2 = this.Effectiveness[e2];
+            return multiplier1 * multiplier2;
+        }
+
+        public decimal GetEffectiveness(Species s)
+        {
+            return GetEffectiveness(s.Type1, s.Type2);
         }
 
         public override string ToString()
