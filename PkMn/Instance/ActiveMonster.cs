@@ -113,5 +113,10 @@ namespace PkMn.Instance
             else
                 return ret;
         }
+
+        public override string ToString()
+        {
+            return Monster.ToString();
+        }
     }
 }

@@ -237,16 +237,16 @@ namespace PkMn.Instance
 
         protected ActiveMonster WhoGoesFirst(ActiveMonster one, ActiveMonster two)
         {
-            if (one.MoveIndex > 0 && one.SelectedMove == Move.Moves["Quick Attack"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Quick Attack"]))
+            if (one.MoveIndex >= 0 && one.SelectedMove == Move.Moves["Quick Attack"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Quick Attack"]))
                 return one;
 
-            if (two.MoveIndex > 0 && two.SelectedMove == Move.Moves["Quick Attack"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Quick Attack"]))
+            if (two.MoveIndex >= 0 && two.SelectedMove == Move.Moves["Quick Attack"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Quick Attack"]))
                 return two;
 
-            if (one.MoveIndex > 0 && one.SelectedMove == Move.Moves["Counter"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Counter"]))
+            if (one.MoveIndex >= 0 && one.SelectedMove == Move.Moves["Counter"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Counter"]))
                 return two;
 
-            if (two.MoveIndex > 0 && two.SelectedMove == Move.Moves["Counter"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Counter"]))
+            if (two.MoveIndex >= 0 && two.SelectedMove == Move.Moves["Counter"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Counter"]))
                 return one;
 
             return one.EffectiveStats.Speed > two.EffectiveStats.Speed ? one : one.EffectiveStats.Speed < two.EffectiveStats.Speed ? two : Rng.Next(0, 2) == 0 ? one : two;
@@ -604,6 +604,34 @@ namespace PkMn.Instance
 
             bool immuneToType = typeMultiplier == 0m;
 
+            CustomDamageEffect customEffect = (CustomDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.CustomDamage).FirstOrDefault();
+            if (customEffect != null)
+            {
+                int customDamage = 0;
+                switch (customEffect.Calculation)
+                {
+                    case "level":
+                        customDamage = current.Monster.Level;
+                        break;
+                    case "constant":
+                        customDamage = customEffect.Value;
+                        break;
+                    case "foe-hp-remaining":
+                        customDamage = Math.Max(1, (int)(((decimal)opponent.Monster.CurrentHP) * customEffect.Multiplier));
+                        break;
+                    case "rng-min-1-max-1.5x-level": //Psywave...
+                        customDamage = Rng.Next(1, (int)(1.5m * (decimal)current.Monster.Level) + 1);
+                        break;
+                }
+
+                if (typeMultiplier == 0m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeImmunity))
+                    customDamage = 0;
+                else if (!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
+                    customDamage = (int)(typeMultiplier * (decimal)customDamage);
+
+                return customDamage;
+            }
+
             //calculate attack and defense
             int att;
             int def;
@@ -666,11 +694,13 @@ namespace PkMn.Instance
             bool triedStatusEffect = false;
 
             bool immuneToType = current.SelectedMove.Type.GetEffectiveness(opponent.Monster.Species) == 0m;
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeImmunity))
+                immuneToType = false;
 
             //handle self stat stage effects
             foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition)))
             {
-                if (moveHit || eff.Who == Who.Both || eff.Who == Who.Self)
+                if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
 
                 HandleStatEffect(current, null, eff, moveHit);
@@ -681,7 +711,7 @@ namespace PkMn.Instance
             //handle self status condition effects
             foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e is StatusEffect))
             {
-                if (moveHit || eff.Who == Who.Both || eff.Who == Who.Self)
+                if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
 
                 HandleStatusEffect(current, current.SelectedMove, null, eff, moveHit);
@@ -750,22 +780,22 @@ namespace PkMn.Instance
                 //only display messages on first hit
                 if (i == 0 && (damage != 0 || !triedStatusEffect))
                 {
-                    if (isCriticalHit)
+                    if (damage != 0 && isCriticalHit)
                         OnSendMessage("Critical hit!");
 
                     decimal typeMultiplier = current.SelectedMove.Type.GetEffectiveness(opponent.Monster.Species);
 
-                    if (typeMultiplier == 0m)
+                    if (typeMultiplier == 0m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeImmunity))
                         OnSendMessage("It doesn't affect {0}{1}.", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                    else if (typeMultiplier > 1m)
+                    else if (typeMultiplier > 1m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
                         OnSendMessage("It's super effective!");
-                    else if (typeMultiplier < 1m)
+                    else if (typeMultiplier < 1m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
                         OnSendMessage("It's not very effective.");
                 }
             
             }
 
-            if(hitsToTry > 1)
+            if(hitsToTry > 1 && hitCount > 0)
                 OnSendMessage("Hit {0} time(s)!", hitCount);
 
             //handle defrosting
