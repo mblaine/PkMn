@@ -18,7 +18,6 @@ namespace PkMn.Instance
         public readonly Move[] Moves;
         public readonly int[] CurrentPP;
         public readonly int[] PPUpsUsed;
-        public readonly bool[] MoveEnabled;
 
         public int Experience;
         public int Level;
@@ -98,13 +97,11 @@ namespace PkMn.Instance
 
             CurrentPP = new int[4];
             PPUpsUsed = new int[4];
-            MoveEnabled = new bool[4];
             
             for (int i = 0; i < CurrentPP.Length; i++)
             {
                 CurrentPP[i] = Moves[i] != null ? Moves[i].PP : 0;
                 PPUpsUsed[i] = 0;
-                MoveEnabled[i] = true;
             }
         }
 

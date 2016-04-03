@@ -82,6 +82,12 @@ namespace PkMn.Instance
             {
                 playerAction = ChooseAction(PlayerCurrent.Monster, Player);
 
+                while (playerAction.Type == BattleActionType.UseMove && PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex)
+                {
+                    //OnSendMessage("It's disabled");
+                    playerAction = ChooseAction(PlayerCurrent.Monster, Player);
+                }
+
                 if (playerAction.Type == BattleActionType.Run)
                 {
                     runCount++;
@@ -268,6 +274,21 @@ namespace PkMn.Instance
 
         protected bool ExecuteMove(ActiveMonster current, ActiveMonster opponent)
         {
+            if (current.DisabledCount > 0)
+            {
+                current.DisabledCount--;
+                if (current.DisabledCount <= 0)
+                {
+                    current.DisabledMoveIndex = -1;
+                    OnSendMessage("{0}{1}'s disabled no more!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                }
+                else if(current.SelectedMove == current.Monster.Moves[current.DisabledMoveIndex])
+                {
+                    OnSendMessage("{0}{1}'s {2} is disabled!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+                    return true;
+                }
+            }
+
             if (current.Monster.Status == StatusCondition.Sleep)
             {
                 if (current.QueuedMove != null && !current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
@@ -539,6 +560,41 @@ namespace PkMn.Instance
 
             opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
 
+            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Disable))
+            {
+                triedStatusEffect = true;
+                if (opponent.DisabledCount > 0)
+                {
+                    OnSendMessage("It failed!");
+                }
+                else
+                {
+                    Move[] enabled = opponent.Monster.Moves.Zip(opponent.Monster.CurrentPP, (move, pp) => new KeyValuePair<Move, int>(move, pp)).Where(p => p.Value > 0).Select(p => p.Key).ToArray();
+
+                    if (enabled.Length <= 0)
+                    {
+                        OnSendMessage("It failed!");
+                    }
+                    else
+                    {
+                        Move disabledMove = enabled[Rng.Next(0, enabled.Length)];
+                        
+                        for (int i = 0; i < opponent.Monster.Moves.Length; i++)
+                        {
+                            if (opponent.Monster.Moves[i] == disabledMove)
+                            {
+                                opponent.DisabledMoveIndex = i;
+                                break;
+                            }
+                        }
+
+                        opponent.DisabledCount = Rng.Next(0, 7);
+
+                        OnSendMessage("{0}{1}'s {2} was disabled!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, disabledMove.Name.ToUpper());
+                    }
+                }
+            }
+
             if (moveHit && current.SelectedMove.CanCauseStatus(StatusCondition.Burn, Who.Foe) && opponent.Monster.Status == StatusCondition.Freeze)
             {
                 OnSendMessage("Fire defrosted {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -570,7 +626,7 @@ namespace PkMn.Instance
                     OnSendMessage("Critical hit!");
 
                 if (effectiveness1 * effectiveness2 == 0m)
-                    OnSendMessage("It doesn't effect {0}{1}.", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    OnSendMessage("It doesn't affect {0}{1}.", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 else if (effectiveness1 * effectiveness2 > 1m)
                     OnSendMessage("It's super effective!");
                 else if (effectiveness1 * effectiveness2 < 1m)

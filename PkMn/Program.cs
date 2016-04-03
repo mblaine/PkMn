@@ -13,6 +13,8 @@ namespace PkMn
 {
     class Program
     {
+        private static DateTime? lastMessage = null;
+
         static void Main(string[] args)
         {
             Trainer player = new Trainer()
@@ -29,12 +31,13 @@ namespace PkMn
                 Party = new Monster[] { new Monster("Blastoise", 36), new Monster("Diglett", 30), new Monster("Mewtwo", 20), null, null, null }
             };
 
-            //player.Party[0].Moves[2] = Move.Moves["Ice Beam"];
-            //player.Party[0].Moves[3] = Move.Moves["Flamethrower"];
+            //player.Party[0].Stats.Speed = 10;
+            //player.Party[0].Moves[2] = Move.Moves["Disable"];
+            //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[2] = Move.Moves["Supersonic"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //rival.Party[0].Moves[1] = Move.Moves["Sleep Powder"];
-            //rival.Party[0].Moves[2] = Move.Moves["Sleep Powder"];
+            //rival.Party[0].Moves[1] = Move.Moves["Disable"];
+            //rival.Party[0].Moves[2] = Move.Moves["Disable"];
 
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
@@ -77,9 +80,19 @@ namespace PkMn
 
         public static void Battle_SendMessage(string message)
         {
-            Console.WriteLine(message);
-            if (message.ToLower().Contains("missed"))
-                ;// Console.ReadLine();
+            if (lastMessage != null && DateTime.Now - lastMessage >= new TimeSpan(0, 0, 1))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("================================================ {0:mm:ss}", DateTime.Now);
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            if (message.ToLower().Contains("was disable") || message.ToLower().Contains("disabled no more"))
+                ;//Console.WriteLine(message + " <----------------------------------------------");
+            else
+                Console.WriteLine(message);
+
+            lastMessage = DateTime.Now;
+            
         }
 
         public static Monster Battle_ChooseMon(Trainer trainer)

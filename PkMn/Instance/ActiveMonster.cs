@@ -18,6 +18,8 @@ namespace PkMn.Instance
         public bool Flinched;
         public int BadlyPoisonedCount;
         public int ConfusedCount;
+        public int DisabledMoveIndex;
+        public int DisabledCount;
         public Move QueuedMove;
 
         public Move SelectedMove
@@ -53,6 +55,8 @@ namespace PkMn.Instance
             ConfusedCount = 0;
             IsSemiInvulnerable = false;
             BadlyPoisonedCount = 1;
+            DisabledMoveIndex = -1;
+            DisabledCount = 0;
             QueuedMove = null;
             if (monster.Status == StatusCondition.BadlyPoisoned)
                 monster.Status = StatusCondition.Poison;
@@ -68,6 +72,8 @@ namespace PkMn.Instance
             ConfusedCount = 0;
             BadlyPoisonedCount = 1;
             MoveIndex = -1;
+            DisabledMoveIndex = -1;
+            DisabledCount = 0;
             QueuedMove = null;
         }
 
