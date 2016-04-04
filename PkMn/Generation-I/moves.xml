@@ -309,7 +309,7 @@
   </move>
   <move name="Rest" type="Psychic" pp="10" accuracy="255">
     <effect type="restore-health" percent="100" of="max" who="self" />
-    <effect type="status" status="Sleep" who="self" turn-limit="2" />
+    <effect type="status" status="Sleep" who="self" turn-limit="2" message="{0}{1} started sleeping!" />
   </move>
   <move name="Roar" type="Normal" pp="20" accuracy="255">
     <effect type="end-wild-battle" />

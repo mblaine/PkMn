@@ -292,7 +292,7 @@ namespace PkMn.Instance
                         if ((eff.Change > 0 && current.StatStages[eff.Stat] >= 6) || (eff.Change < 0 && current.StatStages[eff.Stat] <= 6))
                         {
                             if (showFailMessage)
-                                OnSendMessage("It didn't have any effect.");
+                                OnSendMessage("Nothing happened!");
                         }
                         else
                         {
@@ -319,7 +319,7 @@ namespace PkMn.Instance
                         if ((eff.Change > 0 && opponent.StatStages[eff.Stat] >= 6) || (eff.Change < 0 && opponent.StatStages[eff.Stat] <= -6))
                         {
                             if (showFailMessage)
-                                OnSendMessage("It didn't have any effect.");
+                                OnSendMessage("Nothing happened!");
                         }
                         else
                         {
@@ -356,7 +356,7 @@ namespace PkMn.Instance
                             OnSendMessage("{0}{1} is already confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
                         else
                         {
-                            OnSendMessage("{0}{1} became confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                            OnSendMessage(eff.Message ?? "{0}{1} became confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
                             current.ConfusedCount = Rng.Next(2, 6);
                         }
                     }
@@ -370,25 +370,25 @@ namespace PkMn.Instance
                         switch (eff.Status)
                         {
                             case StatusCondition.Paralysis:
-                                OnSendMessage("{0}{1} was paralyzed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was paralyzed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                                 current.EffectiveStats.Speed = (int)(((decimal)current.EffectiveStats.Speed) * 0.25m);
                                 break;
                             case StatusCondition.Sleep:
-                                OnSendMessage("{0}{1} fell asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                current.Monster.SleepCounter = Rng.Next(1, 8);
+                                OnSendMessage(eff.Message ?? "{0}{1} fell asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                current.Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
                                 break;
                             case StatusCondition.Burn:
-                                OnSendMessage("{0}{1} was burned!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was burned!", current.Trainer.MonNamePrefix, current.Monster.Name);
                                 current.EffectiveStats.Attack = (int)(((decimal)current.EffectiveStats.Attack) * 0.5m);
                                 break;
                             case StatusCondition.BadlyPoisoned:
-                                OnSendMessage("{0}{1} was badly poisoned!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was badly poisoned!", current.Trainer.MonNamePrefix, current.Monster.Name);
                                 break;
                             case StatusCondition.Freeze:
-                                OnSendMessage("{0}{1} was frozen!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was frozen!", current.Trainer.MonNamePrefix, current.Monster.Name);
                                 break;
                             default:
-                                OnSendMessage("{0}{1} was {2}ed!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Status.ToString().ToLower());
+                                OnSendMessage(eff.Message ?? "{0}{1} was {2}ed!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Status.ToString().ToLower());
                                 break;
                         }
 
@@ -408,7 +408,7 @@ namespace PkMn.Instance
                             OnSendMessage("{0}{1} is already confused!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                         else
                         {
-                            OnSendMessage("{0}{1} became confused!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                            OnSendMessage(eff.Message ?? "{0}{1} became confused!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                             opponent.ConfusedCount = Rng.Next(2, 6);
                         }
                     }
@@ -422,25 +422,25 @@ namespace PkMn.Instance
                         switch (eff.Status)
                         {
                             case StatusCondition.Paralysis:
-                                OnSendMessage("{0}{1} was paralyzed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was paralyzed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                                 opponent.EffectiveStats.Speed = (int)(((decimal)opponent.EffectiveStats.Speed) * 0.25m);
                                 break;
                             case StatusCondition.Sleep:
-                                OnSendMessage("{0}{1} fell asleep!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                opponent.Monster.SleepCounter = Rng.Next(1, 8);
+                                OnSendMessage(eff.Message ?? "{0}{1} fell asleep!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                opponent.Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
                                 break;
                             case StatusCondition.Burn:
-                                OnSendMessage("{0}{1} was burned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was burned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                                 opponent.EffectiveStats.Attack = (int)(((decimal)opponent.EffectiveStats.Attack) * 0.5m);
                                 break;
                             case StatusCondition.BadlyPoisoned:
-                                OnSendMessage("{0}{1} was badly poisoned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was badly poisoned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                                 break;
                             case StatusCondition.Freeze:
-                                OnSendMessage("{0}{1} was frozen!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                                OnSendMessage(eff.Message ?? "{0}{1} was frozen!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                                 break;
                             default:
-                                OnSendMessage("{0}{1} was {2}ed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Status.ToString().ToLower());
+                                OnSendMessage(eff.Message ?? "{0}{1} was {2}ed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Status.ToString().ToLower());
                                 break;
                         }
 
@@ -557,6 +557,13 @@ namespace PkMn.Instance
                 return false;
             }
 
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.RestoreHealth) && current.Monster.CurrentHP == current.Monster.Stats.HP)
+            {
+                OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+                OnSendMessage("But, it failed.");
+                return false;
+            }
+
             return true;
         }
 
@@ -564,7 +571,7 @@ namespace PkMn.Instance
         {
             if (opponent.DisabledCount > 0)
             {
-                OnSendMessage("It failed!");
+                OnSendMessage("But, it failed!");
             }
             else
             {
@@ -572,7 +579,7 @@ namespace PkMn.Instance
 
                 if (enabled.Length <= 0)
                 {
-                    OnSendMessage("It failed!");
+                    OnSendMessage("But, it failed!");
                 }
                 else
                 {
@@ -717,6 +724,22 @@ namespace PkMn.Instance
                 HandleStatusEffect(current, current.SelectedMove, null, eff, moveHit);
             }
 
+            HealthEffect restoreHealth = (HealthEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.RestoreHealth).FirstOrDefault();
+            if (restoreHealth != null)
+            {
+                if (restoreHealth.Of == "max" && restoreHealth.Who == Who.Self)
+                {
+                    int hpRestored = (int)(restoreHealth.Percent / 100m * (decimal)current.Monster.Stats.HP);
+                    if (hpRestored == 0)
+                        hpRestored = 1;
+                    hpRestored = Math.Min(hpRestored, current.Monster.Stats.HP - current.Monster.CurrentHP);
+                    current.Monster.CurrentHP += hpRestored;
+                    OnSendMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
+                    OnSendMessage("{0}{1} regained health!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                }
+                //nothing else to implement
+            }
+
             //handle miss
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
@@ -797,6 +820,21 @@ namespace PkMn.Instance
 
             if(hitsToTry > 1 && hitCount > 0)
                 OnSendMessage("Hit {0} time(s)!", hitCount);
+
+            HealthEffect transferHealth = (HealthEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.TransferHealth).FirstOrDefault();
+            if (transferHealth != null)
+            {
+                if (transferHealth.Of == "damage")
+                {
+                    int hpRestored = (int)(transferHealth.Percent / 100m * (decimal)(damage * hitCount));
+                    if(hpRestored == 0)
+                        hpRestored = 1;
+                    hpRestored = Math.Min(hpRestored, current.Monster.Stats.HP - current.Monster.CurrentHP);
+                    current.Monster.CurrentHP += hpRestored;
+                    OnSendMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
+                    OnSendMessage("Sucked health from {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                }
+            }
 
             //handle defrosting
             if (moveHit && current.SelectedMove.CanCauseStatus(StatusCondition.Burn, Who.Foe) && opponent.Monster.Status == StatusCondition.Freeze)
