@@ -15,8 +15,9 @@ namespace PkMn.Model.Moves
         public readonly int TurnLimit;
         public readonly bool Reset;
         public readonly string Message;
+        public readonly bool Force;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message", "force" }; } }
 
         public StatusEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -27,6 +28,7 @@ namespace PkMn.Model.Moves
             TurnLimit = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
             Reset = type == MoveEffectType.ResetStatus;
             Message = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message") ? node.Attributes["message"].Value : null;
+            Force = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "force") ? bool.Parse(node.Attributes["force"].Value) : false;
         }
     }
 }

@@ -13,20 +13,23 @@ namespace PkMn.Model.Moves
         public readonly int Max;
         public readonly When When;
         public readonly string Message;
+        public readonly bool ConstantDamage;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "min", "max", "when", "message" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "min", "max", "when", "message", "constant-damage" }; } }
 
         public MultiEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            Min = int.Parse(node.Attributes["min"].Value);
-            Max = int.Parse(node.Attributes["max"].Value);
+            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
 
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "when"))
-                When = (When)Enum.Parse(typeof(When), node.Attributes["when"].Value, true);
+            Min = attrs.Contains("min") ? int.Parse(node.Attributes["min"].Value) : int.MaxValue - 1;
+            Max = attrs.Contains("max") ? int.Parse(node.Attributes["max"].Value) : int.MaxValue - 1;
 
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message"))
-                Message = node.Attributes["message"].Value;
+            When = attrs.Contains("when") ? (When)Enum.Parse(typeof(When), node.Attributes["when"].Value, true) : Enums.When.NA;
+
+            Message = attrs.Contains("message") ? node.Attributes["message"].Value : null;
+
+            ConstantDamage = attrs.Contains("constant-damage") ? bool.Parse(node.Attributes["constant-damage"].Value) : false;
         }
     }
 }

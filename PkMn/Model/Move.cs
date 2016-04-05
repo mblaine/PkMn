@@ -79,7 +79,7 @@ namespace PkMn.Model
                     case MoveEffectType.MultiHit:
                     case MoveEffectType.Disable:
                     case MoveEffectType.Charge:
-                    case MoveEffectType.MultiTurn:
+                    case MoveEffectType.LockInMove:
                         Effects.Add(new MultiEffect(effectType, effect));
                         break;
                     case MoveEffectType.CustomDamage:

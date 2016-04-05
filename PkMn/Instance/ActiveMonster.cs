@@ -16,11 +16,14 @@ namespace PkMn.Instance
         public int MoveIndex;
         public bool IsSemiInvulnerable;
         public bool Flinched;
+        public bool MoveCancelled;
         public int BadlyPoisonedCount;
         public int ConfusedCount;
         public int DisabledMoveIndex;
         public int DisabledCount;
         public Move QueuedMove;
+        public int QueuedMoveLimit;
+        public int QueuedMoveDamage;
 
         public Move SelectedMove
         {
@@ -52,12 +55,15 @@ namespace PkMn.Instance
             EffectiveStats = new BattleStats();
             MoveIndex = -1;
             Flinched = false;
+            MoveCancelled = false;
             ConfusedCount = 0;
             IsSemiInvulnerable = false;
             BadlyPoisonedCount = 1;
             DisabledMoveIndex = -1;
             DisabledCount = 0;
             QueuedMove = null;
+            QueuedMoveLimit = -1;
+            QueuedMoveDamage = -1;
             if (monster.Status == StatusCondition.BadlyPoisoned)
                 monster.Status = StatusCondition.Poison;
             Recalc();
@@ -69,12 +75,15 @@ namespace PkMn.Instance
             EffectiveStats = new BattleStats();
             IsSemiInvulnerable = false;
             Flinched = false;
+            MoveCancelled = false;
             ConfusedCount = 0;
             BadlyPoisonedCount = 1;
             MoveIndex = -1;
             DisabledMoveIndex = -1;
             DisabledCount = 0;
             QueuedMove = null;
+            QueuedMoveLimit = -1;
+            QueuedMoveDamage = -1;
         }
 
         public void Recalc(StatType? stat = null)

@@ -21,20 +21,20 @@ namespace PkMn
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = new Monster[] { new Monster("Staryu", 27) }//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null }
+                Party = new Monster[] { new Monster("Onix", 20) }//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null }
             };
 
             Trainer rival = new Trainer()
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = new Monster[] { new Monster("Snorlax", 27)}//, new Monster("Diglett", 30), new Monster("Mewtwo", 20), null, null, null }
+                Party = new Monster[] { new Monster("Cloyster", 34)}//, new Monster("Mewtwo", 20), null, null, null }
             };
 
             //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[2] = Move.Moves["Mega Drain"];
+            //player.Party[0].Moves[2] = Move.Moves["Rage"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
-            player.Party[0].Moves[3] = Move.Moves["Softboiled"];
+            //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[2] = Move.Moves["Disable"];

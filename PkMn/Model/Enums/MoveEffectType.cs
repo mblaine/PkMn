@@ -21,7 +21,6 @@ namespace PkMn.Model.Enums
         MirrorMove,
         MissDamage,
         MultiHit,
-        MultiTurn,
         MustBeFaster,
         NeverDeductPP,
         NoEffect,
