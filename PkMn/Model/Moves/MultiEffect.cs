@@ -14,8 +14,10 @@ namespace PkMn.Model.Moves
         public readonly When When;
         public readonly string Message;
         public readonly bool ConstantDamage;
+        public readonly bool IgnoreCancel;
+        public readonly bool IgnoreMissOnLock;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "min", "max", "when", "message", "constant-damage" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "min", "max", "when", "message", "constant-damage", "ignore-cancel", "ignore-miss-on-lock" }; } }
 
         public MultiEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -30,6 +32,8 @@ namespace PkMn.Model.Moves
             Message = attrs.Contains("message") ? node.Attributes["message"].Value : null;
 
             ConstantDamage = attrs.Contains("constant-damage") ? bool.Parse(node.Attributes["constant-damage"].Value) : false;
+            IgnoreCancel = attrs.Contains("ignore-cancel") ? bool.Parse(node.Attributes["ignore-cancel"].Value) : false;
+            IgnoreMissOnLock = attrs.Contains("ignore-miss-on-lock") ? bool.Parse(node.Attributes["ignore-miss-on-lock"].Value) : false;
         }
     }
 }

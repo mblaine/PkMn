@@ -463,6 +463,20 @@ namespace PkMn.Instance
             return ret;
         }
 
+        protected void CancelQueuedMove(ActiveMonster current)
+        {
+            if (current.QueuedMove != null)
+            {
+                MultiEffect enemyLockIn = (MultiEffect)current.QueuedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
+                if (enemyLockIn == null || !enemyLockIn.IgnoreCancel)
+                {
+                    current.QueuedMove = null;
+                    current.QueuedMoveDamage = -1;
+                    current.QueuedMoveLimit = -1;
+                }
+            }
+        }
+
         protected bool PreMoveChecks(ActiveMonster current, ActiveMonster opponent)
         {
             //handle current pkmn disabled
@@ -477,6 +491,7 @@ namespace PkMn.Instance
                 else if (current.SelectedMove == current.Monster.Moves[current.DisabledMoveIndex])
                 {
                     OnSendMessage("{0}{1}'s {2} is disabled!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+                    CancelQueuedMove(current);
                     return false;
                 }
             }
@@ -484,11 +499,15 @@ namespace PkMn.Instance
             //handle current pkmn trapped
             if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
+                CancelQueuedMove(current);
                 return false;
             }
 
             if (current.MoveCancelled)
+            {
+                CancelQueuedMove(current);
                 return false;
+            }
 
             //handle current pkmn asleep
             if (current.Monster.Status == StatusCondition.Sleep)
@@ -507,6 +526,7 @@ namespace PkMn.Instance
                 else
                 {
                     OnSendMessage("{0}{1} is fast asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                    CancelQueuedMove(current);
                     return false;
                 }
             }
@@ -518,12 +538,14 @@ namespace PkMn.Instance
                 current.IsSemiInvulnerable = false;
 
                 OnSendMessage("{0}{1} is frozen solid!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                CancelQueuedMove(current);
                 return false;
             }
             //handle current pkmn paralyzed
             else if (current.Monster.Status == StatusCondition.Paralysis && Rng.Next(0, 256) < 63)
             {
                 OnSendMessage("{0}{1} is fully paralyzed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                CancelQueuedMove(current);
                 return false;
             }
 
@@ -549,6 +571,7 @@ namespace PkMn.Instance
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
                         OnSendMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
                         current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
+                        CancelQueuedMove(current);
                         return false;
                     }
                 }
@@ -691,6 +714,44 @@ namespace PkMn.Instance
             return damage;
         }
 
+        protected void HandleLockInBeginning(ActiveMonster current, MultiEffect lockInEffect, ActiveMonster opponent)
+        {
+            //lock-in starting
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
+                OnSendMessage("{0}{1} can't move!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+            current.QueuedMove = current.SelectedMove;
+            if (lockInEffect.Min == 2 && lockInEffect.Max == 5)
+                current.QueuedMoveLimit = new int[] { 2, 2, 2, 3, 3, 3, 4, 5 }[Rng.Next(0, 8)];
+            else
+                current.QueuedMoveLimit = Rng.Next(lockInEffect.Min, lockInEffect.Max + 1);
+            OnSendMessage("{0}{1} locked in for {2} moves", current.Trainer.MonNamePrefix, current.Monster.Name, current.QueuedMoveLimit);
+        }
+
+        protected void HandleLockInEnding(ActiveMonster current, ActiveMonster opponent, bool moveHit)
+        {
+            foreach (StatusEffect eff in current.QueuedMove.Effects.Where(e => e is StatusEffect).Cast<StatusEffect>().Where(e => e.Condition == "lock-in-end"))
+            {
+                HandleStatusEffect(current, current.QueuedMove, opponent, eff, moveHit);
+            }
+
+            current.QueuedMoveLimit = -1;
+            current.QueuedMoveDamage = -1;
+            current.QueuedMove = null;
+        }
+
+        protected bool RequirementSatisfied(ActiveMonster current, ActiveMonster opponent, StatusRequirementEffect eff)
+        {
+            bool ret = true;
+
+            if ((eff.Who == Who.Both || eff.Who == Who.Self) && current.Monster.Status != eff.Status)
+                ret = false;
+
+            if ((eff.Who == Who.Both || eff.Who == Who.Foe) && opponent.Monster.Status != eff.Status)
+                ret = false;
+
+            return ret;
+        }
+
         protected bool ExecuteMove(ActiveMonster current, ActiveMonster opponent)
         {
             if (!PreMoveChecks(current, opponent))
@@ -698,14 +759,21 @@ namespace PkMn.Instance
 
             MultiEffect lockInEffect = (MultiEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
 
-            if (current.QueuedMove != null && lockInEffect != null && lockInEffect.ConstantDamage)
-                OnSendMessage("{0}{1}'s attack continues!", current.Trainer.MonNamePrefix, current.Monster.Name);
+            if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
+                OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
             else
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
+            {
+                CancelQueuedMove(opponent);
+            }
 
             //calculate critical hit or not
             int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio));
             bool isCriticalHit = Rng.Next(0, 256) < Math.Min(255, critRatio);
+
+            StatusRequirementEffect req = (StatusRequirementEffect)current.SelectedMove.Effects.Where(e => e is StatusRequirementEffect).FirstOrDefault();
 
             //calculate move hit or miss
             bool moveHit = Rng.Next(0, 256) < (int)(((decimal)current.SelectedMove.Accuracy) * (decimal)current.EffectiveStats.Accuracy / (decimal)opponent.EffectiveStats.Evade);
@@ -715,6 +783,8 @@ namespace PkMn.Instance
                 moveHit = false;
             else if (current.QueuedMove != null && lockInEffect != null && lockInEffect.ConstantDamage)
                 moveHit = true;
+            else if (req != null && !RequirementSatisfied(current, opponent, req))
+                moveHit = false;
 
             current.IsSemiInvulnerable = false;
 
@@ -740,7 +810,7 @@ namespace PkMn.Instance
                 damage = CalculateDamage(current, opponent, isCriticalHit);
 
             //handle self status condition effects
-            foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e is StatusEffect))
+            foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e is StatusEffect).Cast<StatusEffect>().Where(e => string.IsNullOrEmpty(((StatusEffect)e).Condition)))
             {
                 if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
@@ -768,6 +838,20 @@ namespace PkMn.Instance
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+               
+                if (lockInEffect != null && lockInEffect.IgnoreMissOnLock && current.QueuedMove == null)
+                {
+                    HandleLockInBeginning(current, lockInEffect, opponent);
+                }
+
+                if(lockInEffect != null)
+                    current.QueuedMoveLimit--;
+
+                if (lockInEffect != null && current.QueuedMoveLimit <= 0)
+                {
+                    HandleLockInEnding(current, opponent, moveHit);
+                }
+
                 return true;
             }
 
@@ -825,7 +909,7 @@ namespace PkMn.Instance
                 }
 
                 //only display messages on first hit
-                if (i == 0 && (damage != 0 || !triedStatusEffect) && !(lockInEffect != null && lockInEffect.ConstantDamage))
+                if (i == 0 && (damage != 0 || !triedStatusEffect) && !(lockInEffect != null && lockInEffect.ConstantDamage && current.QueuedMoveLimit > 0))
                 {
                     if (damage != 0 && isCriticalHit)
                         OnSendMessage("Critical hit!");
@@ -863,7 +947,7 @@ namespace PkMn.Instance
                     hpRestored = Math.Min(hpRestored, current.Monster.Stats.HP - current.Monster.CurrentHP);
                     current.Monster.CurrentHP += hpRestored;
                     OnSendMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
-                    OnSendMessage("Sucked health from {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    OnSendMessage(transferHealth.Message ?? "Sucked health from {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 }
             }
 
@@ -889,14 +973,7 @@ namespace PkMn.Instance
             {
                 if (current.QueuedMove == null)
                 {
-                    //lock-in starting
-                    OnSendMessage("{0}{1} can't move!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                    current.QueuedMove = current.SelectedMove;
-                    if (lockInEffect.Min == 2 && lockInEffect.Max == 5)
-                        current.QueuedMoveLimit = new int[] { 2, 2, 2, 3, 3, 3, 4, 5 }[Rng.Next(0, 8)];
-                    else
-                        current.QueuedMoveLimit = Rng.Next(lockInEffect.Min, lockInEffect.Max + 1);
-                    OnSendMessage("{0}{1} locked in for {2} moves", current.Trainer.MonNamePrefix, current.Monster.Name, current.QueuedMoveLimit);
+                    HandleLockInBeginning(current, lockInEffect, opponent);
                 }
 
                 current.QueuedMoveLimit--;
@@ -904,9 +981,7 @@ namespace PkMn.Instance
                 if (current.QueuedMoveLimit <= 0)
                 {
                     //lock-in ending
-                    current.QueuedMoveLimit = -1;
-                    current.QueuedMoveDamage = -1;
-                    current.QueuedMove = null;
+                    HandleLockInEnding(current, opponent, moveHit);                    
                 }
                 else if (lockInEffect.ConstantDamage)
                     current.QueuedMoveDamage = damage;

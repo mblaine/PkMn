@@ -33,7 +33,7 @@
     <effect type="ignore-type-immunity" />
   </move>
   <move name="Bind" type="Normal" pp="20" power="15" accuracy="191">
-    <effect type="lock-in-move" min="2" max="5" constant-damage="true" />
+    <effect type="lock-in-move" min="2" max="5" constant-damage="true" message="{0}{1}'s attack continues!" />
     <effect type="cancel-enemy-move" />
   </move>
   <move name="Bite" type="Normal" pp="25" power="60" accuracy="255">
@@ -58,7 +58,7 @@
     <effect type="stat" stat="Speed" change="-1" who="foe" chance="26" />
   </move>
   <move name="Clamp" type="Water" pp="10" power="35" accuracy="191">
-    <effect type="lock-in-move" min="2" max="5" constant-damage="true" />
+    <effect type="lock-in-move" min="2" max="5" constant-damage="true" message="{0}{1}'s attack continues!" />
     <effect type="cancel-enemy-move" />
   </move>
   <move name="Comet Punch" type="Normal" pp="15" power="18" accuracy="216">
@@ -107,7 +107,7 @@
     <effect type="ignore-type-effectiveness" />
   </move>
   <move name="Dream Eater" type="Psychic" pp="15" power="100" accuracy="255">
-    <effect type="transfer-health" percent="50" of="damage" />
+    <effect type="transfer-health" percent="50" of="damage" message="{0}{1}'s dream was eaten!" />
     <effect type="status-requirement" status="Sleep" who="foe" />
   </move>
   <move name="Drill Peck" type="Flying" pp="20" power="80" accuracy="255" />
@@ -127,7 +127,7 @@
     <effect type="status" status="Burn" who="foe" chance="26" />
   </move>
   <move name="Fire Spin" type="Fire" pp="15" power="15" accuracy="178">
-    <effect type="lock-in-move" min="2" max="5" constant-damage="true" />
+    <effect type="lock-in-move" min="2" max="5" constant-damage="true" message="{0}{1}'s attack continues!" />
     <effect type="cancel-enemy-move" />
   </move>
   <move name="Fissure" type="Ground" pp="5" accuracy="76">
@@ -265,8 +265,8 @@
   </move>
   <move name="Peck" type="Flying" pp="35" power="35" accuracy="255" />
   <move name="Petal Dance" type="Grass" pp="20" power="70" accuracy="255">
-    <effect type="lock-in-move" min="3" max="4" />
-    <effect type="status" status="Confusion" who="self" />
+    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" message="{0}{1}'s thrashing about!" />
+    <effect type="status" status="Confusion" who="self" condition="lock-in-end" />
   </move>
   <move name="Pin Missile" type="Bug" pp="20" power="14" accuracy="216">
     <effect type="multi-hit" min="2" max="5" />
@@ -294,7 +294,7 @@
   </move>
   <move name="Quick Attack" type="Normal" pp="30" power="40" accuracy="255" />
   <move name="Rage" type="Normal" pp="20" power="20" accuracy="255">
-    <effect type="lock-in-move" />
+    <effect type="lock-in-move" ignore-cancel="true" />
     <effect type="stat" stat="Attack" change="1" who="self" condition="on-damaged" limit="999" message="{0}{1}'s rage is building!" />
   </move>
   <move name="Razor Leaf" type="Grass" pp="25" power="55" accuracy="242" crit-ratio="8" />
@@ -428,8 +428,8 @@
     <effect type="end-wild-battle" />
   </move>
   <move name="Thrash" type="Normal" pp="20" power="90" accuracy="255">
-    <effect type="lock-in-move" min="3" max="4" />
-    <effect type="status" status="Confusion" who="self" />
+    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" message="{0}{1}'s thrashing about!" />
+    <effect type="status" status="Confusion" who="self" condition="lock-in-end" />
   </move>
   <move name="Thunder" type="Electric" pp="10" power="120" accuracy="178">
     <effect type="status" status="Paralysis" who="foe" chance="26" />
@@ -473,7 +473,7 @@
     <effect type="stat" stat="Defense" change="1" who="self" />
   </move>
   <move name="Wrap" type="Normal" pp="20" power="15" accuracy="216">
-    <effect type="lock-in-move" min="2" max="5" constant-damage="true" />
+    <effect type="lock-in-move" min="2" max="5" constant-damage="true" message="{0}{1}'s attack continues!" />
     <effect type="cancel-enemy-move" />
   </move>
 </moves>

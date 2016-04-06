@@ -16,19 +16,22 @@ namespace PkMn.Model.Moves
         public readonly bool Reset;
         public readonly string Message;
         public readonly bool Force;
+        public readonly string Condition;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message", "force" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message", "force", "condition" }; } }
 
         public StatusEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
+            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
             Status = (StatusCondition)Enum.Parse(typeof(StatusCondition), node.Attributes["status"].Value.Replace("-", ""), true);
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
-            Chance = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
-            TurnLimit = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
+            Chance = attrs.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
+            TurnLimit = attrs.Contains("turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
             Reset = type == MoveEffectType.ResetStatus;
-            Message = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message") ? node.Attributes["message"].Value : null;
-            Force = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "force") ? bool.Parse(node.Attributes["force"].Value) : false;
+            Message = attrs.Contains("message") ? node.Attributes["message"].Value : null;
+            Force = attrs.Contains("force") ? bool.Parse(node.Attributes["force"].Value) : false;
+            Condition = attrs.Contains("condition") ? node.Attributes["condition"].Value : null;
         }
     }
 }
