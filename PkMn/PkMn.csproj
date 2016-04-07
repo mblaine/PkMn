@@ -52,6 +52,7 @@
     <Compile Include="Instance\Trainer.cs" />
     <Compile Include="Model\DexEntry.cs" />
     <Compile Include="Model\Enums\BattleActionType.cs" />
+    <Compile Include="Model\Enums\CancelMoveReason.cs" />
     <Compile Include="Model\Enums\Color.cs" />
     <Compile Include="Model\Enums\EvolutionType.cs" />
     <Compile Include="Model\Enums\ExpGrowthRate.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Model\Moves\CustomDamageEffect.cs" />
     <Compile Include="Model\Moves\ExtraDamageEffect.cs" />
     <Compile Include="Model\Moves\HealthEffect.cs" />
+    <Compile Include="Model\Moves\LockInEffect.cs" />
     <Compile Include="Model\Moves\MoveEffect.cs" />
     <Compile Include="Model\Moves\MultiEffect.cs" />
     <Compile Include="Model\Moves\NoEffectEffect.cs" />

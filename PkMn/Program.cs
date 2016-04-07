@@ -14,25 +14,55 @@ namespace PkMn
     class Program
     {
         private static DateTime? lastMessage = null;
+        private static StringBuilder sb = new StringBuilder();
+
+        static Monster[] PlayerStatic()
+        {
+            return new Monster[] { new Monster("Nidoking", 36)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+        }
+
+        static Monster[] RivalStatic()
+        {
+            return new Monster[] { new Monster("Machoke", 50)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+        }
+
+        static Monster[] Random()
+        {
+            Monster[] ret = new Monster[6];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 50);
+            }
+
+            Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
+
+            return ret;
+        }
 
         static void Main(string[] args)
         {
+            bool random = false;
+
             Trainer player = new Trainer()
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = new Monster[] { new Monster("Geodude", 35) }//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null }
+                Party = random ? Random() : PlayerStatic()
             };
 
             Trainer rival = new Trainer()
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = new Monster[] { new Monster("Tangela", 35)}//, new Monster("Mewtwo", 20), null, null, null }
+                Party = random ? Random() : RivalStatic()
             };
 
             //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[2] = Move.Moves["Petal Dance"];
+            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Rage"];
+            rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Supersonic"];
+
+            //player.Party[0].Moves[2] = Move.Moves["Focus Energy"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
@@ -46,24 +76,34 @@ namespace PkMn
 
             do
             {
-                Console.WriteLine("------------------------------------------------------------");
+                Log("------------------------------------------------------------");
                 Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
-                Console.WriteLine("{0,60}", battle.FoeCurrent.Monster);
+                Log("{0,60}", battle.FoeCurrent.Monster);
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine("{0,60}", battle.FoeCurrent.Monster.Stats);
-                Console.WriteLine("{0,60}", "Stages: " + battle.FoeCurrent.StatStages);
-                Console.WriteLine("{0,60}", "Effective: " + battle.FoeCurrent.EffectiveStats);
+                Log("{0,60}", battle.FoeCurrent.Monster.Stats);
+                Log("{0,60}", "Stages: " + battle.FoeCurrent.StatStages);
+                Log("{0,60}", "Effective: " + battle.FoeCurrent.EffectiveStats);
 
                 Console.ForegroundColor = ForeColor(battle.PlayerCurrent.Monster.Species.DexEntry.Color);
-                Console.WriteLine(battle.PlayerCurrent.Monster);
+                Log(battle.PlayerCurrent.Monster.ToString());
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine(battle.PlayerCurrent.Monster.Stats);
-                Console.WriteLine("Stages: " + battle.PlayerCurrent.StatStages);
-                Console.WriteLine("Effective: " + battle.PlayerCurrent.EffectiveStats);
+                Log(battle.PlayerCurrent.Monster.Stats.ToString());
+                Log("Stages: " + battle.PlayerCurrent.StatStages);
+                Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
 
-                Console.WriteLine("------------------------------------------------------------");
+                Log("------------------------------------------------------------");
             }
             while (battle.Step());
+
+            if (random)
+            {
+                foreach (Trainer t in new Trainer[] { player, rival })
+                {
+                    Log(">>> " + string.Join(" ", t.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
+                }
+
+                File.WriteAllText(Path.Combine(@"C:\Users\Matthew\AppData\Roaming\PkMn\Logs", string.Format("{0:yyyy-MM-dd_HH-mm-ss}.txt", DateTime.Now)), sb.ToString());
+            }
 
             Console.ReadLine();
         }
@@ -83,17 +123,25 @@ namespace PkMn
             if (lastMessage != null && DateTime.Now - lastMessage >= new TimeSpan(0, 0, 1))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("================================================ {0:mm:ss}", DateTime.Now);
+                Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
             if (false && (message.ToLower().Contains("was disable") || message.ToLower().Contains("disabled no more")))
-                Console.WriteLine(message + " <----------------------------------------------");
+                Log(message + " <----------------------------------------------");
             else
-                Console.WriteLine(message);
+                Log(message);
 
             lastMessage = DateTime.Now;
             
         }
+
+        private static void Log(string format, params object[] args)
+        {
+            Console.WriteLine(format, args);
+            sb.AppendFormat(format, args);
+            sb.AppendLine();
+        }
+
 
         public static Monster Battle_ChooseMon(Trainer trainer)
         {
@@ -119,6 +167,8 @@ namespace PkMn
                     return ConsoleColor.DarkGreen;
                 case Color.Black:
                     return ConsoleColor.White;
+                case Color.Gray:
+                    return ConsoleColor.DarkGray;
                 default:
                     return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), c.ToString(), true);
 

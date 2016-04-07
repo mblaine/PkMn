@@ -236,7 +236,7 @@ namespace PkMn.Instance
                 }
 
                 //cancel trapping move that isn't rage
-                if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove && ((MultiEffect)e).ConstantDamage))
+                if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove && ((LockInEffect)e).ConstantDamage))
                 {
                     opponent.QueuedMove = null;
                     opponent.QueuedMoveDamage = -1;
@@ -463,17 +463,20 @@ namespace PkMn.Instance
             return ret;
         }
 
-        protected void CancelQueuedMove(ActiveMonster current)
+        protected void CancelQueuedMove(ActiveMonster current, CancelMoveReason reason)
         {
             if (current.QueuedMove != null)
             {
-                MultiEffect enemyLockIn = (MultiEffect)current.QueuedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
-                if (enemyLockIn == null || !enemyLockIn.IgnoreCancel)
+                LockInEffect enemyLockIn = (LockInEffect)current.QueuedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
+                if (enemyLockIn != null && enemyLockIn.IgnoreCancel != null)
                 {
-                    current.QueuedMove = null;
-                    current.QueuedMoveDamage = -1;
-                    current.QueuedMoveLimit = -1;
+                    if (enemyLockIn.IgnoreCancel.Contains(CancelMoveReason.All) || enemyLockIn.IgnoreCancel.Contains(reason))
+                        return;
                 }
+
+                current.QueuedMove = null;
+                current.QueuedMoveDamage = -1;
+                current.QueuedMoveLimit = -1;
             }
         }
 
@@ -491,7 +494,7 @@ namespace PkMn.Instance
                 else if (current.SelectedMove == current.Monster.Moves[current.DisabledMoveIndex])
                 {
                     OnSendMessage("{0}{1}'s {2} is disabled!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
-                    CancelQueuedMove(current);
+                    CancelQueuedMove(current, CancelMoveReason.MoveDisabled);
                     return false;
                 }
             }
@@ -499,13 +502,13 @@ namespace PkMn.Instance
             //handle current pkmn trapped
             if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
-                CancelQueuedMove(current);
+                CancelQueuedMove(current, CancelMoveReason.Trapped);
                 return false;
             }
 
             if (current.MoveCancelled)
             {
-                CancelQueuedMove(current);
+                CancelQueuedMove(current, CancelMoveReason.Trapped);
                 return false;
             }
 
@@ -526,7 +529,7 @@ namespace PkMn.Instance
                 else
                 {
                     OnSendMessage("{0}{1} is fast asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                    CancelQueuedMove(current);
+                    CancelQueuedMove(current, CancelMoveReason.Asleep);
                     return false;
                 }
             }
@@ -538,14 +541,14 @@ namespace PkMn.Instance
                 current.IsSemiInvulnerable = false;
 
                 OnSendMessage("{0}{1} is frozen solid!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                CancelQueuedMove(current);
+                CancelQueuedMove(current, CancelMoveReason.Frozen);
                 return false;
             }
             //handle current pkmn paralyzed
             else if (current.Monster.Status == StatusCondition.Paralysis && Rng.Next(0, 256) < 63)
             {
                 OnSendMessage("{0}{1} is fully paralyzed!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                CancelQueuedMove(current);
+                CancelQueuedMove(current, CancelMoveReason.FullyParalyzed);
                 return false;
             }
 
@@ -571,7 +574,7 @@ namespace PkMn.Instance
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
                         OnSendMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
                         current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
-                        CancelQueuedMove(current);
+                        CancelQueuedMove(current, CancelMoveReason.HurtInConfusion);
                         return false;
                     }
                 }
@@ -757,7 +760,7 @@ namespace PkMn.Instance
             if (!PreMoveChecks(current, opponent))
                 return true;
 
-            MultiEffect lockInEffect = (MultiEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
+            LockInEffect lockInEffect = (LockInEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
 
             if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
                 OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
@@ -766,7 +769,7 @@ namespace PkMn.Instance
 
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
-                CancelQueuedMove(opponent);
+                CancelQueuedMove(opponent, CancelMoveReason.Trapped);
             }
 
             //calculate critical hit or not
@@ -847,7 +850,7 @@ namespace PkMn.Instance
                 if(lockInEffect != null)
                     current.QueuedMoveLimit--;
 
-                if (lockInEffect != null && current.QueuedMoveLimit <= 0)
+                if (lockInEffect != null && current.QueuedMove != null && current.QueuedMoveLimit <= 0)
                 {
                     HandleLockInEnding(current, opponent, moveHit);
                 }

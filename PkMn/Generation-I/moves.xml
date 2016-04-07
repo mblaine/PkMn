@@ -145,7 +145,7 @@
     <effect type="semi-invulnerable" />
   </move>
   <move name="Focus Energy" type="Normal" pp="30" accuracy="255" category="status">
-    <effect type="stat" stat="Crit-Ratio" who="self" multiplier="0.25" />
+    <effect type="stat" stat="Crit-Ratio" who="self" multiplier="0.25" message="{0}{1}'s getting pumped!" />
   </move>
   <move name="Fury Attack" type="Normal" pp="20" power="15" accuracy="216">
     <effect type="multi-hit" min="2" max="5" />
@@ -265,7 +265,7 @@
   </move>
   <move name="Peck" type="Flying" pp="35" power="35" accuracy="255" />
   <move name="Petal Dance" type="Grass" pp="20" power="70" accuracy="255">
-    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" message="{0}{1}'s thrashing about!" />
+    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" ignore-cancel="asleep,frozen,trapped,movedisabled" message="{0}{1}'s thrashing about!" />
     <effect type="status" status="Confusion" who="self" condition="lock-in-end" />
   </move>
   <move name="Pin Missile" type="Bug" pp="20" power="14" accuracy="216">
@@ -294,7 +294,7 @@
   </move>
   <move name="Quick Attack" type="Normal" pp="30" power="40" accuracy="255" />
   <move name="Rage" type="Normal" pp="20" power="20" accuracy="255">
-    <effect type="lock-in-move" ignore-cancel="true" />
+    <effect type="lock-in-move" ignore-cancel="all" />
     <effect type="stat" stat="Attack" change="1" who="self" condition="on-damaged" limit="999" message="{0}{1}'s rage is building!" />
   </move>
   <move name="Razor Leaf" type="Grass" pp="25" power="55" accuracy="242" crit-ratio="8" />
@@ -428,7 +428,7 @@
     <effect type="end-wild-battle" />
   </move>
   <move name="Thrash" type="Normal" pp="20" power="90" accuracy="255">
-    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" message="{0}{1}'s thrashing about!" />
+    <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" ignore-cancel="asleep,frozen,trapped,movedisabled" message="{0}{1}'s thrashing about!" />
     <effect type="status" status="Confusion" who="self" condition="lock-in-end" />
   </move>
   <move name="Thunder" type="Electric" pp="10" power="120" accuracy="178">
