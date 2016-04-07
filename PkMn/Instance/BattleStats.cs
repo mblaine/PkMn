@@ -18,7 +18,7 @@ namespace PkMn.Instance
         {
             Evade = 0;
             Accuracy = 0;
-            CritRatio = 0;
+            CritRatio = 100;
         }
 
         public new int this[StatType s]

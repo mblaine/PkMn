@@ -306,20 +306,33 @@ namespace PkMn.Instance
                         }
                         else
                         {
-                            current.StatStages[eff.Stat] += eff.Change;
-                            if (current.StatStages[eff.Stat] > 6)
-                                current.StatStages[eff.Stat] = 6;
-                            else if (current.StatStages[eff.Stat] < -6)
-                                current.StatStages[eff.Stat] = -6;
-                            OnSendMessage("{0}{1}'s {2} {3}{4}!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
-                            current.Recalc(eff.Stat);
+                            if (eff.Stat == StatType.CritRatio)
+                            {
+                                current.EffectiveStats.CritRatio = eff.Constant;
+                            }
+                            else
+                            {
+
+                                current.StatStages[eff.Stat] += eff.Change;
+                                if (current.StatStages[eff.Stat] > 6)
+                                    current.StatStages[eff.Stat] = 6;
+                                else if (current.StatStages[eff.Stat] < -6)
+                                    current.StatStages[eff.Stat] = -6;
+                                OnSendMessage("{0}{1}'s {2} {3}{4}!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                                current.Recalc(eff.Stat);
+                            }
+
                             ret = true;
+                                
                         }
                     }
                 }
 
                 if (opponent != null && (eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
                 {
+                    if (!string.IsNullOrWhiteSpace(eff.Message))
+                        OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
                     if (eff.Temporary)
                     {
                         opponent.EffectiveStats[eff.Stat] = (int)(((decimal)opponent.EffectiveStats[eff.Stat]) * eff.Multiplier);
@@ -333,13 +346,21 @@ namespace PkMn.Instance
                         }
                         else
                         {
-                            opponent.StatStages[eff.Stat] += eff.Change;
-                            if (opponent.StatStages[eff.Stat] > 6)
-                                opponent.StatStages[eff.Stat] = 6;
-                            else if (opponent.StatStages[eff.Stat] < -6)
-                                opponent.StatStages[eff.Stat] = -6;
-                            OnSendMessage("{0}{1}'s {2} {3}{4}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
-                            opponent.Recalc(eff.Stat);
+                            if (eff.Stat == StatType.CritRatio)
+                            {
+                                opponent.EffectiveStats.CritRatio = eff.Constant;
+                            }
+                            else
+                            {
+                                opponent.StatStages[eff.Stat] += eff.Change;
+                                if (opponent.StatStages[eff.Stat] > 6)
+                                    opponent.StatStages[eff.Stat] = 6;
+                                else if (opponent.StatStages[eff.Stat] < -6)
+                                    opponent.StatStages[eff.Stat] = -6;
+                                OnSendMessage("{0}{1}'s {2} {3}{4}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                                opponent.Recalc(eff.Stat);
+                            }
+
                             ret = true;
                         }
                     }
@@ -742,6 +763,16 @@ namespace PkMn.Instance
             current.QueuedMove = null;
         }
 
+        protected void HandleMissDamage(ActiveMonster current, ExtraDamageEffect crashEffect)
+        {
+
+            int crashDamage = crashEffect.Value;
+            crashDamage = Math.Min(crashDamage, current.Monster.CurrentHP);
+            current.Monster.CurrentHP -= crashDamage;
+            OnSendMessage(crashEffect.Message ?? "{0}{1} got hurt!", current.Trainer.MonNamePrefix, current.Monster.Name);
+            OnSendMessage("Did {0} damage to {1}{2}", crashDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
+        }
+
         protected bool RequirementSatisfied(ActiveMonster current, ActiveMonster opponent, StatusRequirementEffect eff)
         {
             bool ret = true;
@@ -773,7 +804,7 @@ namespace PkMn.Instance
             }
 
             //calculate critical hit or not
-            int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio));
+            int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio) * ((decimal)current.EffectiveStats.CritRatio) / 100m);
             bool isCriticalHit = Rng.Next(0, 256) < Math.Min(255, critRatio);
 
             StatusRequirementEffect req = (StatusRequirementEffect)current.SelectedMove.Effects.Where(e => e is StatusRequirementEffect).FirstOrDefault();
@@ -837,6 +868,8 @@ namespace PkMn.Instance
                 //nothing else to implement
             }
 
+            ExtraDamageEffect crashEffect = (ExtraDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.MissDamage).FirstOrDefault();
+
             //handle miss
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
@@ -851,9 +884,10 @@ namespace PkMn.Instance
                     current.QueuedMoveLimit--;
 
                 if (lockInEffect != null && current.QueuedMove != null && current.QueuedMoveLimit <= 0)
-                {
                     HandleLockInEnding(current, opponent, moveHit);
-                }
+
+                if (crashEffect != null)
+                    HandleMissDamage(current, crashEffect);
 
                 return true;
             }
@@ -929,6 +963,11 @@ namespace PkMn.Instance
             
             }
 
+            if (current.SelectedMove.Type.GetEffectiveness(opponent.Monster.Species) == 0m && crashEffect != null)
+            {
+                HandleMissDamage(current, crashEffect);
+            }
+
             if(hitsToTry > 1 && hitCount > 0)
                 OnSendMessage("Hit {0} time(s)!", hitCount);
 
@@ -952,6 +991,18 @@ namespace PkMn.Instance
                     OnSendMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
                     OnSendMessage(transferHealth.Message ?? "Sucked health from {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 }
+            }
+
+            ExtraDamageEffect recoilEffect = (ExtraDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.RecoilDamage).FirstOrDefault();
+            if (recoilEffect != null)
+            {
+                int recoilDamage = (int)(recoilEffect.Percent / 100m * (decimal)(damage * hitCount));
+                if (recoilDamage == 0)
+                    recoilDamage = 1;
+                recoilDamage = Math.Min(recoilDamage, current.Monster.CurrentHP);
+                current.Monster.CurrentHP -= recoilDamage;
+                OnSendMessage("{0}{1}'s hit with recoil!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnSendMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
 
             //handle defrosting

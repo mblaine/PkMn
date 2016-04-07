@@ -145,7 +145,7 @@
     <effect type="semi-invulnerable" />
   </move>
   <move name="Focus Energy" type="Normal" pp="30" accuracy="255" category="status">
-    <effect type="stat" stat="Crit-Ratio" who="self" multiplier="0.25" message="{0}{1}'s getting pumped!" />
+    <effect type="stat" stat="Crit-Ratio" who="self" constant="25" message="{0}{1}'s getting pumped!" />
   </move>
   <move name="Fury Attack" type="Normal" pp="20" power="15" accuracy="216">
     <effect type="multi-hit" min="2" max="5" />
@@ -180,7 +180,7 @@
     <effect type="status" status="flinch" who="foe" chance="76" />
   </move>
   <move name="Hi Jump Kick" type="Fighting" pp="20" power="85" accuracy="229">
-    <effect type="miss-damage" value="1" />
+    <effect type="miss-damage" value="1" message="{0}{1} kept going and crashed!" />
   </move>
   <move name="Horn Attack" type="Normal" pp="25" power="65" accuracy="255" />
   <move name="Horn Drill" type="Normal" pp="5" accuracy="76">
@@ -204,7 +204,7 @@
     <effect type="status" status="Freeze" who="foe" chance="26" />
   </move>
   <move name="Jump Kick" type="Fighting" pp="25" power="70" accuracy="242">
-    <effect type="miss-damage" value="1" />
+    <effect type="miss-damage" value="1" message="{0}{1} kept going and crashed!" />
   </move>
   <move name="Karate Chop" type="Normal" pp="25" power="50" accuracy="255" crit-ratio="8" />
   <move name="Kinesis" type="Psychic" pp="15" accuracy="204" category="status">

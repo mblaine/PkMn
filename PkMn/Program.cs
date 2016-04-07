@@ -23,7 +23,7 @@ namespace PkMn
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Machoke", 50)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Gastly", 36)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -59,8 +59,8 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Rage"];
-            rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Supersonic"];
+            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Jump Kick"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Supersonic"];
 
             //player.Party[0].Moves[2] = Move.Moves["Focus Energy"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];

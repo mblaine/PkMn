@@ -14,6 +14,7 @@ namespace PkMn.Model.Moves
 
         public readonly int Change;
         public readonly decimal Multiplier;
+        public readonly int Constant;
 
         public readonly int Chance;
         public readonly bool Temporary;
@@ -22,7 +23,7 @@ namespace PkMn.Model.Moves
         public readonly bool IgnoreIfCritical;
         public readonly string Message;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "stat", "who", "change", "multiplier", "chance", "temporary", "condition", "limit", "ignore-if-critical", "message" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "stat", "who", "change", "multiplier", "chance", "temporary", "condition", "limit", "ignore-if-critical", "message", "constant" }; } }
 
         public StatEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -41,6 +42,7 @@ namespace PkMn.Model.Moves
             Limit = attrs.Contains("limit") ? int.Parse(node.Attributes["limit"].Value) : int.MaxValue;
             IgnoreIfCritical = attrs.Contains("ignore-if-critical") ? bool.Parse(node.Attributes["ignore-if-critical"].Value) : false;
             Message = attrs.Contains("message") ? node.Attributes["message"].Value : "";
+            Constant = attrs.Contains("constant") ? int.Parse(node.Attributes["constant"].Value) : 0;
         }
     }
 }
