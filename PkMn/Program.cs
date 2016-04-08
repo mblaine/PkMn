@@ -18,12 +18,12 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Pikachu", 15)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Charmeleon", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Ditto", 15)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Wartortle", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -42,7 +42,7 @@ namespace PkMn
 
         static void Main(string[] args)
         {
-            bool random = true;
+            bool random = false;
 
             Trainer player = new Trainer()
             {
@@ -59,7 +59,7 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[0] = Move.Moves["Conversion"];
+            player.Party[0].Moves[3] = Move.Moves["Metronome"];
             //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Tail Whip"];
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Hyper Beam"];
 

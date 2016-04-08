@@ -155,6 +155,10 @@ namespace PkMn.Instance
             second.Flinched = false;
             first.MoveCancelled = false;
             second.MoveCancelled = false;
+            if(first.QueuedMove == null)
+                first.MoveOverrideTemporary = null;
+            if(second.QueuedMove == null)
+                second.MoveOverrideTemporary = null;
 
             foreach (ActiveMonster current in new ActiveMonster[] { first, second })
             {
@@ -804,6 +808,8 @@ namespace PkMn.Instance
 
         protected bool ExecuteMove(ActiveMonster current, ActiveMonster opponent)
         {
+            current.LastMoveUsed = current.SelectedMove;
+
             if (!PreMoveChecks(current, opponent))
                 return true;
 
@@ -817,6 +823,27 @@ namespace PkMn.Instance
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
                 CancelQueuedMove(opponent, CancelMoveReason.Trapped);
+            }
+
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.MirrorMove))
+            {
+                if (opponent.LastMoveUsed == null || opponent.LastMoveUsed == current.SelectedMove)
+                {
+                    OnSendMessage("The MIRROR MOVE failed!");
+                    return true;
+                }
+                else
+                {
+                    current.MoveOverrideTemporary = opponent.LastMoveUsed;
+                    return ExecuteMove(current, opponent);
+                }
+            }
+
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Random))
+            {
+                string[] moves = Move.Moves.Values.Where(m => m != current.SelectedMove && !m.Effects.Any(e => e.Type == MoveEffectType.NeverDeductPP)).Select(m => m.Name).ToArray();
+                current.MoveOverrideTemporary = Move.Moves[moves[Rng.Next(0, moves.Length)]];
+                return ExecuteMove(current, opponent);
             }
 
             //calculate critical hit or not

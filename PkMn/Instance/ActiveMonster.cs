@@ -35,12 +35,17 @@ namespace PkMn.Instance
         public Stats StatsOverride;
         public Move[] MovesOverride;
 
+        public Move MoveOverrideTemporary;
+        public Move LastMoveUsed;
+
         public Move SelectedMove
         {
             get 
             {
                 if (Monster == null)
                     return null;
+                if (MoveOverrideTemporary != null)
+                    return MoveOverrideTemporary;
                 if (QueuedMove != null)
                     return QueuedMove;
                 if (MoveIndex < 0 || MoveIndex > 3)
@@ -99,6 +104,8 @@ namespace PkMn.Instance
             Type2Override = null;
             StatsOverride = null;
             MovesOverride = null;
+            MoveOverrideTemporary = null;
+            LastMoveUsed = null;
         }
 
         public void Reset()
@@ -120,6 +127,8 @@ namespace PkMn.Instance
             Type2Override = null;
             StatsOverride = null;
             MovesOverride = null;
+            MoveOverrideTemporary = null;
+            LastMoveUsed = null;
         }
 
         public void Recalc(StatType? stat = null)
