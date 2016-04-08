@@ -15,10 +15,11 @@ namespace PkMn.Model.Moves
         public readonly int TurnLimit;
         public readonly bool Reset;
         public readonly string Message;
+        public readonly string ForceMessage;
         public readonly bool Force;
         public readonly string Condition;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message", "force", "condition" }; } }
+        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who", "chance", "turn-limit", "message", "force", "condition", "force-message" }; } }
 
         public StatusEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -30,6 +31,7 @@ namespace PkMn.Model.Moves
             TurnLimit = attrs.Contains("turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
             Reset = type == MoveEffectType.ResetStatus;
             Message = attrs.Contains("message") ? node.Attributes["message"].Value : null;
+            ForceMessage = attrs.Contains("force-message") ? node.Attributes["force-message"].Value : null;
             Force = attrs.Contains("force") ? bool.Parse(node.Attributes["force"].Value) : false;
             Condition = attrs.Contains("condition") ? node.Attributes["condition"].Value : null;
         }

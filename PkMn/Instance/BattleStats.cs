@@ -21,6 +21,18 @@ namespace PkMn.Instance
             CritRatio = 100;
         }
 
+        public BattleStats(BattleStats b)
+        {
+            HP = b.HP;
+            Attack = b.Attack;
+            Defense = b.Defense;
+            Special = b.Special;
+            Speed = b.Speed;
+            Evade = b.Evade;
+            Accuracy = b.Accuracy;
+            CritRatio = b.CritRatio;
+        }
+
         public new int this[StatType s]
         {
             get

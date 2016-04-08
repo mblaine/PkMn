@@ -73,8 +73,8 @@
   <move name="Constrict" type="Normal" pp="35" power="10" accuracy="255">
     <effect type="stat" stat="Speed" change="-1" who="foe" chance="26" />
   </move>
-  <move name="Conversion" type="Normal" pp="30" accuracy="255">
-    <effect type="copy" what="type" />
+  <move name="Conversion" type="Normal" pp="30" accuracy="255" category="status">
+    <effect type="copy" what="type" message="Converted types to {0}{1}'s!" />
   </move>
   <move name="Counter" type="Fighting" pp="20" accuracy="255" />
   <move name="Crabhammer" type="Water" pp="10" power="90" accuracy="216" crit-ratio="8" />
@@ -243,8 +243,8 @@
   <move name="Metronome" type="Normal" pp="10" accuracy="255">
     <effect type="random" />
   </move>
-  <move name="Mimic" type="Normal" pp="10" accuracy="255">
-    <effect type="copy" what="move" />
+  <move name="Mimic" type="Normal" pp="10" accuracy="255" category="status">
+    <effect type="copy" what="move" message="{0}{1} learned {2}!" />
   </move>
   <move name="Minimize" type="Normal" pp="20" accuracy="255" category="status">
     <effect type="stat" stat="Evade" change="1" who="self" />
@@ -309,7 +309,7 @@
   </move>
   <move name="Rest" type="Psychic" pp="10" accuracy="255">
     <effect type="restore-health" percent="100" of="max" who="self" />
-    <effect type="status" status="Sleep" who="self" turn-limit="2" force="true" message="{0}{1} started sleeping!" />
+    <effect type="status" status="Sleep" who="self" turn-limit="2" force="true" message="{0}{1} started sleeping!" force-message="{0}{1} fell asleep and became healthy!" />
   </move>
   <move name="Roar" type="Normal" pp="20" accuracy="255">
     <effect type="end-wild-battle" />
@@ -451,8 +451,7 @@
   </move>
   <move name="Transform" type="Normal" pp="10" accuracy="255">
     <effect type="copy" what="type" />
-    <effect type="copy" what="species" />
-    <effect type="copy" what="all-moves" pp="5" />
+    <effect type="copy" what="all-moves" pp="5" message="{0}{1} transformed into {2}!" />
     <effect type="copy" what="stats" />
     <effect type="copy" what="stat-stages" />
   </move>

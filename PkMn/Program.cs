@@ -18,12 +18,12 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Nidoking", 36)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Pikachu", 15)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Gastly", 36)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Ditto", 15)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -42,7 +42,7 @@ namespace PkMn
 
         static void Main(string[] args)
         {
-            bool random = false;
+            bool random = true;
 
             Trainer player = new Trainer()
             {
@@ -59,20 +59,22 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Jump Kick"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Supersonic"];
+            //player.Party[0].Moves[0] = Move.Moves["Conversion"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Tail Whip"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Hyper Beam"];
 
-            //player.Party[0].Moves[2] = Move.Moves["Focus Energy"];
+            //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //rival.Party[0].Moves[3] = Move.Moves["Thunder Wave"];
+            //rival.Party[0].Moves[0] = Move.Moves["String Shot"];
             //rival.Party[0].Moves[2] = Move.Moves["Disable"];
 
             Battle battle = new Battle(player, rival, true);
             battle.ChooseNextMon += Battle_ChooseMon;
             battle.SendMessage += Battle_SendMessage;
             battle.ChooseAction += Battle_ChooseAction;
+            battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
 
             do
             {
@@ -80,14 +82,14 @@ namespace PkMn
                 Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
                 Log("{0,60}", battle.FoeCurrent.Monster);
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Log("{0,60}", battle.FoeCurrent.Monster.Stats);
+                Log("{0,60}", battle.FoeCurrent.Stats);
                 Log("{0,60}", "Stages: " + battle.FoeCurrent.StatStages);
                 Log("{0,60}", "Effective: " + battle.FoeCurrent.EffectiveStats);
 
                 Console.ForegroundColor = ForeColor(battle.PlayerCurrent.Monster.Species.DexEntry.Color);
                 Log(battle.PlayerCurrent.Monster.ToString());
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Log(battle.PlayerCurrent.Monster.Stats.ToString());
+                Log(battle.PlayerCurrent.Stats.ToString());
                 Log("Stages: " + battle.PlayerCurrent.StatStages);
                 Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
 
@@ -106,6 +108,11 @@ namespace PkMn
             }
 
             Console.ReadLine();
+        }
+
+        public static int Battle_ChooseMoveToMimic(Move[] moves)
+        {
+            return Rng.Next(0, moves.Count(m => m != null));
         }
 
         public static BattleAction Battle_ChooseAction(Monster current, Trainer trainer)

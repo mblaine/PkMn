@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PkMn.Model;
 using PkMn.Model.Enums;
+using PkMn.Model.Moves;
 
 namespace PkMn.Instance
 {
@@ -13,17 +14,26 @@ namespace PkMn.Instance
         public Monster Monster;
         public BattleStats StatStages;
         public BattleStats EffectiveStats;
+        
         public int MoveIndex;
+        public int BadlyPoisonedCount;
+        public int ConfusedCount;
+        
+        public int DisabledMoveIndex;
+        public int DisabledCount;
+        
         public bool IsSemiInvulnerable;
         public bool Flinched;
         public bool MoveCancelled;
-        public int BadlyPoisonedCount;
-        public int ConfusedCount;
-        public int DisabledMoveIndex;
-        public int DisabledCount;
+        
         public Move QueuedMove;
         public int QueuedMoveLimit;
         public int QueuedMoveDamage;
+
+        public Element Type1Override;
+        public Element Type2Override;
+        public Stats StatsOverride;
+        public Move[] MovesOverride;
 
         public Move SelectedMove
         {
@@ -35,7 +45,7 @@ namespace PkMn.Instance
                     return QueuedMove;
                 if (MoveIndex < 0 || MoveIndex > 3)
                     return null;
-                return Monster.Moves[MoveIndex];
+                return Moves[MoveIndex];
             }
         }
 
@@ -44,6 +54,23 @@ namespace PkMn.Instance
             get
             {
                 return ConfusedCount > 0;
+            }
+        }
+
+        public Element Type1 { get { return Type1Override ?? Monster.Species.Type1; } }
+        public Element Type2 { get { return Type1Override != null ? Type2Override : (Type2Override ?? Monster.Species.Type2); } }
+        public Stats Stats { get { return StatsOverride ?? Monster.Stats; } }
+
+        public Move[] Moves
+        {
+            get
+            {
+                if (MovesOverride == null)
+                    return Monster.Moves;
+                else if (MovesOverride.Length == 1)
+                    return Monster.Moves.Select(m => m.Effects.Any(e => e.Type == MoveEffectType.Copy && ((CopyEffect)e).What == "move") ? MovesOverride[0] : m).ToArray();
+                else
+                    return MovesOverride;
             }
         }
 
@@ -67,6 +94,11 @@ namespace PkMn.Instance
             if (monster.Status == StatusCondition.BadlyPoisoned)
                 monster.Status = StatusCondition.Poison;
             Recalc();
+
+            Type1Override = null;
+            Type2Override = null;
+            StatsOverride = null;
+            MovesOverride = null;
         }
 
         public void Reset()
@@ -84,6 +116,10 @@ namespace PkMn.Instance
             QueuedMove = null;
             QueuedMoveLimit = -1;
             QueuedMoveDamage = -1;
+            Type1Override = null;
+            Type2Override = null;
+            StatsOverride = null;
+            MovesOverride = null;
         }
 
         public void Recalc(StatType? stat = null)
@@ -93,15 +129,15 @@ namespace PkMn.Instance
                 if(stat == StatType.Evade || stat == StatType.Accuracy)
                     EffectiveStats[(StatType)stat] = RecalcStat(100, StatStages[(StatType)stat]);
                 else if (stat != StatType.CritRatio)
-                    EffectiveStats[(StatType)stat] = RecalcStat(Monster.Stats[(StatType)stat], StatStages[(StatType)stat]);
+                    EffectiveStats[(StatType)stat] = RecalcStat(Stats[(StatType)stat], StatStages[(StatType)stat]);
             }
             else
             {
-                EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
-                EffectiveStats.Defense = RecalcStat(Monster.Stats.Defense, StatStages.Defense);
-                EffectiveStats.Special = RecalcStat(Monster.Stats.Special, StatStages.Special);
-                EffectiveStats.Speed = RecalcStat(Monster.Stats.Speed, StatStages.Speed);
-                EffectiveStats.Attack = RecalcStat(Monster.Stats.Attack, StatStages.Attack);
+                EffectiveStats.Attack = RecalcStat(Stats.Attack, StatStages.Attack);
+                EffectiveStats.Defense = RecalcStat(Stats.Defense, StatStages.Defense);
+                EffectiveStats.Special = RecalcStat(Stats.Special, StatStages.Special);
+                EffectiveStats.Speed = RecalcStat(Stats.Speed, StatStages.Speed);
+                EffectiveStats.Attack = RecalcStat(Stats.Attack, StatStages.Attack);
                 EffectiveStats.Evade = RecalcStat(100, StatStages.Evade);
                 EffectiveStats.Accuracy = RecalcStat(100, StatStages.Accuracy);
             }

@@ -70,6 +70,15 @@ namespace PkMn.Model
             Speed = 0;
         }
 
+        public Stats(Stats s)
+        {
+            HP = s.HP;
+            Attack = s.Attack;
+            Defense = s.Defense;
+            Special = s.Special;
+            Speed = s.Speed;
+        }
+
         public Stats(XmlNode node)
         {
             HP = int.Parse(node.Attributes["hp"].Value);

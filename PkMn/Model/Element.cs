@@ -67,11 +67,6 @@ namespace PkMn.Model
             return multiplier1 * multiplier2;
         }
 
-        public decimal GetEffectiveness(Species s)
-        {
-            return GetEffectiveness(s.Type1, s.Type2);
-        }
-
         public override string ToString()
         {
             return Name;
