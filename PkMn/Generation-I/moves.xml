@@ -25,8 +25,8 @@
     <effect type="stat" stat="Defense" change="2" who="self" />
   </move>
   <move name="Bide" type="Normal" pp="10" accuracy="255">
-    <effect type="custom-damage" calculation="damage-received" multiplier="2" />
-    <effect type="charge" min="2" max="3" />
+    <effect type="lock-in-move" min="3" max="4" ignore-cancel="asleep,frozen,trapped" message="{0}{1} unleashed energy!" />
+    <effect type="custom-damage" calculation="accumulated-on-lock-end" multiplier="2" />
     <effect type="perfect-accuracy" />
     <effect type="ignore-semi-invulnerability" />
     <effect type="ignore-type-effectiveness" />
@@ -76,7 +76,11 @@
   <move name="Conversion" type="Normal" pp="30" accuracy="255" category="status">
     <effect type="copy" what="type" message="Converted types to {0}{1}'s!" />
   </move>
-  <move name="Counter" type="Fighting" pp="20" accuracy="255" />
+  <move name="Counter" type="Fighting" pp="20" accuracy="255">
+    <effect type="custom-damage" calculation="last-damage-if-normal-or-fighting" multiplier="2" />
+    <effect type="ignore-type-effectiveness" />
+    <effect type="ignore-type-immunity" />
+  </move>
   <move name="Crabhammer" type="Water" pp="10" power="90" accuracy="216" crit-ratio="8" />
   <move name="Cut" type="Normal" pp="30" power="50" accuracy="242" />
   <move name="Defense Curl" type="Normal" pp="40" accuracy="255" category="status">

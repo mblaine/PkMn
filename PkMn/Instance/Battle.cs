@@ -29,6 +29,8 @@ namespace PkMn.Instance
         public ChooseActionEventHandler ChooseAction;
         public ChooseMoveEventHandler ChooseMoveToMimic;
 
+        public int LastDamageDealt;
+
         public Battle(Trainer player, Trainer foe, bool isWildBattle)
         {
             Player = player;
@@ -277,12 +279,14 @@ namespace PkMn.Instance
                 if (current.Monster.Status == StatusCondition.BadlyPoisoned)
                     damage = damage * current.BadlyPoisonedCount++;
                 current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - damage);
+                current.AccumulatedDamage += damage;
                 OnSendMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
             else if (current.Monster.Status == StatusCondition.Burn)
             {
                 OnSendMessage("{0}{1}'s hurt by the burn!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
+                current.AccumulatedDamage += damage;
                 current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - damage);
                 OnSendMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
@@ -612,6 +616,7 @@ namespace PkMn.Instance
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
                         OnSendMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
                         current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
+                        current.AccumulatedDamage += confusionDamage;
                         CancelQueuedMove(current, CancelMoveReason.HurtInConfusion);
                         return false;
                     }
@@ -716,6 +721,12 @@ namespace PkMn.Instance
                     case "rng-min-1-max-1.5x-level": //Psywave...
                         customDamage = Rng.Next(1, (int)(1.5m * (decimal)current.Monster.Level) + 1);
                         break;
+                    case "last-damage-if-normal-or-fighting": //Counter...
+                        customDamage = opponent.SelectedMove.Type == Element.Elements["Normal"] | opponent.SelectedMove.Type == Element.Elements["Fighting"] ? (int)(customEffect.Multiplier * (decimal)LastDamageDealt) : 0;
+                        break;
+                    case "accumulated-on-lock-end": //Bide...
+                        customDamage = current.QueuedMoveLimit == 1 ? (int)(customEffect.Multiplier * (decimal)current.AccumulatedDamage) : 0;
+                        break;
                 }
 
                 if (typeMultiplier == 0m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeImmunity))
@@ -769,6 +780,10 @@ namespace PkMn.Instance
                 current.QueuedMoveLimit = new int[] { 2, 2, 2, 3, 3, 3, 4, 5 }[Rng.Next(0, 8)];
             else
                 current.QueuedMoveLimit = Rng.Next(lockInEffect.Min, lockInEffect.Max + 1);
+
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end"))
+                current.AccumulatedDamage = 0;
+
             OnSendMessage("{0}{1} locked in for {2} moves", current.Trainer.MonNamePrefix, current.Monster.Name, current.QueuedMoveLimit);
         }
 
@@ -789,6 +804,7 @@ namespace PkMn.Instance
             int crashDamage = crashEffect.Value;
             crashDamage = Math.Min(crashDamage, current.Monster.CurrentHP);
             current.Monster.CurrentHP -= crashDamage;
+            current.AccumulatedDamage += crashDamage;
             OnSendMessage(crashEffect.Message ?? "{0}{1} got hurt!", current.Trainer.MonNamePrefix, current.Monster.Name);
             OnSendMessage("Did {0} damage to {1}{2}", crashDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
         }
@@ -816,7 +832,10 @@ namespace PkMn.Instance
             LockInEffect lockInEffect = (LockInEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
 
             if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
-                OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+            {
+                if(!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end") || current.QueuedMoveLimit == 1)
+                    OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+            }
             else
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
 
@@ -926,6 +945,7 @@ namespace PkMn.Instance
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                LastDamageDealt = 0;
                
                 if (lockInEffect != null && lockInEffect.IgnoreMissOnLock && current.QueuedMove == null)
                 {
@@ -1013,11 +1033,19 @@ namespace PkMn.Instance
             else
                 damage = CalculateDamage(current, opponent, isCriticalHit);
 
+            if (damage == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && !(((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end" && (current.QueuedMove == null || current.QueuedMoveLimit > 1))))
+            {
+                OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                moveHit = false;
+            }
+
             //hit
             for (int i = 0; i < hitsToTry; i++)
             {
                 hitCount++;
                 opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
+                LastDamageDealt = damage;
+                opponent.AccumulatedDamage += damage;
 
                 if (damage != 0)
                     OnSendMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -1104,6 +1132,7 @@ namespace PkMn.Instance
                     recoilDamage = 1;
                 recoilDamage = Math.Min(recoilDamage, current.Monster.CurrentHP);
                 current.Monster.CurrentHP -= recoilDamage;
+                current.AccumulatedDamage += recoilDamage;
                 OnSendMessage("{0}{1}'s hit with recoil!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 OnSendMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
@@ -1126,9 +1155,9 @@ namespace PkMn.Instance
             }
 
             //handle move lock-in
-            if (moveHit && lockInEffect != null)
+            if (lockInEffect != null)
             {
-                if (current.QueuedMove == null)
+                if (moveHit && current.QueuedMove == null)
                 {
                     HandleLockInBeginning(current, lockInEffect, opponent);
                 }

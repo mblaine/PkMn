@@ -23,7 +23,7 @@ namespace PkMn
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Wartortle", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Primeape", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -42,7 +42,7 @@ namespace PkMn
 
         static void Main(string[] args)
         {
-            bool random = false;
+            bool random = true;
 
             Trainer player = new Trainer()
             {
@@ -59,9 +59,9 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            player.Party[0].Moves[3] = Move.Moves["Metronome"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Tail Whip"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Hyper Beam"];
+            //player.Party[0].Moves[3] = Move.Moves["Metronome"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Bide"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Leer"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
@@ -133,8 +133,14 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (false && (message.ToLower().Contains("was disable") || message.ToLower().Contains("disabled no more")))
-                Log(message + " <----------------------------------------------");
+            if (true && (message.ToLower().Contains("counter") || message.ToLower().Contains("unleashed")))
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.White;
+                Log(message);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
             else
                 Log(message);
 

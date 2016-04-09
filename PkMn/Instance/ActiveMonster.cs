@@ -37,6 +37,7 @@ namespace PkMn.Instance
 
         public Move MoveOverrideTemporary;
         public Move LastMoveUsed;
+        public int AccumulatedDamage;
 
         public Move SelectedMove
         {
@@ -83,29 +84,12 @@ namespace PkMn.Instance
         {
             Trainer = trainer;
             Monster = monster;
-            StatStages = new BattleStats();
-            EffectiveStats = new BattleStats();
-            MoveIndex = -1;
-            Flinched = false;
-            MoveCancelled = false;
-            ConfusedCount = 0;
-            IsSemiInvulnerable = false;
-            BadlyPoisonedCount = 1;
-            DisabledMoveIndex = -1;
-            DisabledCount = 0;
-            QueuedMove = null;
-            QueuedMoveLimit = -1;
-            QueuedMoveDamage = -1;
+
             if (monster.Status == StatusCondition.BadlyPoisoned)
                 monster.Status = StatusCondition.Poison;
-            Recalc();
 
-            Type1Override = null;
-            Type2Override = null;
-            StatsOverride = null;
-            MovesOverride = null;
-            MoveOverrideTemporary = null;
-            LastMoveUsed = null;
+            Reset();
+            Recalc();
         }
 
         public void Reset()
@@ -129,6 +113,7 @@ namespace PkMn.Instance
             MovesOverride = null;
             MoveOverrideTemporary = null;
             LastMoveUsed = null;
+            AccumulatedDamage = 0;
         }
 
         public void Recalc(StatType? stat = null)
