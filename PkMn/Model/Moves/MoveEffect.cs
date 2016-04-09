@@ -10,12 +10,17 @@ namespace PkMn.Model.Moves
     public class MoveEffect
     {
         public readonly MoveEffectType Type;
+        public readonly string Message;
 
-        protected virtual string[] ValidAttributes { get { return new string[] { "type" }; } }
+        protected virtual string[] ValidAttributes { get { return new string[] { "type", "message" }; } }
 
         public MoveEffect(MoveEffectType type, XmlNode node)
         {
             Type = type;
+            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message"))
+                Message = node.Attributes["message"].Value;
+            else
+                Message = null;
             Validate(node);
         }
 

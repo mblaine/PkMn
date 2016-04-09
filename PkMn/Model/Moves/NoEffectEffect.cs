@@ -11,7 +11,7 @@ namespace PkMn.Model.Moves
     {
         public readonly Element Condition;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "condition" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "condition" }).ToArray(); } }
 
         public NoEffectEffect(MoveEffectType type, XmlNode node)
             : base(type, node)

@@ -13,9 +13,8 @@ namespace PkMn.Model.Moves
         public readonly string Of;
         public readonly Who Who;
         public readonly bool RestoreOnly;
-        public readonly string Message;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "percent", "of", "who", "message" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "percent", "of", "who" }).ToArray(); } }
 
         public HealthEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -25,10 +24,6 @@ namespace PkMn.Model.Moves
             if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "who"))
                 Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
             RestoreOnly = type == MoveEffectType.RestoreHealth;
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message"))
-                Message = node.Attributes["message"].Value;
-            else
-                Message = null;
         }
     }
 }

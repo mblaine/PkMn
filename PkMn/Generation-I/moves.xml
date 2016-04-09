@@ -316,7 +316,7 @@
     <effect type="status" status="Sleep" who="self" turn-limit="2" force="true" message="{0}{1} started sleeping!" force-message="{0}{1} fell asleep and became healthy!" />
   </move>
   <move name="Roar" type="Normal" pp="20" accuracy="255">
-    <effect type="end-wild-battle" />
+    <effect type="end-wild-battle" message="{2}{3} ran away scared!" />
   </move>
   <move name="Rock Slide" type="Rock" pp="10" power="75" accuracy="229" />
   <move name="Rock Throw" type="Rock" pp="15" power="50" accuracy="165" />
@@ -429,7 +429,7 @@
     <effect type="recoil-damage" percent="25" />
   </move>
   <move name="Teleport" type="Psychic" pp="20" accuracy="255">
-    <effect type="end-wild-battle" />
+    <effect type="end-wild-battle" message="{0}{1} ran from battle!" />
   </move>
   <move name="Thrash" type="Normal" pp="20" power="90" accuracy="255">
     <effect type="lock-in-move" min="3" max="4" ignore-miss-on-lock="true" ignore-cancel="asleep,frozen,trapped,movedisabled" message="{0}{1}'s thrashing about!" />
@@ -469,7 +469,7 @@
   <move name="Water Gun" type="Water" pp="25" power="40" accuracy="255" />
   <move name="Waterfall" type="Water" pp="15" power="80" accuracy="255" />
   <move name="Whirlwind" type="Normal" pp="20" accuracy="216">
-    <effect type="end-wild-battle" />
+    <effect type="end-wild-battle" message="{2}{3} was blown away!" />
   </move>
   <move name="Wing Attack" type="Flying" pp="35" power="35" accuracy="255" />
   <move name="Withdraw" type="Water" pp="40" accuracy="255" category="status">

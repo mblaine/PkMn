@@ -11,7 +11,7 @@ namespace PkMn.Model.Moves
     {
         public readonly decimal HPPercent;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "hp-percent" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "hp-percent" }).ToArray(); } }
 
         public SubstituteEffect(MoveEffectType type, XmlNode node)
             : base(type, node)

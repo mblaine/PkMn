@@ -13,7 +13,7 @@ namespace PkMn.Model.Moves
         public readonly int Value;
         public readonly decimal Multiplier;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "calculation", "value", "multiplier" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "calculation", "value", "multiplier" }).ToArray(); } }
 
         public CustomDamageEffect(MoveEffectType type, XmlNode node)
             : base(type, node)

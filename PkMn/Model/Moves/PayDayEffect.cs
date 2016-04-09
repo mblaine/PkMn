@@ -11,7 +11,7 @@ namespace PkMn.Model.Moves
     {
         public readonly decimal Multiplier;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "multiplier" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "multiplier" }).ToArray(); } }
 
         public PayDayEffect(MoveEffectType type, XmlNode node)
             : base(type, node)

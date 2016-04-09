@@ -12,7 +12,7 @@ namespace PkMn.Model.Moves
         public readonly Who Who;
         public readonly bool Protect;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "who" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "who" }).ToArray(); } }
 
         public StatStageEffect(MoveEffectType type, XmlNode node)
             : base(type, node)

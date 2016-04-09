@@ -12,9 +12,8 @@ namespace PkMn.Model.Moves
         public readonly int Min;
         public readonly int Max;
         public readonly When When;
-        public readonly string Message;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "min", "max", "when", "message", "constant-damage", "ignore-cancel", "ignore-miss-on-lock" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] { "min", "max", "when", "constant-damage", "ignore-cancel", "ignore-miss-on-lock" }).ToArray(); } }
 
         public MultiEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
@@ -25,8 +24,6 @@ namespace PkMn.Model.Moves
             Max = attrs.Contains("max") ? int.Parse(node.Attributes["max"].Value) : int.MaxValue - 1;
 
             When = attrs.Contains("when") ? (When)Enum.Parse(typeof(When), node.Attributes["when"].Value, true) : Enums.When.NA;
-
-            Message = attrs.Contains("message") ? node.Attributes["message"].Value : null;
         }
     }
 }

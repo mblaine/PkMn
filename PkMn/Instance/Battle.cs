@@ -177,7 +177,7 @@ namespace PkMn.Instance
                     bool battleContinues = ExecuteMove(current, opponent);
                     if (!battleContinues)
                     {
-                        OnSendMessage("Battle ended due to roar or something");
+                        //OnSendMessage("Battle ended due to roar or something");
                         return false;
                     }
 
@@ -930,6 +930,21 @@ namespace PkMn.Instance
             current.IsSemiInvulnerable = false;
 
             bool triedStatusEffect = false;
+
+            MoveEffect endWildBattle = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.EndWildBattle).FirstOrDefault();
+            if (moveHit && endWildBattle != null)
+            {
+                if (IsWildBattle)
+                {
+                    OnSendMessage(endWildBattle.Message ?? "The battle ended!", current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    return false;
+                }
+                else
+                {
+                    OnSendMessage("But, it failed!");
+                    return true;
+                }
+            }
 
             bool immuneToType = current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2) == 0m;
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeImmunity))

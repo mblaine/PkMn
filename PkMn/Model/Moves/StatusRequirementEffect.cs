@@ -12,7 +12,7 @@ namespace PkMn.Model.Moves
         public readonly StatusCondition Status;
         public readonly Who Who;
 
-        protected override string[] ValidAttributes { get { return new string[] { "type", "status", "who" }; } }
+        protected override string[] ValidAttributes { get { return base.ValidAttributes.Union(new string[] {"status", "who" }).ToArray(); } }
 
         public StatusRequirementEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
