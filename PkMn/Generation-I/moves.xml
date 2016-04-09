@@ -228,7 +228,7 @@
     <effect type="status" status="Paralysis" who="foe" chance="76" />
   </move>
   <move name="Light Screen" type="Psychic" pp="30" accuracy="255" category="status">
-    <effect type="stat" stat="Special" who="self" multiplier="2" condition="defense-only" limit="1024" ignore-if-critical="true" />
+    <effect type="stat" stat="Special" who="self" multiplier="2" condition="defense-only" message="{0}{1}'s protected against special attacks!" />
   </move>
   <move name="Lovely Kiss" type="Normal" pp="10" accuracy="191" category="status">
     <effect type="status" status="Sleep" who="foe" />
@@ -309,7 +309,7 @@
     <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Reflect" type="Psychic" pp="20" accuracy="255" category="status">
-    <effect type="stat" stat="Defense" who="self" multiplier="2" condition="defense-only" limit="1024" ignore-if-critical="true" />
+    <effect type="stat" stat="Defense" who="self" multiplier="2" condition="defense-only" message="{0}{1} gained armor!" />
   </move>
   <move name="Rest" type="Psychic" pp="10" accuracy="255">
     <effect type="restore-health" percent="100" of="max" who="self" />

@@ -39,6 +39,9 @@ namespace PkMn.Instance
         public Move LastMoveUsed;
         public int AccumulatedDamage;
 
+        public int DefenseMultiplier;
+        public int SpecialDefenseMultiplier;
+
         public Move SelectedMove
         {
             get 
@@ -114,6 +117,8 @@ namespace PkMn.Instance
             MoveOverrideTemporary = null;
             LastMoveUsed = null;
             AccumulatedDamage = 0;
+            DefenseMultiplier = 1;
+            SpecialDefenseMultiplier = 1;
         }
 
         public void Recalc(StatType? stat = null)

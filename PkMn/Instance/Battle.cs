@@ -300,12 +300,29 @@ namespace PkMn.Instance
             {
                 if (current != null && (eff.Who == Who.Self || eff.Who == Who.Both))
                 {
-                    if (!string.IsNullOrWhiteSpace(eff.Message))
-                        OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
-
                     if (eff.Temporary)
                     {
                         current.EffectiveStats[eff.Stat] = (int)(((decimal)current.EffectiveStats[eff.Stat]) * eff.Multiplier);
+                    }
+                    else if (eff.Condition == "defense-only")
+                    {
+                        bool worked = false;
+
+                        if (eff.Stat == StatType.Defense && current.DefenseMultiplier == 1)
+                        {
+                            current.DefenseMultiplier = (int)eff.Multiplier;
+                            worked = true;
+                        }
+                        else if (eff.Stat == StatType.Special && current.SpecialDefenseMultiplier == 1)
+                        {
+                            current.SpecialDefenseMultiplier = (int)eff.Multiplier;
+                            worked = true;
+                        }
+                        else
+                            OnSendMessage("But, it failed!");
+
+                        if (worked && !string.IsNullOrWhiteSpace(eff.Message))
+                            OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
                     }
                     else
                     {
@@ -316,6 +333,9 @@ namespace PkMn.Instance
                         }
                         else
                         {
+                            if (!string.IsNullOrWhiteSpace(eff.Message))
+                                OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+
                             if (eff.Stat == StatType.CritRatio)
                             {
                                 current.EffectiveStats.CritRatio = eff.Constant;
@@ -333,19 +353,35 @@ namespace PkMn.Instance
                             }
 
                             ret = true;
-                                
+
                         }
                     }
                 }
 
                 if (opponent != null && (eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
                 {
-                    if (!string.IsNullOrWhiteSpace(eff.Message))
-                        OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-
                     if (eff.Temporary)
                     {
                         opponent.EffectiveStats[eff.Stat] = (int)(((decimal)opponent.EffectiveStats[eff.Stat]) * eff.Multiplier);
+                    }
+                    else if (eff.Condition == "defense-only")
+                    {
+                        bool worked = false;
+                        if (eff.Stat == StatType.Defense && opponent.DefenseMultiplier == 1)
+                        {
+                            opponent.DefenseMultiplier = (int)eff.Multiplier;
+                            worked = true;
+                        }
+                        else if (eff.Stat == StatType.Special && opponent.SpecialDefenseMultiplier == 1)
+                        {
+                            opponent.SpecialDefenseMultiplier = (int)eff.Multiplier;
+                            worked = true;
+                        }
+                        else
+                            OnSendMessage("But, it failed!");
+
+                        if (worked && !string.IsNullOrWhiteSpace(eff.Message))
+                            OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                     }
                     else
                     {
@@ -356,6 +392,9 @@ namespace PkMn.Instance
                         }
                         else
                         {
+                            if (!string.IsNullOrWhiteSpace(eff.Message))
+                                OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
                             if (eff.Stat == StatType.CritRatio)
                             {
                                 opponent.EffectiveStats.CritRatio = eff.Constant;
@@ -749,7 +788,7 @@ namespace PkMn.Instance
             else
             {
                 att = current.SelectedMove.Type.Category == ElementCategory.Physical ? current.EffectiveStats.Attack : current.EffectiveStats.Special;
-                def = current.SelectedMove.Type.Category == ElementCategory.Physical ? opponent.EffectiveStats.Defense : opponent.EffectiveStats.Special;
+                def = current.SelectedMove.Type.Category == ElementCategory.Physical ? opponent.EffectiveStats.Defense * opponent.DefenseMultiplier: opponent.EffectiveStats.Special * opponent.SpecialDefenseMultiplier;
             }
 
             if (def == 0)
@@ -897,7 +936,7 @@ namespace PkMn.Instance
                 immuneToType = false;
 
             //handle self stat stage effects
-            foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition)))
+            foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
             {
                 if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
@@ -1056,7 +1095,7 @@ namespace PkMn.Instance
                 //apply foe effects
                 if (!immuneToType)
                 {
-                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition)))
+                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
                     {
                         HandleStatEffect(null, opponent, eff, moveHit);
                     }
