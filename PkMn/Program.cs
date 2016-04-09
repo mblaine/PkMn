@@ -23,7 +23,7 @@ namespace PkMn
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Charmeleon", 16)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Charmeleon", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -32,7 +32,7 @@ namespace PkMn
 
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 50);
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 35);
             }
 
             Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
@@ -59,22 +59,28 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[3] = Move.Moves["Metronome"];
+            player.Party[0].Moves[3] = Move.Moves["Mist"];
             //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Teleport"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Roar"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Fly"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[0] = Move.Moves["String Shot"];
-            //rival.Party[0].Moves[2] = Move.Moves["Disable"];
+            rival.Party[0].Moves[2] = Move.Moves["Haze"];
+            rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
-            Battle battle = new Battle(player, rival, true);
+            Battle battle = new Battle(player, rival, false);
             battle.ChooseNextMon += Battle_ChooseMon;
             battle.SendMessage += Battle_SendMessage;
             battle.ChooseAction += Battle_ChooseAction;
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
+
+            //battle.PlayerCurrent.ConfusedCount = 10;
+            //battle.PlayerCurrent.Monster.Status = StatusCondition.BadlyPoisoned;
+            //battle.PlayerCurrent.BadlyPoisonedCount = 2;
+            //battle.FoeCurrent.Monster.Status = StatusCondition.Freeze;
 
             do
             {
@@ -133,7 +139,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (true && (message.ToLower().Contains("counter") || message.ToLower().Contains("unleashed")))
+            if (true && (message.ToLower().Contains("mist") || message.ToLower().Contains("haze")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;

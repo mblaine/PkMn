@@ -8,7 +8,6 @@ namespace PkMn.Model.Enums
     public enum MoveEffectType
     {
         CancelEnemyMove,
-        CancelOtherEffects,
         Charge,
         Copy,
         CustomDamage,

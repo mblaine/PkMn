@@ -177,8 +177,8 @@
   <move name="Haze" type="Ice" pp="30" accuracy="255">
     <effect type="reset-stat-stages" who="both" />
     <effect type="reset-status" status="Confusion" who="both" />
-    <effect type="reset-status" status="all" who="foe" />
-    <effect type="cancel-other-effects" />
+	<effect type="reset-status" status="Badly-Poisoned" who="both" />
+    <effect type="reset-status" status="all" who="foe" message="ALL STATUS changes are eliminated!" />
   </move>
   <move name="Headbutt" type="Normal" pp="15" power="70" accuracy="255">
     <effect type="status" status="flinch" who="foe" chance="76" />
@@ -257,7 +257,7 @@
     <effect type="mirror-move" />
   </move>
   <move name="Mist" type="Ice" pp="30" accuracy="255">
-    <effect type="protect-stat-stages" who="self" />
+    <effect type="protect-stat-stages" who="self" message="{0}{1}'s shrouded in mist!" />
   </move>
   <move name="Night Shade" type="Ghost" pp="15" accuracy="255">
     <effect type="custom-damage" calculation="level" />

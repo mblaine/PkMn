@@ -360,7 +360,12 @@ namespace PkMn.Instance
 
                 if (opponent != null && (eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
                 {
-                    if (eff.Temporary)
+                    if (opponent.ProtectStages)
+                    {
+                        if (showFailMessage)
+                            OnSendMessage("But, it failed!");
+                    }
+                    else if (eff.Temporary)
                     {
                         opponent.EffectiveStats[eff.Stat] = (int)(((decimal)opponent.EffectiveStats[eff.Stat]) * eff.Multiplier);
                     }
@@ -828,7 +833,7 @@ namespace PkMn.Instance
 
         protected void HandleLockInEnding(ActiveMonster current, ActiveMonster opponent, bool moveHit)
         {
-            foreach (StatusEffect eff in current.QueuedMove.Effects.Where(e => e is StatusEffect).Cast<StatusEffect>().Where(e => e.Condition == "lock-in-end"))
+            foreach (StatusEffect eff in current.QueuedMove.Effects.Where(e => e.Type == MoveEffectType.Status).Cast<StatusEffect>().Where(e => e.Condition == "lock-in-end"))
             {
                 HandleStatusEffect(current, current.QueuedMove, opponent, eff, moveHit);
             }
@@ -904,6 +909,111 @@ namespace PkMn.Instance
                 return ExecuteMove(current, opponent);
             }
 
+            foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatStages))
+            {
+                if (eff.Who == Who.Both || eff.Who == Who.Self)
+                {
+                    current.StatStages = new BattleStats();
+                    current.DefenseMultiplier = 1;
+                    current.SpecialDefenseMultiplier = 1;
+                    current.ProtectStages = false;
+                    current.Recalc();
+                }
+                
+                if (eff.Who == Who.Both || eff.Who == Who.Foe)
+                {
+                    opponent.StatStages = new BattleStats();
+                    opponent.DefenseMultiplier = 1;
+                    opponent.SpecialDefenseMultiplier = 1;
+                    opponent.ProtectStages = false;
+                    opponent.Recalc();
+                }
+            }
+
+            bool triedStatusEffect = false;
+
+            foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatus))
+            {
+                if (!string.IsNullOrEmpty(eff.Message))
+                    OnSendMessage(eff.Message);
+
+                triedStatusEffect = true;
+
+                if (eff.Who == Who.Both || eff.Who == Who.Self)
+                {
+                    if (eff.Status == StatusCondition.Confusion)
+                        current.ConfusedCount = 0;
+                    else if (eff.Status == StatusCondition.Flinch)
+                        current.Flinched = false;
+                    else if (eff.Status == StatusCondition.BadlyPoisoned && current.Monster.Status == StatusCondition.BadlyPoisoned)
+                    {
+                        current.Monster.Status = StatusCondition.Poison;
+                        current.BadlyPoisonedCount = 0;
+                    }
+                    else if (eff.Status == current.Monster.Status)
+                        current.Monster.Status = StatusCondition.None;
+                    else if (eff.Status == StatusCondition.All)
+                    {
+                        current.ConfusedCount = 0;
+                        current.Flinched = false;
+                        current.Monster.Status = StatusCondition.None;
+                        current.BadlyPoisonedCount = 0;
+                    }
+                }
+
+                if (eff.Who == Who.Both || eff.Who == Who.Foe)
+                {
+                    if (eff.Status == StatusCondition.Confusion)
+                        opponent.ConfusedCount = 0;
+                    else if (eff.Status == StatusCondition.Flinch)
+                        opponent.Flinched = false;
+                    else if (eff.Status == StatusCondition.BadlyPoisoned && opponent.Monster.Status == StatusCondition.BadlyPoisoned)
+                    {
+                        opponent.Monster.Status = StatusCondition.Poison;
+                        opponent.BadlyPoisonedCount = 0;
+                    }
+                    else if (eff.Status == opponent.Monster.Status)
+                    {
+                        if (opponent.Monster.Status == StatusCondition.Sleep || opponent.Monster.Status == StatusCondition.Freeze)
+                            opponent.MoveCancelled = true;
+                        opponent.Monster.Status = StatusCondition.None;
+                    }
+                    else if (eff.Status == StatusCondition.All)
+                    {
+                        if (opponent.Monster.Status == StatusCondition.Sleep || opponent.Monster.Status == StatusCondition.Freeze)
+                            opponent.MoveCancelled = true;
+                        opponent.ConfusedCount = 0;
+                        opponent.Flinched = false;
+                        opponent.Monster.Status = StatusCondition.None;
+                        opponent.BadlyPoisonedCount = 0;
+                    }
+                }
+            }
+
+            foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ProtectStatStages))
+            {
+                triedStatusEffect = true;
+                if (eff.Who == Who.Both || eff.Who == Who.Self)
+                {
+                    if (current.ProtectStages)
+                        OnSendMessage("But, it failed!");
+                    else if (!string.IsNullOrEmpty(eff.Message))
+                        OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+                        
+                    current.ProtectStages = true;
+                }
+
+                if (eff.Who == Who.Both || eff.Who == Who.Foe)
+                {
+                    if (opponent.ProtectStages)
+                        OnSendMessage("But, it failed!");
+                    else if (!string.IsNullOrEmpty(eff.Message))
+                        OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
+                    current.ProtectStages = true;
+                }
+            }
+
             //calculate critical hit or not
             int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio) * ((decimal)current.EffectiveStats.CritRatio) / 100m);
             bool isCriticalHit = Rng.Next(0, 256) < Math.Min(255, critRatio);
@@ -928,8 +1038,6 @@ namespace PkMn.Instance
                 moveHit = false;
 
             current.IsSemiInvulnerable = false;
-
-            bool triedStatusEffect = false;
 
             MoveEffect endWildBattle = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.EndWildBattle).FirstOrDefault();
             if (moveHit && endWildBattle != null)
@@ -969,7 +1077,7 @@ namespace PkMn.Instance
             }
             
             //handle self status condition effects
-            foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e is StatusEffect).Cast<StatusEffect>().Where(e => string.IsNullOrEmpty(((StatusEffect)e).Condition)))
+            foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Status).Cast<StatusEffect>().Where(e => string.IsNullOrEmpty(((StatusEffect)e).Condition)))
             {
                 if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
@@ -1115,7 +1223,7 @@ namespace PkMn.Instance
                         HandleStatEffect(null, opponent, eff, moveHit);
                     }
 
-                    foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e is StatusEffect))
+                    foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Status))
                     {
                         HandleStatusEffect(null, current.SelectedMove, opponent, eff, moveHit);
                     }

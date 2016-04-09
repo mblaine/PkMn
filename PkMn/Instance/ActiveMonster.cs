@@ -42,6 +42,8 @@ namespace PkMn.Instance
         public int DefenseMultiplier;
         public int SpecialDefenseMultiplier;
 
+        public bool ProtectStages;
+
         public Move SelectedMove
         {
             get 
@@ -119,6 +121,7 @@ namespace PkMn.Instance
             AccumulatedDamage = 0;
             DefenseMultiplier = 1;
             SpecialDefenseMultiplier = 1;
+            ProtectStages = false;
         }
 
         public void Recalc(StatType? stat = null)
