@@ -12,7 +12,7 @@ namespace PkMn.Instance
     {
         public delegate Monster ChooseMonEventHandler(Trainer trainer);
         public delegate void SendMessageEventHandler(string message);
-        public delegate BattleAction ChooseActionEventHandler(Monster current, Trainer trainer);
+        public delegate BattleAction ChooseActionEventHandler(ActiveMonster current, Trainer trainer);
         public delegate int ChooseMoveEventHandler(Move[] moeves);
 
         protected Trainer Player;
@@ -30,6 +30,7 @@ namespace PkMn.Instance
         public ChooseMoveEventHandler ChooseMoveToMimic;
 
         public int LastDamageDealt;
+        public int RewardMoney;
 
         public Battle(Trainer player, Trainer foe, bool isWildBattle)
         {
@@ -37,6 +38,7 @@ namespace PkMn.Instance
             Foe = foe;
             IsWildBattle = isWildBattle;
             runCount = 0;
+            RewardMoney = 0;
 
             foreach (Monster mon in Player.Party)
             {
@@ -84,12 +86,12 @@ namespace PkMn.Instance
 
             if (PlayerCurrent.QueuedMove == null)
             {
-                playerAction = ChooseAction(PlayerCurrent.Monster, Player);
+                playerAction = ChooseAction(PlayerCurrent, Player);
 
                 while (playerAction.Type == BattleActionType.UseMove && PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex)
                 {
                     //OnSendMessage("It's disabled");
-                    playerAction = ChooseAction(PlayerCurrent.Monster, Player);
+                    playerAction = ChooseAction(PlayerCurrent, Player);
                 }
 
                 if (playerAction.Type == BattleActionType.Run)
@@ -233,6 +235,10 @@ namespace PkMn.Instance
                         OnSendMessage("{0} is out of usable Pokémon! {0} blacked out!", current.Trainer.Name);
                     else
                         OnSendMessage("{0} defeated {1}!", this.Player.Name, current.Trainer.Name);
+                    
+                    if (RewardMoney > 0)
+                        Console.WriteLine("{0} picked up ${1}!", isPlayer ? Foe.Name : Player.Name, RewardMoney);
+
                 }
                 else
                 {
@@ -883,6 +889,12 @@ namespace PkMn.Instance
             else
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
 
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.None))
+            {
+                OnSendMessage("No effect.");
+                return true;
+            }
+
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
                 CancelQueuedMove(opponent, CancelMoveReason.Trapped);
@@ -1299,6 +1311,13 @@ namespace PkMn.Instance
                 OnSendMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
 
+            PayDayEffect payDay = (PayDayEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.PayDay).FirstOrDefault();
+            if (payDay != null)
+            {
+                RewardMoney += (int)(payDay.Multiplier * current.Monster.Level);
+                OnSendMessage("Coins scattered everywhere!");
+            }
+
             //handle defrosting
             if (moveHit && current.SelectedMove.CanCauseStatus(StatusCondition.Burn, Who.Foe) && opponent.Monster.Status == StatusCondition.Freeze)
             {
@@ -1338,7 +1357,7 @@ namespace PkMn.Instance
                 current.QueuedMove = null;
 
             //handle hyper beam
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After))
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After) && opponent.Monster.CurrentHP > 0)
             {
                 current.QueuedMove = current.SelectedMove;
             }

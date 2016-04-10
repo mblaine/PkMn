@@ -32,7 +32,7 @@ namespace PkMn
 
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 35);
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 55);
             }
 
             Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
@@ -59,8 +59,8 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            player.Party[0].Moves[3] = Move.Moves["Mist"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Teleport"];
+            //player.Party[0].Moves[3] = Move.Moves["Mist"];
+            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Pay Day"];
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Fly"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
@@ -68,8 +68,8 @@ namespace PkMn
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
             //rival.Party[0].Moves[0] = Move.Moves["String Shot"];
-            rival.Party[0].Moves[2] = Move.Moves["Haze"];
-            rival.Party[0].Moves[3] = Move.Moves["Growl"];
+            //rival.Party[0].Moves[2] = Move.Moves["Haze"];
+            //rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
             Battle battle = new Battle(player, rival, false);
             battle.ChooseNextMon += Battle_ChooseMon;
@@ -121,7 +121,7 @@ namespace PkMn
             return Rng.Next(0, moves.Count(m => m != null));
         }
 
-        public static BattleAction Battle_ChooseAction(Monster current, Trainer trainer)
+        public static BattleAction Battle_ChooseAction(ActiveMonster current, Trainer trainer)
         {
             BattleAction ret = new BattleAction();
 
