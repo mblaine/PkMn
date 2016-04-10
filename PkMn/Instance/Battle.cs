@@ -296,6 +296,20 @@ namespace PkMn.Instance
                 current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - damage);
                 OnSendMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
+
+            if (current.IsSeeded)
+            {
+                int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
+                if (damage == 0)
+                    damage = 1;
+                if (current.Monster.Status == StatusCondition.BadlyPoisoned)
+                    damage = damage * current.BadlyPoisonedCount;
+                int hpRestored = Math.Min(damage, opponent.Monster.Stats.HP - opponent.Monster.CurrentHP);
+                opponent.Monster.CurrentHP += hpRestored;
+                OnSendMessage("LEECH SEED saps {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnSendMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnSendMessage("Restored {0} HP to {1}{2}", hpRestored, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+            }
         }
 
         protected bool HandleStatEffect(ActiveMonster current, ActiveMonster opponent, StatEffect eff, bool hitOpponent, bool showFailMessage = true)
@@ -359,7 +373,6 @@ namespace PkMn.Instance
                             }
 
                             ret = true;
-
                         }
                     }
                 }
@@ -895,6 +908,22 @@ namespace PkMn.Instance
                 return true;
             }
 
+            foreach(NoEffectEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.NoEffect))
+            {
+                if (opponent.Type1 == eff.Condition || opponent.Type2 == eff.Condition)
+                {
+                    OnSendMessage("{0}{1} evaded attack!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    return true;
+                }
+            }
+
+            MoveEffect leechSeed = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LeechSeed).FirstOrDefault();
+            if (leechSeed != null && opponent.IsSeeded)
+            {
+                OnSendMessage("{0}{1} evaded attack!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                return true;
+            }
+
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
             {
                 CancelQueuedMove(opponent, CancelMoveReason.Trapped);
@@ -929,6 +958,7 @@ namespace PkMn.Instance
                     current.DefenseMultiplier = 1;
                     current.SpecialDefenseMultiplier = 1;
                     current.ProtectStages = false;
+                    current.IsSeeded = false;
                     current.Recalc();
                 }
                 
@@ -938,6 +968,7 @@ namespace PkMn.Instance
                     opponent.DefenseMultiplier = 1;
                     opponent.SpecialDefenseMultiplier = 1;
                     opponent.ProtectStages = false;
+                    opponent.IsSeeded = false;
                     opponent.Recalc();
                 }
             }
@@ -1135,6 +1166,13 @@ namespace PkMn.Instance
                 if (crashEffect != null)
                     HandleMissDamage(current, crashEffect);
 
+                return true;
+            }
+
+            if (leechSeed != null)
+            {
+                opponent.IsSeeded = true;
+                OnSendMessage("{0}{1} was seeded!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 return true;
             }
 

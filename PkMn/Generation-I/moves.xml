@@ -218,7 +218,7 @@
     <effect type="transfer-health" percent="50" of="damage" />
   </move>
   <move name="Leech Seed" type="Grass" pp="10" accuracy="229">
-    <effect type="transfer-health" percent="6.25" of="current" who="foe" />
+    <effect type="leech-seed" />
     <effect type="no-effect" condition="Grass" />
   </move>
   <move name="Leer" type="Normal" pp="30" accuracy="255" category="status">

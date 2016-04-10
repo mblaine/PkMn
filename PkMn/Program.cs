@@ -18,12 +18,12 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Wartortle", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Ivysaur", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Charmeleon", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Seaking", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -59,8 +59,8 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[3] = Move.Moves["Mist"];
-            player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Pay Day"];
+            player.Party[0].Moves[3] = Move.Moves["Toxic"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Leech Seed"];
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Fly"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
@@ -139,7 +139,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (true && (message.ToLower().Contains("mist") || message.ToLower().Contains("haze")))
+            if (true && (message.ToLower().Contains("seed") || message.ToLower().Contains("poison")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;

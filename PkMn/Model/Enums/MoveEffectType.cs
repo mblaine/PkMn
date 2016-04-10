@@ -16,6 +16,7 @@ namespace PkMn.Model.Enums
         IgnoreSemiInvulnerability,
         IgnoreTypeEffectiveness,
         IgnoreTypeImmunity,
+        LeechSeed,
         LockInMove,
         MirrorMove,
         MissDamage,

@@ -25,6 +25,7 @@ namespace PkMn.Instance
         public bool IsSemiInvulnerable;
         public bool Flinched;
         public bool MoveCancelled;
+        public bool IsSeeded;
         
         public Move QueuedMove;
         public int QueuedMoveLimit;
@@ -122,6 +123,7 @@ namespace PkMn.Instance
             DefenseMultiplier = 1;
             SpecialDefenseMultiplier = 1;
             ProtectStages = false;
+            IsSeeded = false;
         }
 
         public void Recalc(StatType? stat = null)
