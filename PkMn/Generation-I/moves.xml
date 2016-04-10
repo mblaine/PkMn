@@ -76,7 +76,7 @@
   <move name="Conversion" type="Normal" pp="30" accuracy="255" category="status">
     <effect type="copy" what="type" message="Converted types to {0}{1}'s!" />
   </move>
-  <move name="Counter" type="Fighting" pp="20" accuracy="255">
+  <move name="Counter" type="Fighting" pp="20" accuracy="255" priority="-1">
     <effect type="custom-damage" calculation="last-damage-if-normal-or-fighting" multiplier="2" />
     <effect type="ignore-type-effectiveness" />
     <effect type="ignore-type-immunity" />
@@ -296,7 +296,7 @@
     <effect type="ignore-type-effectiveness" />
     <effect type="ignore-type-immunity" />
   </move>
-  <move name="Quick Attack" type="Normal" pp="30" power="40" accuracy="255" />
+  <move name="Quick Attack" type="Normal" pp="30" power="40" accuracy="255" priority="1" />
   <move name="Rage" type="Normal" pp="20" power="20" accuracy="255">
     <effect type="lock-in-move" ignore-cancel="all" />
     <effect type="stat" stat="Attack" change="1" who="self" condition="on-damaged" limit="999" message="{0}{1}'s rage is building!" />

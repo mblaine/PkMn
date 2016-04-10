@@ -21,6 +21,7 @@ namespace PkMn.Model
         public readonly int PP;
         public readonly int Power;
         public readonly int Accuracy;
+        public readonly int Priority;
         public readonly int CritRatio;
         public readonly ElementCategory Category;
 
@@ -56,6 +57,11 @@ namespace PkMn.Model
                 Category = (ElementCategory)Enum.Parse(typeof(ElementCategory), node.Attributes["category"].Value, true);
             else
                 Category = Type.Category;
+
+            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "priority"))
+                Priority = int.Parse(node.Attributes["priority"].Value);
+            else
+                Priority = 0;
 
             if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "crit-ratio"))
                 CritRatio = int.Parse(node.Attributes["crit-ratio"].Value);

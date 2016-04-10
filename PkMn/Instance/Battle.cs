@@ -261,17 +261,13 @@ namespace PkMn.Instance
 
         protected ActiveMonster WhoGoesFirst(ActiveMonster one, ActiveMonster two)
         {
-            if (one.MoveIndex >= 0 && one.SelectedMove == Move.Moves["Quick Attack"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Quick Attack"]))
+            int onePriority = one.MoveIndex >= 0 ? one.SelectedMove.Priority : -10;
+            int twoPriority = two.MoveIndex >= 0 ? two.SelectedMove.Priority : -10;
+
+            if (onePriority > twoPriority)
                 return one;
-
-            if (two.MoveIndex >= 0 && two.SelectedMove == Move.Moves["Quick Attack"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Quick Attack"]))
+            else if (onePriority < twoPriority)
                 return two;
-
-            if (one.MoveIndex >= 0 && one.SelectedMove == Move.Moves["Counter"] && (two.MoveIndex < 0 || two.SelectedMove != Move.Moves["Counter"]))
-                return two;
-
-            if (two.MoveIndex >= 0 && two.SelectedMove == Move.Moves["Counter"] && (one.MoveIndex < 0 || one.SelectedMove != Move.Moves["Counter"]))
-                return one;
 
             return one.EffectiveStats.Speed > two.EffectiveStats.Speed ? one : one.EffectiveStats.Speed < two.EffectiveStats.Speed ? two : Rng.Next(0, 2) == 0 ? one : two;
         }
@@ -318,123 +314,71 @@ namespace PkMn.Instance
 
             if (Rng.Next(0, 256) < eff.Chance)
             {
-                if (current != null && (eff.Who == Who.Self || eff.Who == Who.Both))
+                ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+                for (int i = 0; i < mons.Length; i++)
                 {
-                    if (eff.Temporary)
-                    {
-                        current.EffectiveStats[eff.Stat] = (int)(((decimal)current.EffectiveStats[eff.Stat]) * eff.Multiplier);
-                    }
-                    else if (eff.Condition == "defense-only")
-                    {
-                        bool worked = false;
+                    Who who = i == 0 ? Who.Self : Who.Foe;
 
-                        if (eff.Stat == StatType.Defense && current.DefenseMultiplier == 1)
-                        {
-                            current.DefenseMultiplier = (int)eff.Multiplier;
-                            worked = true;
-                        }
-                        else if (eff.Stat == StatType.Special && current.SpecialDefenseMultiplier == 1)
-                        {
-                            current.SpecialDefenseMultiplier = (int)eff.Multiplier;
-                            worked = true;
-                        }
-                        else
-                            OnSendMessage("But, it failed!");
-
-                        if (worked && !string.IsNullOrWhiteSpace(eff.Message))
-                            OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
-                    }
-                    else
+                    if (mons[i] != null && (eff.Who == who || eff.Who == Who.Both) && (i == 0 || hitOpponent))
                     {
-                        if ((eff.Change > 0 && current.StatStages[eff.Stat] >= 6) || (eff.Change < 0 && current.StatStages[eff.Stat] <= 6))
+                        if (i == 1 && mons[i].ProtectStages)
                         {
                             if (showFailMessage)
-                                OnSendMessage("Nothing happened!");
+                                OnSendMessage("But, it failed!");
+                        }
+                        else if (eff.Temporary)
+                        {
+                            mons[i].EffectiveStats[eff.Stat] = (int)(((decimal)mons[i].EffectiveStats[eff.Stat]) * eff.Multiplier);
+                        }
+                        else if (eff.Condition == "defense-only")
+                        {
+                            bool worked = false;
+                            if (eff.Stat == StatType.Defense && mons[i].DefenseMultiplier == 1)
+                            {
+                                mons[i].DefenseMultiplier = (int)eff.Multiplier;
+                                worked = true;
+                            }
+                            else if (eff.Stat == StatType.Special && mons[i].SpecialDefenseMultiplier == 1)
+                            {
+                                mons[i].SpecialDefenseMultiplier = (int)eff.Multiplier;
+                                worked = true;
+                            }
+                            else
+                                OnSendMessage("But, it failed!");
+
+                            if (worked && !string.IsNullOrWhiteSpace(eff.Message))
+                                OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
                         }
                         else
                         {
-                            if (!string.IsNullOrWhiteSpace(eff.Message))
-                                OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
-
-                            if (eff.Stat == StatType.CritRatio)
+                            if ((eff.Change > 0 && mons[i].StatStages[eff.Stat] >= 6) || (eff.Change < 0 && mons[i].StatStages[eff.Stat] <= -6))
                             {
-                                current.EffectiveStats.CritRatio = eff.Constant;
+                                if (showFailMessage)
+                                    OnSendMessage("Nothing happened!");
                             }
                             else
                             {
+                                if (!string.IsNullOrWhiteSpace(eff.Message))
+                                    OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
 
-                                current.StatStages[eff.Stat] += eff.Change;
-                                if (current.StatStages[eff.Stat] > 6)
-                                    current.StatStages[eff.Stat] = 6;
-                                else if (current.StatStages[eff.Stat] < -6)
-                                    current.StatStages[eff.Stat] = -6;
-                                OnSendMessage("{0}{1}'s {2} {3}{4}!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
-                                current.Recalc(eff.Stat);
+                                if (eff.Stat == StatType.CritRatio)
+                                {
+                                    mons[i].EffectiveStats.CritRatio = eff.Constant;
+                                }
+                                else
+                                {
+                                    mons[i].StatStages[eff.Stat] += eff.Change;
+                                    if (mons[i].StatStages[eff.Stat] > 6)
+                                        mons[i].StatStages[eff.Stat] = 6;
+                                    else if (mons[i].StatStages[eff.Stat] < -6)
+                                        mons[i].StatStages[eff.Stat] = -6;
+                                    OnSendMessage("{0}{1}'s {2} {3}{4}!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                                    mons[i].Recalc(eff.Stat);
+                                }
+
+                                ret = true;
                             }
-
-                            ret = true;
-                        }
-                    }
-                }
-
-                if (opponent != null && (eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
-                {
-                    if (opponent.ProtectStages)
-                    {
-                        if (showFailMessage)
-                            OnSendMessage("But, it failed!");
-                    }
-                    else if (eff.Temporary)
-                    {
-                        opponent.EffectiveStats[eff.Stat] = (int)(((decimal)opponent.EffectiveStats[eff.Stat]) * eff.Multiplier);
-                    }
-                    else if (eff.Condition == "defense-only")
-                    {
-                        bool worked = false;
-                        if (eff.Stat == StatType.Defense && opponent.DefenseMultiplier == 1)
-                        {
-                            opponent.DefenseMultiplier = (int)eff.Multiplier;
-                            worked = true;
-                        }
-                        else if (eff.Stat == StatType.Special && opponent.SpecialDefenseMultiplier == 1)
-                        {
-                            opponent.SpecialDefenseMultiplier = (int)eff.Multiplier;
-                            worked = true;
-                        }
-                        else
-                            OnSendMessage("But, it failed!");
-
-                        if (worked && !string.IsNullOrWhiteSpace(eff.Message))
-                            OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                    }
-                    else
-                    {
-                        if ((eff.Change > 0 && opponent.StatStages[eff.Stat] >= 6) || (eff.Change < 0 && opponent.StatStages[eff.Stat] <= -6))
-                        {
-                            if (showFailMessage)
-                                OnSendMessage("Nothing happened!");
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrWhiteSpace(eff.Message))
-                                OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-
-                            if (eff.Stat == StatType.CritRatio)
-                            {
-                                opponent.EffectiveStats.CritRatio = eff.Constant;
-                            }
-                            else
-                            {
-                                opponent.StatStages[eff.Stat] += eff.Change;
-                                if (opponent.StatStages[eff.Stat] > 6)
-                                    opponent.StatStages[eff.Stat] = 6;
-                                else if (opponent.StatStages[eff.Stat] < -6)
-                                    opponent.StatStages[eff.Stat] = -6;
-                                OnSendMessage("{0}{1}'s {2} {3}{4}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
-                                opponent.Recalc(eff.Stat);
-                            }
-
-                            ret = true;
                         }
                     }
                 }
@@ -445,123 +389,75 @@ namespace PkMn.Instance
 
         protected bool HandleStatusEffect(ActiveMonster current, Move move, ActiveMonster opponent, StatusEffect eff, bool hitOpponent)
         {
+            if (eff.Type != MoveEffectType.Status)
+                return false;
+
             bool ret = false;
 
             if (Rng.Next(0, 256) < eff.Chance)
             {
-                if (current != null && (eff.Who == Who.Self || eff.Who == Who.Both))
+                ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+                for (int i = 0; i < mons.Length; i++)
                 {
-                    ret = true;
+                    Who who = i == 0 ? Who.Self : Who.Foe;
 
-                    if (eff.Status == StatusCondition.Faint)
-                        current.Monster.CurrentHP = 0;
-                    else if (eff.Status == StatusCondition.Confusion)
+                    if (mons[i] != null && (eff.Who == who || eff.Who == Who.Both) && (i == 0 || hitOpponent))
                     {
-                        if (current.IsConfused)
-                            OnSendMessage("{0}{1} is already confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                        else
+                        ret = true;
+                        if (eff.Status == StatusCondition.Faint)
+                            mons[i].Monster.CurrentHP = 0;
+                        else if (eff.Status == StatusCondition.Confusion)
                         {
-                            OnSendMessage(eff.Message ?? "{0}{1} became confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                            current.ConfusedCount = Rng.Next(2, 6);
+                            if (mons[i].IsConfused)
+                                OnSendMessage("{0}{1} is already confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                            else
+                            {
+                                OnSendMessage(eff.Message ?? "{0}{1} became confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                mons[i].ConfusedCount = Rng.Next(2, 6);
+                            }
                         }
-                    }
-                    else if (eff.Status == StatusCondition.Flinch)
-                    {
-                        //flinching itself is not implemented
-                    }
-                    else if ((eff.Force || current.Monster.Status == StatusCondition.None) && !current.Monster.Species.IsImmuneToStatus(eff.Status))
-                    {
-                        string message = eff.Message;
-                        if (current.Monster.Status != StatusCondition.None && eff.Force && !string.IsNullOrEmpty(eff.ForceMessage))
-                            message = eff.ForceMessage;
-
-                        current.Monster.Status = eff.Status;
-                        
-                        switch (eff.Status)
+                        else if (eff.Status == StatusCondition.Flinch)
                         {
-                            case StatusCondition.Paralysis:
-                                OnSendMessage(message ?? "{0}{1} was paralyzed!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                current.EffectiveStats.Speed = (int)(((decimal)current.EffectiveStats.Speed) * 0.25m);
-                                break;
-                            case StatusCondition.Sleep:
-                                OnSendMessage(message ?? "{0}{1} fell asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                current.Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
-                                break;
-                            case StatusCondition.Burn:
-                                OnSendMessage(message ?? "{0}{1} was burned!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                current.EffectiveStats.Attack = (int)(((decimal)current.EffectiveStats.Attack) * 0.5m);
-                                break;
-                            case StatusCondition.BadlyPoisoned:
-                                OnSendMessage(message ?? "{0}{1} was badly poisoned!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                break;
-                            case StatusCondition.Freeze:
-                                OnSendMessage(message ?? "{0}{1} was frozen!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                                break;
-                            default:
-                                OnSendMessage(message ?? "{0}{1} was {2}ed!", current.Trainer.MonNamePrefix, current.Monster.Name, eff.Status.ToString().ToLower());
-                                break;
+                            mons[i].Flinched = true;
                         }
-
-                    }
-                    else if (move.Category == ElementCategory.Status)
-                        OnSendMessage("It didn't affect {0}{1}.", current.Trainer.MonNamePrefix, current.Monster.Name);
-                }
-
-                if (opponent != null && (eff.Who == Who.Foe || eff.Who == Who.Both) && hitOpponent)
-                {
-                    ret = true;
-                    if (eff.Status == StatusCondition.Faint)
-                        opponent.Monster.CurrentHP = 0;
-                    else if (eff.Status == StatusCondition.Confusion)
-                    {
-                        if (opponent.IsConfused)
-                            OnSendMessage("{0}{1} is already confused!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                        else
+                        else if ((eff.Force || mons[i].Monster.Status == StatusCondition.None) && !mons[i].Monster.Species.IsImmuneToStatus(eff.Status))
                         {
-                            OnSendMessage(eff.Message ?? "{0}{1} became confused!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                            opponent.ConfusedCount = Rng.Next(2, 6);
-                        }
-                    }
-                    else if (eff.Status == StatusCondition.Flinch)
-                    {
-                        opponent.Flinched = true;
-                    }
-                    else if ((eff.Force || opponent.Monster.Status == StatusCondition.None) && !opponent.Monster.Species.IsImmuneToStatus(eff.Status))
-                    {
-                        string message = eff.Message;
-                        if (opponent.Monster.Status != StatusCondition.None && eff.Force && !string.IsNullOrEmpty(eff.ForceMessage))
-                            message = eff.ForceMessage;
-                        
-                        opponent.Monster.Status = eff.Status;
-                        
-                        switch (eff.Status)
-                        {
-                            case StatusCondition.Paralysis:
-                                OnSendMessage(eff.Message ?? "{0}{1} was paralyzed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                opponent.EffectiveStats.Speed = (int)(((decimal)opponent.EffectiveStats.Speed) * 0.25m);
-                                break;
-                            case StatusCondition.Sleep:
-                                OnSendMessage(message ?? "{0}{1} fell asleep!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                opponent.Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
-                                break;
-                            case StatusCondition.Burn:
-                                OnSendMessage(message ?? "{0}{1} was burned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                opponent.EffectiveStats.Attack = (int)(((decimal)opponent.EffectiveStats.Attack) * 0.5m);
-                                break;
-                            case StatusCondition.BadlyPoisoned:
-                                OnSendMessage(message ?? "{0}{1} was badly poisoned!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                break;
-                            case StatusCondition.Freeze:
-                                OnSendMessage(message ?? "{0}{1} was frozen!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                                break;
-                            default:
-                                OnSendMessage(message ?? "{0}{1} was {2}ed!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, eff.Status.ToString().ToLower());
-                                break;
-                        }
+                            string message = eff.Message;
+                            if (mons[i].Monster.Status != StatusCondition.None && eff.Force && !string.IsNullOrEmpty(eff.ForceMessage))
+                                message = eff.ForceMessage;
 
+                            mons[i].Monster.Status = eff.Status;
+
+                            switch (eff.Status)
+                            {
+                                case StatusCondition.Paralysis:
+                                    OnSendMessage(message ?? "{0}{1} was paralyzed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    mons[i].EffectiveStats.Speed = (int)(((decimal)mons[i].EffectiveStats.Speed) * 0.25m);
+                                    break;
+                                case StatusCondition.Sleep:
+                                    OnSendMessage(message ?? "{0}{1} fell asleep!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    mons[i].Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
+                                    break;
+                                case StatusCondition.Burn:
+                                    OnSendMessage(message ?? "{0}{1} was burned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    mons[i].EffectiveStats.Attack = (int)(((decimal)mons[i].EffectiveStats.Attack) * 0.5m);
+                                    break;
+                                case StatusCondition.BadlyPoisoned:
+                                    OnSendMessage(message ?? "{0}{1} was badly poisoned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    break;
+                                case StatusCondition.Freeze:
+                                    OnSendMessage(message ?? "{0}{1} was frozen!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    break;
+                                default:
+                                    OnSendMessage(message ?? "{0}{1} was {2}ed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Status.ToString().ToLower());
+                                    break;
+                            }
+
+                        }
+                        else if (move.Category == ElementCategory.Status)
+                            OnSendMessage("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
                     }
-                    else if (move.Category == ElementCategory.Status)
-                        OnSendMessage("It didn't affect {0}{1}.", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 }
             }
 
@@ -761,7 +657,6 @@ namespace PkMn.Instance
 
         protected int CalculateDamage(ActiveMonster current, ActiveMonster opponent, bool isCriticalHit)
         {
-            //calculate type effectiveness
             decimal typeMultiplier = current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2);
 
             bool immuneToType = typeMultiplier == 0m;
@@ -835,7 +730,6 @@ namespace PkMn.Instance
 
         protected void HandleLockInBeginning(ActiveMonster current, MultiEffect lockInEffect, ActiveMonster opponent)
         {
-            //lock-in starting
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
                 OnSendMessage("{0}{1} can't move!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
             current.QueuedMove = current.SelectedMove;
@@ -862,6 +756,67 @@ namespace PkMn.Instance
             current.QueuedMove = null;
         }
 
+        protected void HandleResetStatusEffect(ActiveMonster current, StatusEffect eff, ActiveMonster opponent)
+        {
+            if (eff.Type != MoveEffectType.ResetStatus)
+                return;
+
+            ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+            for (int i = 0; i < mons.Length; i++)
+            {
+                Who who = i == 0 ? Who.Self : Who.Foe;
+
+                if (eff.Who == Who.Both || eff.Who == who)
+                {
+                    if (eff.Status == StatusCondition.Confusion)
+                        mons[i].ConfusedCount = 0;
+                    else if (eff.Status == StatusCondition.Flinch)
+                        mons[i].Flinched = false;
+                    else if (eff.Status == StatusCondition.BadlyPoisoned && mons[i].Monster.Status == StatusCondition.BadlyPoisoned)
+                    {
+                        mons[i].Monster.Status = StatusCondition.Poison;
+                        mons[i].BadlyPoisonedCount = 0;
+                    }
+                    else if (eff.Status == mons[i].Monster.Status)
+                    {
+                        if (i == 1 && (mons[i].Monster.Status == StatusCondition.Sleep || mons[i].Monster.Status == StatusCondition.Freeze))
+                            mons[i].MoveCancelled = true;
+                        mons[i].Monster.Status = StatusCondition.None;
+                    }
+                    else if (eff.Status == StatusCondition.All)
+                    {
+                        if (i == 1 && (mons[i].Monster.Status == StatusCondition.Sleep || mons[i].Monster.Status == StatusCondition.Freeze))
+                            mons[i].MoveCancelled = true;
+                        mons[i].ConfusedCount = 0;
+                        mons[i].Flinched = false;
+                        mons[i].Monster.Status = StatusCondition.None;
+                        mons[i].BadlyPoisonedCount = 0;
+                    }
+                }
+            }
+        }
+
+        protected void HandleResetStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
+        {
+            ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+            for (int i = 0; i < mons.Length; i++)
+            {
+                Who who = i == 0 ? Who.Self : Who.Foe;
+
+                if (eff.Who == Who.Both || eff.Who == who)
+                {
+                    mons[i].StatStages = new BattleStats();
+                    mons[i].DefenseMultiplier = 1;
+                    mons[i].SpecialDefenseMultiplier = 1;
+                    mons[i].ProtectStages = false;
+                    mons[i].IsSeeded = false;
+                    mons[i].Recalc();
+                }
+            }
+        }
+
         protected void HandleMissDamage(ActiveMonster current, ExtraDamageEffect crashEffect)
         {
             int crashDamage = crashEffect.Value;
@@ -885,6 +840,62 @@ namespace PkMn.Instance
             return ret;
         }
 
+        protected void HandleProtectStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
+        {
+            ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+            for (int i = 0; i < mons.Length; i++)
+            {
+                Who who = i == 0 ? Who.Self : Who.Foe;
+
+                if (eff.Who == Who.Both || eff.Who == who)
+                {
+                    if (mons[i].ProtectStages)
+                        OnSendMessage("But, it failed!");
+                    else if (!string.IsNullOrEmpty(eff.Message))
+                        OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+
+                    current.ProtectStages = true;
+                }
+            }
+        }
+
+        protected void HandleCopyEffect(ActiveMonster current, CopyEffect copy, ActiveMonster opponent)
+        {
+            if (copy.What == "move")
+            {
+                int copyIndex = ChooseMoveToMimic(opponent.Moves);
+                if (current.MovesOverride != null && current.MovesOverride.Length > 1)
+                    current.MovesOverride[current.MoveIndex] = opponent.Moves[copyIndex];
+                else
+                    current.MovesOverride = new Move[] { opponent.Moves[copyIndex] };
+                if (!string.IsNullOrEmpty(copy.Message))
+                    OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+            }
+            else if (copy.What == "type")
+            {
+                current.Type1Override = opponent.Type1;
+                current.Type2Override = opponent.Type2;
+                if (!string.IsNullOrEmpty(copy.Message))
+                    OnSendMessage(copy.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+            }
+            else if (copy.What == "all-moves")
+            {
+                current.MovesOverride = (Move[])opponent.Moves.Clone();
+                if (!string.IsNullOrEmpty(copy.Message))
+                    OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Monster.Species.Name.ToUpper());
+            }
+            else if (copy.What == "stat-stages")
+            {
+                current.StatStages = new BattleStats(opponent.StatStages);
+            }
+            else if (copy.What == "stats")
+            {
+                current.StatsOverride = new Stats(opponent.Stats);
+                current.EffectiveStats = new BattleStats(opponent.EffectiveStats);
+            }
+        }
+
         protected bool ExecuteMove(ActiveMonster current, ActiveMonster opponent)
         {
             current.LastMoveUsed = current.SelectedMove;
@@ -892,8 +903,8 @@ namespace PkMn.Instance
             if (!PreMoveChecks(current, opponent))
                 return true;
 
+            //...used move!
             LockInEffect lockInEffect = (LockInEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
-
             if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
             {
                 if(!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end") || current.QueuedMoveLimit == 1)
@@ -901,6 +912,7 @@ namespace PkMn.Instance
             }
             else
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+
 
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.None))
             {
@@ -952,25 +964,7 @@ namespace PkMn.Instance
 
             foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatStages))
             {
-                if (eff.Who == Who.Both || eff.Who == Who.Self)
-                {
-                    current.StatStages = new BattleStats();
-                    current.DefenseMultiplier = 1;
-                    current.SpecialDefenseMultiplier = 1;
-                    current.ProtectStages = false;
-                    current.IsSeeded = false;
-                    current.Recalc();
-                }
-                
-                if (eff.Who == Who.Both || eff.Who == Who.Foe)
-                {
-                    opponent.StatStages = new BattleStats();
-                    opponent.DefenseMultiplier = 1;
-                    opponent.SpecialDefenseMultiplier = 1;
-                    opponent.ProtectStages = false;
-                    opponent.IsSeeded = false;
-                    opponent.Recalc();
-                }
+                HandleResetStatStageEffect(current, eff, opponent);
             }
 
             bool triedStatusEffect = false;
@@ -982,79 +976,14 @@ namespace PkMn.Instance
 
                 triedStatusEffect = true;
 
-                if (eff.Who == Who.Both || eff.Who == Who.Self)
-                {
-                    if (eff.Status == StatusCondition.Confusion)
-                        current.ConfusedCount = 0;
-                    else if (eff.Status == StatusCondition.Flinch)
-                        current.Flinched = false;
-                    else if (eff.Status == StatusCondition.BadlyPoisoned && current.Monster.Status == StatusCondition.BadlyPoisoned)
-                    {
-                        current.Monster.Status = StatusCondition.Poison;
-                        current.BadlyPoisonedCount = 0;
-                    }
-                    else if (eff.Status == current.Monster.Status)
-                        current.Monster.Status = StatusCondition.None;
-                    else if (eff.Status == StatusCondition.All)
-                    {
-                        current.ConfusedCount = 0;
-                        current.Flinched = false;
-                        current.Monster.Status = StatusCondition.None;
-                        current.BadlyPoisonedCount = 0;
-                    }
-                }
-
-                if (eff.Who == Who.Both || eff.Who == Who.Foe)
-                {
-                    if (eff.Status == StatusCondition.Confusion)
-                        opponent.ConfusedCount = 0;
-                    else if (eff.Status == StatusCondition.Flinch)
-                        opponent.Flinched = false;
-                    else if (eff.Status == StatusCondition.BadlyPoisoned && opponent.Monster.Status == StatusCondition.BadlyPoisoned)
-                    {
-                        opponent.Monster.Status = StatusCondition.Poison;
-                        opponent.BadlyPoisonedCount = 0;
-                    }
-                    else if (eff.Status == opponent.Monster.Status)
-                    {
-                        if (opponent.Monster.Status == StatusCondition.Sleep || opponent.Monster.Status == StatusCondition.Freeze)
-                            opponent.MoveCancelled = true;
-                        opponent.Monster.Status = StatusCondition.None;
-                    }
-                    else if (eff.Status == StatusCondition.All)
-                    {
-                        if (opponent.Monster.Status == StatusCondition.Sleep || opponent.Monster.Status == StatusCondition.Freeze)
-                            opponent.MoveCancelled = true;
-                        opponent.ConfusedCount = 0;
-                        opponent.Flinched = false;
-                        opponent.Monster.Status = StatusCondition.None;
-                        opponent.BadlyPoisonedCount = 0;
-                    }
-                }
+                HandleResetStatusEffect(current, eff, opponent);
             }
 
             foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ProtectStatStages))
             {
                 triedStatusEffect = true;
-                if (eff.Who == Who.Both || eff.Who == Who.Self)
-                {
-                    if (current.ProtectStages)
-                        OnSendMessage("But, it failed!");
-                    else if (!string.IsNullOrEmpty(eff.Message))
-                        OnSendMessage(eff.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
-                        
-                    current.ProtectStages = true;
-                }
 
-                if (eff.Who == Who.Both || eff.Who == Who.Foe)
-                {
-                    if (opponent.ProtectStages)
-                        OnSendMessage("But, it failed!");
-                    else if (!string.IsNullOrEmpty(eff.Message))
-                        OnSendMessage(eff.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-
-                    current.ProtectStages = true;
-                }
+                HandleProtectStatStageEffect(current, eff, opponent);
             }
 
             //calculate critical hit or not
@@ -1179,40 +1108,7 @@ namespace PkMn.Instance
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Copy))
             {
                 foreach (CopyEffect copy in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Copy).Cast<CopyEffect>())
-                {
-                    if (copy.What == "move")
-                    {
-                        int copyIndex = ChooseMoveToMimic(opponent.Moves);
-                        if (current.MovesOverride != null && current.MovesOverride.Length > 1)
-                            current.MovesOverride[current.MoveIndex] = opponent.Moves[copyIndex];
-                        else
-                            current.MovesOverride = new Move[] { opponent.Moves[copyIndex] };
-                        if(!string.IsNullOrEmpty(copy.Message))
-                            OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
-                    }
-                    else if (copy.What == "type")
-                    {
-                        current.Type1Override = opponent.Type1;
-                        current.Type2Override = opponent.Type2;
-                        if (!string.IsNullOrEmpty(copy.Message))
-                            OnSendMessage(copy.Message, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                    }
-                    else if (copy.What == "all-moves")
-                    {
-                        current.MovesOverride = (Move[])opponent.Moves.Clone();
-                        if (!string.IsNullOrEmpty(copy.Message))
-                            OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Monster.Species.Name.ToUpper());
-                    }
-                    else if (copy.What == "stat-stages")
-                    {
-                        current.StatStages = new BattleStats(opponent.StatStages);
-                    }
-                    else if (copy.What == "stats")
-                    {
-                        current.StatsOverride = new Stats(opponent.Stats);
-                        current.EffectiveStats = new BattleStats(opponent.EffectiveStats);
-                    }
-                }
+                    HandleCopyEffect(current, copy, opponent);
 
                 return true;
             }

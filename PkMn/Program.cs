@@ -23,7 +23,7 @@ namespace PkMn
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Seaking", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Seaking", 50)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -42,7 +42,7 @@ namespace PkMn
 
         static void Main(string[] args)
         {
-            bool random = false;
+            bool random = true;
 
             Trainer player = new Trainer()
             {
@@ -59,9 +59,9 @@ namespace PkMn
             };
 
             //player.Party[0].Stats.Speed = 10;
-            player.Party[0].Moves[3] = Move.Moves["Toxic"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Leech Seed"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Fly"];
+            //player.Party[0].Moves[3] = Move.Moves["Toxic"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Quick Attack"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Counter"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
