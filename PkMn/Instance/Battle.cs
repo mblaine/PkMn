@@ -163,6 +163,10 @@ namespace PkMn.Instance
                 first.MoveOverrideTemporary = null;
             if(second.QueuedMove == null)
                 second.MoveOverrideTemporary = null;
+            if (first.SubstituteHP <= 0)
+                first.SubstituteHP = null;
+            if (second.SubstituteHP <= 0)
+                second.SubstituteHP = null;
 
             foreach (ActiveMonster current in new ActiveMonster[] { first, second })
             {
@@ -339,8 +343,18 @@ namespace PkMn.Instance
 
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
                         OnSendMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
-                        current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
-                        current.AccumulatedDamage += confusionDamage;
+                        if (current.SubstituteHP > 0)
+                        {
+                            current.SubstituteHP -= confusionDamage;
+                            OnSendMessage("The SUBSTITUTE took damage for {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                            if (opponent.SubstituteHP <= 0)
+                                OnSendMessage("{0}{1}'s SUBSTITUTE broke!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                        }
+                        else
+                        {
+                            current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
+                            current.AccumulatedDamage += confusionDamage;
+                        }
                         CancelQueuedMove(current, CancelMoveReason.HurtInConfusion);
                         return false;
                     }
@@ -502,6 +516,12 @@ namespace PkMn.Instance
                     OnSendMessage("{0}{1} evaded attack!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                     return true;
                 }
+            }
+
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Substitute))
+            {
+                HandleSubstituteEffect(current);
+                return true;
             }
 
             //already seeded
@@ -719,9 +739,21 @@ namespace PkMn.Instance
             for (int i = 0; i < hitsToTry; i++)
             {
                 hitCount++;
-                opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
-                LastDamageDealt = damage;
-                opponent.AccumulatedDamage += damage;
+                if (opponent.SubstituteHP > 0)
+                {
+                    opponent.SubstituteHP -= damage;
+                    if(damage > 0)
+                        OnSendMessage("The SUBSTITUTE took damage for {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    LastDamageDealt = 0;
+                    if (opponent.SubstituteHP <= 0)
+                        OnSendMessage("{0}{1}'s SUBSTITUTE broke!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                }
+                else
+                {
+                    opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
+                    LastDamageDealt = damage;
+                    opponent.AccumulatedDamage += damage;
+                }
 
                 if (damage != 0)
                     OnSendMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -765,6 +797,9 @@ namespace PkMn.Instance
                     else if (typeMultiplier < 1m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
                         OnSendMessage("It's not very effective.");
                 }
+
+                if (opponent.Monster.CurrentHP <= 0)
+                    break;
             }
 
             //crash
@@ -786,7 +821,7 @@ namespace PkMn.Instance
                 HandleTransferHealthEffect(current, transferHealth, opponent, damage * hitCount);
 
             ExtraDamageEffect recoilEffect = (ExtraDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.RecoilDamage).FirstOrDefault();
-            if (recoilEffect != null)
+            if (recoilEffect != null && (opponent.SubstituteHP == null || opponent.SubstituteHP > 0)) //no recoil if substitute broke
                 HandleRecoilEffect(current, recoilEffect, damage * hitCount);
 
             PayDayEffect payDay = (PayDayEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.PayDay).FirstOrDefault();
@@ -830,7 +865,7 @@ namespace PkMn.Instance
                 current.QueuedMove = null;
 
             //handle hyper beam
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After) && opponent.Monster.CurrentHP > 0)
+            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After) && opponent.Monster.CurrentHP > 0 && (opponent.SubstituteHP == null || opponent.SubstituteHP > 0))
                 current.QueuedMove = current.SelectedMove;
 
             return true;

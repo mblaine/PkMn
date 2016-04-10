@@ -39,6 +39,7 @@ namespace PkMn.Instance
         public Move MoveOverrideTemporary;
         public Move LastMoveUsed;
         public int AccumulatedDamage;
+        public int? SubstituteHP;
 
         public int DefenseMultiplier;
         public int SpecialDefenseMultiplier;
@@ -124,6 +125,7 @@ namespace PkMn.Instance
             SpecialDefenseMultiplier = 1;
             ProtectStages = false;
             IsSeeded = false;
+            SubstituteHP = null;
         }
 
         public void Recalc(StatType? stat = null)

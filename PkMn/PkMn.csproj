@@ -81,7 +81,6 @@
     <Compile Include="Model\Moves\StatStageEffect.cs" />
     <Compile Include="Model\Moves\StatusEffect.cs" />
     <Compile Include="Model\Moves\StatusRequirementEffect.cs" />
-    <Compile Include="Model\Moves\SubstituteEffect.cs" />
     <Compile Include="Model\Species.cs" />
     <Compile Include="Model\Element.cs" />
     <Compile Include="Model\Stats.cs" />

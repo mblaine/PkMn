@@ -18,12 +18,12 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Ivysaur", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Wartortle", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Seaking", 50)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Ponyta", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -58,16 +58,18 @@ namespace PkMn
                 Party = random ? Random() : RivalStatic()
             };
 
-            //player.Party[0].Stats.Speed = 10;
-            //player.Party[0].Moves[3] = Move.Moves["Toxic"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Quick Attack"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Counter"];
+            //player.Party[0].Stats.Speed = 200;
+            //player.Party[0].CurrentHP /= 4;
+            //player.Party[0].Moves[0] = Move.Moves["Substitute"];
+            //player.Party[0].Moves[1] = Move.Moves["Tackle"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Substitute"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Take Down"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //rival.Party[0].Moves[0] = Move.Moves["String Shot"];
+            //.rival.Party[0].Moves[0] = Move.Moves["String Shot"];
             //rival.Party[0].Moves[2] = Move.Moves["Haze"];
             //rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
@@ -76,8 +78,6 @@ namespace PkMn
             battle.SendMessage += Battle_SendMessage;
             battle.ChooseAction += Battle_ChooseAction;
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
-
-            //battle.PlayerCurrent.ConfusedCount = 10;
             //battle.PlayerCurrent.Monster.Status = StatusCondition.BadlyPoisoned;
             //battle.PlayerCurrent.BadlyPoisonedCount = 2;
             //battle.FoeCurrent.Monster.Status = StatusCondition.Freeze;
@@ -121,13 +121,15 @@ namespace PkMn
             return Rng.Next(0, moves.Count(m => m != null));
         }
 
+        //public static bool firstAttack = true;
         public static BattleAction Battle_ChooseAction(ActiveMonster current, Trainer trainer)
         {
             BattleAction ret = new BattleAction();
 
             ret.Type = BattleActionType.UseMove;
             ret.WhichMove = Rng.Next(0, current.Moves.Count(m => m != null));
-
+            //ret.WhichMove = firstAttack ? 0 : 1;
+            //firstAttack = false;
             return ret;
         }
 
@@ -139,7 +141,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (true && (message.ToLower().Contains("seed") || message.ToLower().Contains("poison")))
+            if (true && (message.ToLower().Contains("broke") || message.ToLower().Contains("created")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;

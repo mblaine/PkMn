@@ -108,9 +108,6 @@ namespace PkMn.Model
                     case MoveEffectType.MissDamage:
                         Effects.Add(new ExtraDamageEffect(effectType, effect));
                         break;
-                    case MoveEffectType.Substitute:
-                        Effects.Add(new SubstituteEffect(effectType, effect));
-                        break;
                     case MoveEffectType.StatusRequirement:
                         Effects.Add(new StatusRequirementEffect(effectType, effect));
                         break;

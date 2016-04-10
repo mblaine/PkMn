@@ -99,7 +99,17 @@ namespace PkMn.Instance
 
                 for (int i = 0; i < mons.Length; i++)
                 {
+                    if (mons[i] == null)
+                        continue;
+
                     Who who = i == 0 ? Who.Self : Who.Foe;
+
+                    if (who == Who.Foe && opponent.SubstituteHP > 0)
+                    {
+                        if (showFailMessage)
+                            OnSendMessage("But, it failed!");
+                        continue;
+                    }
 
                     if (mons[i] != null && (eff.Who == who || eff.Who == Who.Both) && (i == 0 || hitOpponent))
                     {
@@ -181,7 +191,17 @@ namespace PkMn.Instance
 
                 for (int i = 0; i < mons.Length; i++)
                 {
+                    if (mons[i] == null)
+                        continue;
+
                     Who who = i == 0 ? Who.Self : Who.Foe;
+
+                    if (who == Who.Foe && opponent.SubstituteHP > 0)
+                    {
+                        if (move.Category == ElementCategory.Status)
+                            OnSendMessage("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                        continue;
+                    }
 
                     if (mons[i] != null && (eff.Who == who || eff.Who == Who.Both) && (i == 0 || hitOpponent))
                     {
@@ -438,6 +458,9 @@ namespace PkMn.Instance
 
         protected void HandleRestoreHealthEffect(ActiveMonster current, HealthEffect eff)
         {
+            if (eff.Type != MoveEffectType.RestoreHealth)
+                return;
+
             if (eff.Of == "max" && eff.Who == Who.Self)
             {
                 int hpRestored = (int)(eff.Percent / 100m * (decimal)current.Monster.Stats.HP);
@@ -453,6 +476,9 @@ namespace PkMn.Instance
 
         protected void HandleTransferHealthEffect(ActiveMonster current, HealthEffect eff, ActiveMonster opponent, int damage)
         {
+            if (eff.Type != MoveEffectType.TransferHealth)
+                return;
+
             if (eff.Of == "damage")
             {
                 int hpRestored = (int)(eff.Percent / 100m * (decimal)damage);
@@ -467,6 +493,8 @@ namespace PkMn.Instance
 
         protected void HandleRecoilEffect(ActiveMonster current, ExtraDamageEffect eff, int damage)
         {
+            if (eff.Type != MoveEffectType.RecoilDamage)
+                return;
             int recoilDamage = (int)(eff.Percent / 100m * (decimal)damage);
             if (recoilDamage == 0)
                 recoilDamage = 1;
@@ -475,6 +503,28 @@ namespace PkMn.Instance
             current.AccumulatedDamage += recoilDamage;
             OnSendMessage("{0}{1}'s hit with recoil!", current.Trainer.MonNamePrefix, current.Monster.Name);
             OnSendMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
+        }
+
+        protected void HandleSubstituteEffect(ActiveMonster current)
+        {
+            if (current.SubstituteHP > 0)
+            {
+                OnSendMessage("{0}{1} has a SUBSTITUTE!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                return;
+            }
+
+            int hpCost = current.Monster.Stats.HP / 4;
+
+            if (current.Monster.CurrentHP < hpCost)
+            {
+                OnSendMessage("Too weak to make a SUBSTITUTE!");
+                return;
+            }
+
+            current.Monster.CurrentHP -= Math.Min(hpCost, current.Monster.CurrentHP);
+            OnSendMessage("It created a SUBSTITUTE!");
+            OnSendMessage("Did {0} damage to {1}{2}", hpCost, current.Trainer.MonNamePrefix, current.Monster.Name);
+            current.SubstituteHP = hpCost + 1;
         }
     }
 }

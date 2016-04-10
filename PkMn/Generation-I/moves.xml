@@ -403,7 +403,7 @@
     <effect type="recoil-damage" percent="25" />
   </move>
   <move name="Substitute" type="Normal" pp="10" accuracy="255">
-    <effect type="substitute" hp-percent="25" />
+    <effect type="substitute" />
   </move>
   <move name="Super Fang" type="Normal" pp="10" accuracy="229">
     <effect type="custom-damage" calculation="foe-hp-remaining" multiplier="0.5" />
