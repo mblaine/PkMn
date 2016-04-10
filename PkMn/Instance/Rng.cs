@@ -7,7 +7,7 @@ namespace PkMn.Instance
 {
     public static class Rng
     {
-        private static int Seed = 764132;
+        private static int Seed = 0;
 
         private static Random instance;
 

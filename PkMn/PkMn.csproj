@@ -48,6 +48,7 @@
     <Compile Include="Instance\BattleAction.cs" />
     <Compile Include="Instance\BattleStats.cs" />
     <Compile Include="Instance\Monster.cs" />
+    <Compile Include="Instance\BattleHandlers.cs" />
     <Compile Include="Instance\Rng.cs" />
     <Compile Include="Instance\Trainer.cs" />
     <Compile Include="Model\DexEntry.cs" />
