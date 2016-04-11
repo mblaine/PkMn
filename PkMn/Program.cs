@@ -18,12 +18,12 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Wartortle", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Growlithe", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Ponyta", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Charmeleon", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -48,22 +48,25 @@ namespace PkMn
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = random ? Random() : PlayerStatic()
+                Party = random ? Random() : PlayerStatic(),
+                IsPlayer = true
             };
 
             Trainer rival = new Trainer()
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = random ? Random() : RivalStatic()
+                Party = random ? Random() : RivalStatic(),
+                IsPlayer = false
             };
 
+            //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //player.Party[0].Stats.Speed = 200;
-            //player.Party[0].CurrentHP /= 4;
-            //player.Party[0].Moves[0] = Move.Moves["Substitute"];
+            //player.Party[0].CurrentHP = rival.Party[0].CurrentHP = 10000;
+            //player.Party[0].Moves[0] = Move.Moves["Transform"];
             //player.Party[0].Moves[1] = Move.Moves["Tackle"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Substitute"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Take Down"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Skull Bash"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Hyper Beam"];
 
             //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
@@ -81,6 +84,7 @@ namespace PkMn
             //battle.PlayerCurrent.Monster.Status = StatusCondition.BadlyPoisoned;
             //battle.PlayerCurrent.BadlyPoisonedCount = 2;
             //battle.FoeCurrent.Monster.Status = StatusCondition.Freeze;
+            //battle.PlayerCurrent.ConfusedCount = 10;
 
             do
             {
@@ -98,7 +102,26 @@ namespace PkMn
                 Log(battle.PlayerCurrent.Stats.ToString());
                 Log("Stages: " + battle.PlayerCurrent.StatStages);
                 Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
+                
+                string[] moveText = new string[4];
+                Move[] playerMoves = battle.PlayerCurrent.Moves;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (playerMoves[i] == null)
+                        moveText[i] = "";
+                    else
+                    {
+                        moveText[i] = string.Format("{0,-15}", playerMoves[i].Name.ToUpper());
+                        if (battle.PlayerCurrent.DisabledMoveIndex == i)
+                            moveText[i] += " disabled";
+                        else
+                            moveText[i] += string.Format(" {0,-2} / {1,-2}", battle.PlayerCurrent.CurrentPP[i], playerMoves[i].PP);
+                    }
 
+                }
+                Log("------------------------------------------------------------");
+                Log("{0,-30}{1,-30}", moveText[0], moveText[1]);
+                Log("{0,-30}{1,-30}", moveText[2], moveText[3]);
                 Log("------------------------------------------------------------");
             }
             while (battle.Step());
@@ -141,7 +164,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (true && (message.ToLower().Contains("broke") || message.ToLower().Contains("created")))
+            if (false && (message.ToLower().Contains("ember")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;
@@ -162,7 +185,6 @@ namespace PkMn
             sb.AppendFormat(format, args);
             sb.AppendLine();
         }
-
 
         public static Monster Battle_ChooseMon(Trainer trainer)
         {

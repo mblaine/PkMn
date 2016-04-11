@@ -273,7 +273,7 @@ namespace PkMn.Instance
             }
             else
             {
-                Move[] enabled = opponent.Moves.Zip(opponent.Monster.CurrentPP, (move, pp) => new KeyValuePair<Move, int>(move, pp)).Where(p => p.Value > 0).Select(p => p.Key).ToArray();
+                Move[] enabled = opponent.Moves.Zip(opponent.CurrentPP, (move, pp) => new KeyValuePair<Move, int>(move, pp)).Where(p => p.Value > 0).Select(p => p.Key).ToArray();
 
                 if (enabled.Length <= 0)
                 {
@@ -442,6 +442,7 @@ namespace PkMn.Instance
             else if (copy.What == "all-moves")
             {
                 current.MovesOverride = (Move[])opponent.Moves.Clone();
+                current.CurrentPPOverride = new int[] { 5, 5, 5, 5 };
                 if (!string.IsNullOrEmpty(copy.Message))
                     OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Monster.Species.Name.ToUpper());
             }

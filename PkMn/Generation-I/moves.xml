@@ -87,7 +87,7 @@
     <effect type="stat" stat="Defense" change="1" who="self" />
   </move>
   <move name="Dig" type="Ground" pp="10" power="100" accuracy="255">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} dug a hole!" />
+    <effect type="charge" when="before" message="{0}{1} dug a hole!" />
     <effect type="semi-invulnerable" />
   </move>
   <move name="Disable" type="Normal" pp="20" accuracy="140">
@@ -145,7 +145,7 @@
     <effect type="stat" stat="Accuracy" who="foe" change="-1" />
   </move>
   <move name="Fly" type="Flying" pp="15" power="70" accuracy="242">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} flew up high!" />
+    <effect type="charge" when="before" message="{0}{1} flew up high!" />
     <effect type="semi-invulnerable" />
   </move>
   <move name="Focus Energy" type="Normal" pp="30" accuracy="255" category="status">
@@ -193,7 +193,7 @@
   </move>
   <move name="Hydro Pump" type="Water" pp="5" power="120" accuracy="204" />
   <move name="Hyper Beam" type="Normal" pp="5" power="150" accuracy="229">
-    <effect type="charge" min="1" max="1" when="after" message="{0}{1} must recharge!" />
+    <effect type="charge" when="after" message="{0}{1} must recharge!" />
   </move>
   <move name="Hyper Fang" type="Normal" pp="15" power="80" accuracy="229">
     <effect type="status" status="Flinch" who="foe" chance="26" />
@@ -303,7 +303,7 @@
   </move>
   <move name="Razor Leaf" type="Grass" pp="25" power="55" accuracy="242" crit-ratio="8" />
   <move name="Razor Wind" type="Normal" pp="10" power="80" accuracy="191">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} made a whirlwind!" />
+    <effect type="charge" when="before" message="{0}{1} made a whirlwind!" />
   </move>
   <move name="Recover" type="Normal" pp="20" accuracy="255">
     <effect type="restore-health" percent="50" of="max" who="self" />
@@ -346,10 +346,10 @@
     <effect type="status" status="Sleep" who="foe" />
   </move>
   <move name="Skull Bash" type="Normal" pp="15" power="100" accuracy="255">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} lowered its head!" />
+    <effect type="charge" when="before" message="{0}{1} lowered its head!" />
   </move>
   <move name="Sky Attack" type="Flying" pp="5" power="140" accuracy="229">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} is glowing!"/>
+    <effect type="charge" when="before" message="{0}{1} is glowing!"/>
   </move>
   <move name="Slam" type="Normal" pp="20" power="80" accuracy="191" />
   <move name="Slash" type="Normal" pp="20" power="70" accuracy="255" crit-ratio="8" />
@@ -369,7 +369,7 @@
     <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Solar Beam" type="Grass" pp="10" power="120" accuracy="255">
-    <effect type="charge" min="1" max="1" when="before" message="{0}{1} took in sunlight!" />
+    <effect type="charge" when="before" message="{0}{1} took in sunlight!" />
   </move>
   <move name="Sonic Boom" type="Normal" pp="20" accuracy="229">
     <effect type="custom-damage" calculation="constant" value="20" />
@@ -394,7 +394,7 @@
   </move>
   <move name="Struggle" type="Normal" pp="10" power="50" accuracy="255">
     <effect type="recoil-damage" percent="50" />
-    <effect type="never-deduct-pp" />
+    <effect type="never-deduct-pp" message="{0}{1} has no moves left!" />
   </move>
   <move name="Stun Spore" type="Grass" pp="30" accuracy="191" category="status">
     <effect type="status" status="Paralysis" who="foe" />

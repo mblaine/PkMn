@@ -10,5 +10,6 @@ namespace PkMn.Instance
         public string Name;
         public string MonNamePrefix;
         public Monster[] Party;
+        public bool IsPlayer;
     }
 }

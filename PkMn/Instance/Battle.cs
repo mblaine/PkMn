@@ -83,12 +83,19 @@ namespace PkMn.Instance
             }
 
             BattleAction playerAction = null;
+            PlayerCurrent.MoveIndex = -1;
+            FoeCurrent.MoveIndex = -1;
 
-            if (PlayerCurrent.QueuedMove == null)
+            bool playerCanAttack = PlayerCurrent.CanSelectAMove;
+            bool foeCanAttack = FoeCurrent.CanSelectAMove;
+            if (!playerCanAttack)
+                PlayerCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
+
+            if (PlayerCurrent.QueuedMove == null  && PlayerCurrent.MoveOverrideTemporary == null)
             {
                 playerAction = ChooseAction(PlayerCurrent, Player);
 
-                while (playerAction.Type == BattleActionType.UseMove && PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex)
+                while (playerAction.Type == BattleActionType.UseMove && ((PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex) || PlayerCurrent.CurrentPP[playerAction.WhichMove] <= 0))
                 {
                     //OnSendMessage("It's disabled");
                     playerAction = ChooseAction(PlayerCurrent, Player);
@@ -149,7 +156,10 @@ namespace PkMn.Instance
                 }
             }
 
-            if(FoeCurrent.QueuedMove == null)
+            if (!foeCanAttack)
+                FoeCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
+
+            if(FoeCurrent.QueuedMove == null && FoeCurrent.MoveOverrideTemporary == null)
                 FoeCurrent.MoveIndex = Rng.Next(0, FoeCurrent.Moves.Count(m => m != null));
 
             ActiveMonster first = WhoGoesFirst(PlayerCurrent, FoeCurrent);
@@ -159,10 +169,10 @@ namespace PkMn.Instance
             second.Flinched = false;
             first.MoveCancelled = false;
             second.MoveCancelled = false;
-            if(first.QueuedMove == null)
-                first.MoveOverrideTemporary = null;
-            if(second.QueuedMove == null)
-                second.MoveOverrideTemporary = null;
+            if(PlayerCurrent.QueuedMove == null && playerCanAttack)
+                PlayerCurrent.MoveOverrideTemporary = null;
+            if(FoeCurrent.QueuedMove == null && foeCanAttack)
+                FoeCurrent.MoveOverrideTemporary = null;
             if (first.SubstituteHP <= 0)
                 first.SubstituteHP = null;
             if (second.SubstituteHP <= 0)
@@ -377,7 +387,17 @@ namespace PkMn.Instance
                     return false;
                 }
                 else
+                {
+                    for (int i = 0; i < current.Moves.Length; i++)
+                    {
+                        if (current.Moves[i] == current.QueuedMove)
+                        {
+                            current.MoveIndex = i;
+                            break;
+                        }
+                    }
                     current.QueuedMove = null;
+                }
             }
 
             if (current.QueuedMove != null && afterEffect != null)
@@ -388,10 +408,11 @@ namespace PkMn.Instance
                 return false;
             }
 
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.RestoreHealth) && current.Monster.CurrentHP == current.Monster.Stats.HP)
+            if (current.SelectedMove != null && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.RestoreHealth) && current.Monster.CurrentHP == current.Monster.Stats.HP)
             {
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
                 OnSendMessage("But, it failed.");
+                current.DeductPP();
                 return false;
             }
 
@@ -491,15 +512,22 @@ namespace PkMn.Instance
             if (!PreMoveChecks(current, opponent))
                 return true;
 
+            MoveEffect alwaysAvailable = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.NeverDeductPP).FirstOrDefault();
+            if (alwaysAvailable != null && !string.IsNullOrEmpty(alwaysAvailable.Message))
+                OnSendMessage(alwaysAvailable.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+
             //...used move!
             LockInEffect lockInEffect = (LockInEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
             if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
             {
-                if(!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end") || current.QueuedMoveLimit == 1)
+                if (!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end") || current.QueuedMoveLimit == 1)
                     OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
             else
+            {
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
+                current.DeductPP();
+            }
 
             //no effect
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.None))
@@ -865,7 +893,7 @@ namespace PkMn.Instance
                 current.QueuedMove = null;
 
             //handle hyper beam
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After) && opponent.Monster.CurrentHP > 0 && (opponent.SubstituteHP == null || opponent.SubstituteHP > 0))
+            if (current.SelectedMove != null && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After) && opponent.Monster.CurrentHP > 0 && (opponent.SubstituteHP == null || opponent.SubstituteHP > 0))
                 current.QueuedMove = current.SelectedMove;
 
             return true;

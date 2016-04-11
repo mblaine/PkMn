@@ -35,6 +35,7 @@ namespace PkMn.Instance
         public Element Type2Override;
         public Stats StatsOverride;
         public Move[] MovesOverride;
+        public int[] CurrentPPOverride;
 
         public Move MoveOverrideTemporary;
         public Move LastMoveUsed;
@@ -73,6 +74,7 @@ namespace PkMn.Instance
         public Element Type1 { get { return Type1Override ?? Monster.Species.Type1; } }
         public Element Type2 { get { return Type1Override != null ? Type2Override : (Type2Override ?? Monster.Species.Type2); } }
         public Stats Stats { get { return StatsOverride ?? Monster.Stats; } }
+        public int[] CurrentPP { get { return CurrentPPOverride ?? Monster.CurrentPP; } }
 
         public Move[] Moves
         {
@@ -84,6 +86,18 @@ namespace PkMn.Instance
                     return Monster.Moves.Select(m => m.Effects.Any(e => e.Type == MoveEffectType.Copy && ((CopyEffect)e).What == "move") ? MovesOverride[0] : m).ToArray();
                 else
                     return MovesOverride;
+            }
+        }
+
+        public bool CanSelectAMove
+        {
+            get
+            {
+                 KeyValuePair<Move, int>[] moves = Moves.Zip(CurrentPP, (move, pp) => new KeyValuePair<Move, int>(move, pp)).ToArray();
+                 for (int i = 0; i < moves.Length; i++)
+                     if (moves[i].Value > 0 && i != DisabledMoveIndex)
+                         return true;
+                 return false;
             }
         }
 
@@ -118,6 +132,7 @@ namespace PkMn.Instance
             Type2Override = null;
             StatsOverride = null;
             MovesOverride = null;
+            CurrentPPOverride = null;
             MoveOverrideTemporary = null;
             LastMoveUsed = null;
             AccumulatedDamage = 0;
@@ -163,6 +178,23 @@ namespace PkMn.Instance
                 return 999;
             else
                 return ret;
+        }
+
+        public void DeductPP()
+        {
+            if (!Trainer.IsPlayer)
+                return;
+
+            if (MoveOverrideTemporary == null && QueuedMove == null && MoveIndex >= 0 && MoveIndex < 4)
+            {
+                if (!Moves[MoveIndex].Effects.Any(e => e.Type == MoveEffectType.NeverDeductPP))
+                {
+                    if (CurrentPPOverride != null)
+                        CurrentPPOverride[MoveIndex]--;
+                    else
+                        Monster.CurrentPP[MoveIndex]--;
+                }
+            }
         }
 
         public override string ToString()
