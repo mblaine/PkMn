@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PkMn.Model;
-using PkMn.Model.Moves;
+using PkMn.Model.MoveEffects;
 using PkMn.Model.Enums;
 
 namespace PkMn.Instance

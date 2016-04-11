@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using PkMn.Model.Enums;
 
-namespace PkMn.Model.Moves
+namespace PkMn.Model.MoveEffects
 {
     public class CopyEffect : MoveEffect
     {

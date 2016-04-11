@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using PkMn.Model.Enums;
-using PkMn.Model.Moves;
+using PkMn.Model.MoveEffects;
 
 namespace PkMn.Model
 {

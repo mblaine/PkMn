@@ -7,7 +7,7 @@ using System.IO;
 using PkMn.Model;
 using PkMn.Instance;
 using PkMn.Model.Enums;
-using PkMn.Model.Moves;
+using PkMn.Model.MoveEffects;
 
 namespace PkMn
 {

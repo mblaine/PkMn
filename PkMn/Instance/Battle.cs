@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using PkMn.Model;
 using PkMn.Model.Enums;
-using PkMn.Model.Moves;
+using PkMn.Model.MoveEffects;
 
 namespace PkMn.Instance
 {
