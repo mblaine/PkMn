@@ -2,20 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{112D05BC-49E1-4696-8A93-D23D4EFAE725}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{018FBBFC-30F5-4A8A-8D76-BEF8FE9AB90D}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PkMn</RootNamespace>
-    <AssemblyName>PkMn</AssemblyName>
+    <RootNamespace>PkMn.Instance</RootNamespace>
+    <AssemblyName>PkMn.Instance</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,8 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,15 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ActiveMonster.cs" />
+    <Compile Include="Battle.cs" />
+    <Compile Include="BattleAction.cs" />
+    <Compile Include="BattleHandlers.cs" />
+    <Compile Include="BattleStats.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rng.cs" />
+    <Compile Include="Trainer.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\PkMn.Instance\PkMn.Instance.csproj">
-      <Project>{018FBBFC-30F5-4A8A-8D76-BEF8FE9AB90D}</Project>
-      <Name>PkMn.Instance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PkMn.Model\PkMn.Model.csproj">
       <Project>{E86EC2D9-58B9-4081-AB7D-27DD03EFE349}</Project>
       <Name>PkMn.Model</Name>
