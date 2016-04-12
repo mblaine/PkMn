@@ -30,6 +30,7 @@ namespace PkMn.Instance
         public Move QueuedMove;
         public int QueuedMoveLimit;
         public int QueuedMoveDamage;
+        public bool ClearQueuedAfterTurn;
 
         public Element Type1Override;
         public Element Type2Override;
@@ -141,6 +142,7 @@ namespace PkMn.Instance
             ProtectStages = false;
             IsSeeded = false;
             SubstituteHP = null;
+            ClearQueuedAfterTurn = false;
         }
 
         public void Recalc(StatType? stat = null)
@@ -161,6 +163,11 @@ namespace PkMn.Instance
                 EffectiveStats.Attack = RecalcStat(Stats.Attack, StatStages.Attack);
                 EffectiveStats.Evade = RecalcStat(100, StatStages.Evade);
                 EffectiveStats.Accuracy = RecalcStat(100, StatStages.Accuracy);
+
+                if(Monster.Status == StatusCondition.Paralysis)
+                    EffectiveStats.Speed = (int)(((decimal)EffectiveStats.Speed) * 0.25m);
+                if(Monster.Status == StatusCondition.Burn)
+                    EffectiveStats.Attack = (int)(((decimal)EffectiveStats.Attack) * 0.5m);
             }
         }
 

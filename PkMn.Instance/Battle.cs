@@ -148,6 +148,7 @@ namespace PkMn.Instance
                         OnSendMessage("Come back {0}!", PlayerCurrent.Monster.Name);
                         PlayerCurrent.Monster = playerAction.SwitchTo;
                         PlayerCurrent.Reset();
+                        PlayerCurrent.Recalc();
                         OnSendMessage("Go {0}!", PlayerCurrent.Monster.Name);
                         break;
                     case BattleActionType.UseMove:
@@ -169,6 +170,8 @@ namespace PkMn.Instance
             second.Flinched = false;
             first.MoveCancelled = false;
             second.MoveCancelled = false;
+            first.ClearQueuedAfterTurn = false;
+            second.ClearQueuedAfterTurn = false;
             if(PlayerCurrent.QueuedMove == null && playerCanAttack)
                 PlayerCurrent.MoveOverrideTemporary = null;
             if(FoeCurrent.QueuedMove == null && foeCanAttack)
@@ -191,6 +194,9 @@ namespace PkMn.Instance
                 if (current.SelectedMove != null)
                 {
                     bool battleContinues = ExecuteMove(current, opponent);
+                    if (current.ClearQueuedAfterTurn)
+                        current.QueuedMove = null;
+
                     if (!battleContinues)
                     {
                         //OnSendMessage("Battle ended due to roar or something");
@@ -232,8 +238,8 @@ namespace PkMn.Instance
 
         protected ActiveMonster WhoGoesFirst(ActiveMonster one, ActiveMonster two)
         {
-            int onePriority = one.MoveIndex >= 0 ? one.SelectedMove.Priority : -10;
-            int twoPriority = two.MoveIndex >= 0 ? two.SelectedMove.Priority : -10;
+            int onePriority = one.MoveIndex >= 0 || one.QueuedMove != null || one.MoveOverrideTemporary != null  ? one.SelectedMove.Priority : -10;
+            int twoPriority = two.MoveIndex >= 0 || two.QueuedMove != null || two.MoveOverrideTemporary != null ? two.SelectedMove.Priority : -10;
 
             if (onePriority > twoPriority)
                 return one;
@@ -388,15 +394,16 @@ namespace PkMn.Instance
                 }
                 else
                 {
-                    for (int i = 0; i < current.Moves.Length; i++)
-                    {
-                        if (current.Moves[i] == current.QueuedMove)
-                        {
-                            current.MoveIndex = i;
-                            break;
-                        }
-                    }
-                    current.QueuedMove = null;
+                    current.ClearQueuedAfterTurn = true;
+                    //for (int i = 0; i < current.Moves.Length; i++)
+                    //{
+                    //    if (current.Moves[i] == current.QueuedMove)
+                    //    {
+                    //        current.MoveIndex = i;
+                    //        break;
+                    //    }
+                    //}
+                    //current.QueuedMove = null;
                 }
             }
 
@@ -560,10 +567,6 @@ namespace PkMn.Instance
                 return true;
             }
 
-            //trapping the enemy
-            if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
-                CancelQueuedMove(opponent, CancelMoveReason.Trapped);
-
             //mirror move
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.MirrorMove))
             {
@@ -575,7 +578,9 @@ namespace PkMn.Instance
                 else
                 {
                     current.MoveOverrideTemporary = opponent.LastMoveUsed;
-                    return ExecuteMove(current, opponent);
+                    bool ret = ExecuteMove(current, opponent);
+                    current.MoveOverrideTemporary = null;
+                    return ret;
                 }
             }
 
@@ -584,12 +589,10 @@ namespace PkMn.Instance
             {
                 string[] moves = Move.Moves.Values.Where(m => m != current.SelectedMove && !m.Effects.Any(e => e.Type == MoveEffectType.NeverDeductPP)).Select(m => m.Name).ToArray();
                 current.MoveOverrideTemporary = Move.Moves[moves[Rng.Next(0, moves.Length)]];
-                return ExecuteMove(current, opponent);
+                bool ret = ExecuteMove(current, opponent);
+                current.MoveOverrideTemporary = null;
+                return ret;
             }
-
-            //reset stages
-            foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatStages))
-                HandleResetStatStageEffect(current, eff, opponent);
 
             bool triedStatusEffect = false;
 
@@ -602,6 +605,10 @@ namespace PkMn.Instance
                 triedStatusEffect = true;
                 HandleResetStatusEffect(current, eff, opponent);
             }
+
+            //reset stages
+            foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatStages))
+                HandleResetStatStageEffect(current, eff, opponent);
 
             //protect stages
             foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ProtectStatStages))
@@ -635,6 +642,10 @@ namespace PkMn.Instance
 
             current.IsSemiInvulnerable = false;
 
+            //trapping the enemy
+            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
+                CancelQueuedMove(opponent, CancelMoveReason.Trapped);
+
             //force run away
             MoveEffect endWildBattle = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.EndWildBattle).FirstOrDefault();
             if (moveHit && endWildBattle != null)
@@ -667,16 +678,13 @@ namespace PkMn.Instance
             //handle pre-damage-calc effects
             foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => e.Temporary))
             {
-                if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
-                    triedStatusEffect = true;
-
                 HandleStatEffect(current, opponent, eff, moveHit);
             }
             
             //handle self status condition effects
             foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Status).Cast<StatusEffect>().Where(e => string.IsNullOrEmpty(((StatusEffect)e).Condition)))
             {
-                if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
+                if ((moveHit && !immuneToType) || eff.Who == Who.Both || (eff.Who == Who.Self && eff.Status != StatusCondition.Faint))
                     triedStatusEffect = true;
 
                 HandleStatusEffect(current, current.SelectedMove, null, eff, moveHit);

@@ -16,14 +16,20 @@ namespace PkMn
         private static DateTime? lastMessage = null;
         private static StringBuilder sb = new StringBuilder();
 
+        static void Main(string[] args)
+        {
+            //Automatic(false);
+            Interactive(args);
+        }
+
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Growlithe", 25)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Moltres", 55)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Charmeleon", 25)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Diglett", 55)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
         static Monster[] Random()
@@ -40,9 +46,123 @@ namespace PkMn
             return ret;
         }
 
-        static void Main(string[] args)
+        static void Interactive(string[] args)
         {
-            bool random = true;
+            Trainer player = new Trainer()
+            {
+                Name = "Matthew",
+                MonNamePrefix = "",
+                Party = Random(),
+                IsPlayer = true
+            };
+
+            Trainer rival = new Trainer()
+            {
+                Name = "Gary",
+                MonNamePrefix = "Enemy ",
+                Party = Random(),
+                IsPlayer = false
+            };
+
+            //player.Party[0].Moves[0] = Move.Moves["Sharpen"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Ember"];
+
+            Battle battle = new Battle(player, rival, false);
+            battle.ChooseNextMon += Battle_ChooseMon;
+            battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
+
+            battle.SendMessage += delegate(string message)
+            {
+                Console.Write(message);
+                Console.ReadLine();
+            };
+
+            battle.ChooseAction += delegate(ActiveMonster current, Trainer trainer)
+            {
+                string[] moveText = new string[4];
+                Move[] playerMoves = battle.PlayerCurrent.Moves;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (playerMoves[i] == null)
+                        moveText[i] = "";
+                    else
+                    {
+                        moveText[i] = string.Format("{0} {1,-15}", i + 1, playerMoves[i].Name.ToUpper());
+                        if (battle.PlayerCurrent.DisabledMoveIndex == i)
+                            moveText[i] += " disabled";
+                        else
+                            moveText[i] += string.Format(" {0,-2} / {1,-2}", battle.PlayerCurrent.CurrentPP[i], playerMoves[i].PP);
+                    }
+
+                }
+                Log("{0,-30}{1,-30}", moveText[0], moveText[1]);
+                Log("{0,-30}{1,-30}", moveText[2], moveText[3]);
+                Log("------------------------------------------------------------");
+
+                int moveIndex = 0;
+                string s = null;
+                while ((!int.TryParse(s = Console.ReadLine(), out moveIndex) || moveIndex < 1 || moveIndex > 4) && s.ToLower() != "c") ;
+
+                BattleAction action = new BattleAction();
+                if (s.ToLower() == "c")
+                {
+                    
+                    action.Type = BattleActionType.ChangeMon;
+                    action.SwitchTo = ChooseMon(trainer.Party);
+                    return action;
+                }
+
+                action.Type = BattleActionType.UseMove;
+                action.WhichMove = moveIndex - 1;
+                return action;
+            };
+
+            do
+            {
+                Log("------------------------------------------------------------");
+                Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
+                Log("{0,60}", battle.FoeCurrent.Monster);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Log("{0,60}", battle.FoeCurrent.Stats);
+                Log("{0,60}", "Stages: " + battle.FoeCurrent.StatStages);
+                Log("{0,60}", "Effective: " + battle.FoeCurrent.EffectiveStats);
+
+                Console.ForegroundColor = ForeColor(battle.PlayerCurrent.Monster.Species.DexEntry.Color);
+                Log(battle.PlayerCurrent.Monster.ToString());
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Log(battle.PlayerCurrent.Stats.ToString());
+                Log("Stages: " + battle.PlayerCurrent.StatStages);
+                Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
+                Log("------------------------------------------------------------");
+            }
+            while (battle.Step());
+
+            Console.ReadLine();
+            Console.ReadLine();
+
+        }
+
+        static Monster ChooseMon(Monster[] party)
+        {
+            int i = 0;
+
+            foreach (Monster mon in party)
+            {
+                Console.Write("{0,-3}{1,-30}", i + 1, mon.ToString());
+                i++;
+                if (i % 2 == 0)
+                    Console.WriteLine();
+            }
+
+            int choice = 0;
+
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > party.Length) ;
+            Log("------------------------------------------------------------");
+            return party[choice - 1];
+        }
+
+        static void Automatic(bool random)
+        {
 
             Trainer player = new Trainer()
             {
@@ -65,15 +185,15 @@ namespace PkMn
             //player.Party[0].CurrentHP = rival.Party[0].CurrentHP = 10000;
             //player.Party[0].Moves[0] = Move.Moves["Transform"];
             //player.Party[0].Moves[1] = Move.Moves["Tackle"];
-            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Skull Bash"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Hyper Beam"];
+            //player.Party[0].Moves[0] = player.Party[0].Moves[1] = player.Party[0].Moves[2] = player.Party[0].Moves[3] = Move.Moves["Fire Spin"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Dig"];
 
-            //player.Party[0].Moves[0] = Move.Moves["Horn Drill"];
+            //player.Party[0].Moves[0] = Move.Moves["Dig"];
             //player.Party[0].Moves[3] = Move.Moves["Disable"];
             //player.Party[0].Moves[3] = Move.Moves["Softboiled"];
             //player.Party[1].Moves[1] = Move.Moves["Thunder Wave"];
-            //.rival.Party[0].Moves[0] = Move.Moves["String Shot"];
-            //rival.Party[0].Moves[2] = Move.Moves["Haze"];
+            //rival.Party[0].Moves[0] = Move.Moves["String Shot"];
+            //rival.Party[0].Moves[2] = Move.Moves["Fly"];
             //rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
             Battle battle = new Battle(player, rival, false);
@@ -164,7 +284,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (false && (message.ToLower().Contains("ember")))
+            if (true && (message.ToLower().Contains("dug a hole") || message.ToLower().Contains("used dig")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;

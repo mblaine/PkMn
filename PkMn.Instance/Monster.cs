@@ -145,6 +145,9 @@ namespace PkMn.Instance
                 case StatusCondition.Sleep:
                     status = " SLP";
                     break;
+                case StatusCondition.Faint:
+                    status = " FNT";
+                    break;
             }
 
             return string.Format(":L{0} {1} ({2} / {3}){4}", Level, Name, CurrentHP, Stats.HP, status);
