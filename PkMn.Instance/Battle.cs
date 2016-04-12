@@ -88,17 +88,41 @@ namespace PkMn.Instance
 
             bool playerCanAttack = PlayerCurrent.CanSelectAMove;
             bool foeCanAttack = FoeCurrent.CanSelectAMove;
-            if (!playerCanAttack)
-                PlayerCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
 
             if (PlayerCurrent.QueuedMove == null  && PlayerCurrent.MoveOverrideTemporary == null)
             {
                 playerAction = ChooseAction(PlayerCurrent, Player);
 
-                while (playerAction.Type == BattleActionType.UseMove && ((PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex) || PlayerCurrent.CurrentPP[playerAction.WhichMove] <= 0))
+                if (!playerCanAttack && playerAction.Type == BattleActionType.UseMove)
+                    PlayerCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
+                else
                 {
-                    //OnSendMessage("It's disabled");
-                    playerAction = ChooseAction(PlayerCurrent, Player);
+                    while ((playerAction.Type == BattleActionType.UseMove && ((PlayerCurrent.DisabledCount > 0 && playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex) || PlayerCurrent.CurrentPP[playerAction.WhichMove] <= 0))
+                            || (playerAction.Type == BattleActionType.ChangeMon && (playerAction.SwitchTo.CurrentHP <= 0 || playerAction.SwitchTo == PlayerCurrent.Monster)))
+                    {
+                        if (!playerCanAttack && playerAction.Type == BattleActionType.UseMove)
+                        {
+                            PlayerCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
+                            break;
+                        }
+
+                        if (playerAction.Type == BattleActionType.UseMove)
+                        {
+                            if (playerAction.WhichMove == PlayerCurrent.DisabledMoveIndex)
+                                OnSendMessage("The move is disabled!");
+                            else if (PlayerCurrent.CurrentPP[playerAction.WhichMove] <= 0)
+                                OnSendMessage("No PP left for this move!");
+                        }
+                        else if (playerAction.Type == BattleActionType.ChangeMon)
+                        {
+                            if (playerAction.SwitchTo == PlayerCurrent.Monster)
+                                OnSendMessage("{0} is already out!", PlayerCurrent.Monster.Name);
+                            else if (playerAction.SwitchTo.CurrentHP <= 0)
+                                OnSendMessage("There's no will to fight!");
+                        }
+
+                        playerAction = ChooseAction(PlayerCurrent, Player);
+                    }
                 }
 
                 if (playerAction.Type == BattleActionType.Run)
@@ -172,10 +196,6 @@ namespace PkMn.Instance
             second.MoveCancelled = false;
             first.ClearQueuedAfterTurn = false;
             second.ClearQueuedAfterTurn = false;
-            if(PlayerCurrent.QueuedMove == null && playerCanAttack)
-                PlayerCurrent.MoveOverrideTemporary = null;
-            if(FoeCurrent.QueuedMove == null && foeCanAttack)
-                FoeCurrent.MoveOverrideTemporary = null;
             if (first.SubstituteHP <= 0)
                 first.SubstituteHP = null;
             if (second.SubstituteHP <= 0)
@@ -196,6 +216,9 @@ namespace PkMn.Instance
                     bool battleContinues = ExecuteMove(current, opponent);
                     if (current.ClearQueuedAfterTurn)
                         current.QueuedMove = null;
+
+                    if (current.QueuedMove == null)
+                        current.MoveOverrideTemporary = null;
 
                     if (!battleContinues)
                     {
@@ -395,15 +418,17 @@ namespace PkMn.Instance
                 else
                 {
                     current.ClearQueuedAfterTurn = true;
-                    //for (int i = 0; i < current.Moves.Length; i++)
-                    //{
-                    //    if (current.Moves[i] == current.QueuedMove)
-                    //    {
-                    //        current.MoveIndex = i;
-                    //        break;
-                    //    }
-                    //}
-                    //current.QueuedMove = null;
+                    if (current.MoveOverrideTemporary == null)
+                    {
+                        for (int i = 0; i < current.Moves.Length; i++)
+                        {
+                            if (current.Moves[i] == current.QueuedMove)
+                            {
+                                current.MoveIndex = i;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 

@@ -14,17 +14,14 @@ namespace PkMn.Instance
         {
             if (current.Monster.CurrentHP == 0)
             {
+
                 OnSendMessage("{0}{1} fainted!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 current.Monster.Status = StatusCondition.Faint;
-                if (isPlayer)
-                    current.Monster = ChooseNextMon(current.Trainer);
-                else
-                    current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
 
-                current.Reset();
-
-                if (current.Monster == null)
+                if (!current.AnyMonstersRemaining)
                 {
+                    current.Monster = null;
+
                     if (isPlayer)
                         OnSendMessage("{0} is out of usable Pokémon! {0} blacked out!", current.Trainer.Name);
                     else
@@ -33,15 +30,32 @@ namespace PkMn.Instance
                     if (RewardMoney > 0)
                         Console.WriteLine("{0} picked up ${1}!", isPlayer ? Foe.Name : Player.Name, RewardMoney);
 
+                    return;
+                }
+
+                if (isPlayer)
+                {
+                    Monster mon = ChooseNextMon(current.Trainer);
+
+                    while (mon.CurrentHP <= 0)
+                    {
+                        OnSendMessage("There's no will to fight!");
+                        mon = ChooseNextMon(current.Trainer);
+                    }
+
+                    current.Monster = mon;
                 }
                 else
-                {
-                    if (isPlayer)
-                        OnSendMessage("Go {0}!", current.Monster.Name);
-                    else
-                        OnSendMessage("{0} sent out {1}!", current.Trainer.Name, current.Monster.Name);
-                    current.Recalc();
-                }
+                    current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
+
+                current.Reset();
+
+                if (isPlayer)
+                    OnSendMessage("Go {0}!", current.Monster.Name);
+                else
+                    OnSendMessage("{0} sent out {1}!", current.Trainer.Name, current.Monster.Name);
+                current.Recalc();
+
 
                 //cancel trapping move that isn't rage
                 if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove && ((LockInEffect)e).ConstantDamage))

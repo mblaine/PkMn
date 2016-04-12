@@ -96,9 +96,17 @@ namespace PkMn.Instance
             {
                  KeyValuePair<Move, int>[] moves = Moves.Zip(CurrentPP, (move, pp) => new KeyValuePair<Move, int>(move, pp)).ToArray();
                  for (int i = 0; i < moves.Length; i++)
-                     if (moves[i].Value > 0 && i != DisabledMoveIndex)
+                     if (moves[i].Key != null && moves[i].Value > 0 && i != DisabledMoveIndex)
                          return true;
                  return false;
+            }
+        }
+
+        public bool AnyMonstersRemaining
+        {
+            get
+            {
+                return Trainer.Party.Any(p => p != null && p.CurrentHP > 0);
             }
         }
 
@@ -192,7 +200,7 @@ namespace PkMn.Instance
             if (!Trainer.IsPlayer)
                 return;
 
-            if (MoveOverrideTemporary == null && QueuedMove == null && MoveIndex >= 0 && MoveIndex < 4)
+            if (MoveOverrideTemporary == null && MoveIndex >= 0 && MoveIndex < 4)
             {
                 if (!Moves[MoveIndex].Effects.Any(e => e.Type == MoveEffectType.NeverDeductPP))
                 {

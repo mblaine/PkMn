@@ -38,7 +38,7 @@ namespace PkMn
 
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 55);
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 35);
             }
 
             Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
@@ -68,7 +68,6 @@ namespace PkMn
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Ember"];
 
             Battle battle = new Battle(player, rival, false);
-            battle.ChooseNextMon += Battle_ChooseMon;
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
 
             battle.SendMessage += delegate(string message)
@@ -115,6 +114,11 @@ namespace PkMn
                 action.Type = BattleActionType.UseMove;
                 action.WhichMove = moveIndex - 1;
                 return action;
+            };
+
+            battle.ChooseNextMon += delegate(Trainer trainer)
+            {
+                return ChooseMon(trainer.Party);
             };
 
             do
