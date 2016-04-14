@@ -38,17 +38,27 @@ namespace PkMn.Instance
             get { return Species.ExpRequired[Species.ExpGrowthRate][Level + 1] - Experience; }
         }
 
-        public Monster(string name, int level)
+        public Monster(string name, int level, Generator generator = Generator.Wild)
         {
             Species = Species.Spp[name];
 
             IV = new Stats();
             EV = new Stats();
 
-            IV.Attack = Rng.Next(16);
-            IV.Defense = Rng.Next(16);
-            IV.Speed = Rng.Next(16);
-            IV.Special = Rng.Next(16);
+            if (generator == Generator.Trainer)
+            {
+                IV.Attack = 9;
+                IV.Defense = 8;
+                IV.Speed = 8;
+                IV.Special = 8;
+            }
+            else
+            {
+                IV.Attack = Rng.Next(16);
+                IV.Defense = Rng.Next(16);
+                IV.Speed = Rng.Next(16);
+                IV.Special = Rng.Next(16);
+            }
 
             IV.HP = (IV.Attack & 0x1) << 3
                 | (IV.Defense & 0x1) << 2
@@ -91,6 +101,29 @@ namespace PkMn.Instance
                         Moves[1] = Moves[2];
                         Moves[2] = Moves[3];
                         Moves[3] = learnset[i].Move;
+                    }
+                }
+            }
+
+            if (generator == Generator.SimulatePlayer)
+            {
+                if (Moves.Count(m => m != null) < 4 || (Species.Evolutions.Count > 0 ? Rng.Next(0, 100) < 30 : Rng.Next(0, 100) < 60))
+                {
+                    Move[] machineMoves = Species.Learnset.Where(l => (l.LearnBy == LearnBy.TM || l.LearnBy == LearnBy.HM) && !Moves.Contains(l.Move)).Select(l => l.Move).ToArray();
+                    Move[] sameType = machineMoves.Where(m => m.Type == Species.Type1 || m.Type == Species.Type2).ToArray();
+                    Move[] differntType = machineMoves.Where(m => m.Type != Species.Type1 && m.Type != Species.Type2).ToArray();
+
+                    Move[] pickFrom = sameType.Length == 0 ? differntType : differntType.Length == 0 ? sameType : Rng.Next(0, 100) < 60 ? sameType : differntType;
+
+                    if (pickFrom.Length > 0)
+                    {
+                        Move newMove = pickFrom[Rng.Next(0, pickFrom.Length)];
+
+                        int indexToReplace = Moves.Count(m => m != null);
+                        if (indexToReplace < 4)
+                            Moves[indexToReplace] = newMove;
+                        else
+                            Moves[Rng.Next(0, 4)] = newMove;
                     }
                 }
             }

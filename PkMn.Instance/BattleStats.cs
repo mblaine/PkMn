@@ -96,7 +96,7 @@ namespace PkMn.Instance
 
         public override string ToString()
         {
-            return string.Format("Atk:{0} Def:{1} Spc:{2} Spd:{3} Eva:{4} Acc:{5}", Attack, Defense, Special, Speed, Evade, Accuracy);
+            return string.Format("Atk:{0} Def:{1} Spc:{2} Spe:{3} Eva:{4} Acc:{5}", Attack, Defense, Special, Speed, Evade, Accuracy);
         }
     }
 }

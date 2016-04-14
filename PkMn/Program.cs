@@ -24,21 +24,21 @@ namespace PkMn
 
         static Monster[] PlayerStatic()
         {
-            return new Monster[] { new Monster("Moltres", 55)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+            return new Monster[] { new Monster("Persian", 55)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
         }
 
         static Monster[] RivalStatic()
         {
-            return new Monster[] { new Monster("Diglett", 55)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+            return new Monster[] { new Monster("Gengar", 55)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
         }
 
-        static Monster[] Random()
+        static Monster[] Random(bool isPlayer)
         {
             Monster[] ret = new Monster[6];
 
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 35);
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 70, isPlayer ? Generator.SimulatePlayer : Generator.Trainer);
             }
 
             Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
@@ -52,7 +52,7 @@ namespace PkMn
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = Random(),
+                Party = Random(true),
                 IsPlayer = true
             };
 
@@ -60,7 +60,7 @@ namespace PkMn
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = Random(),
+                Party = Random(false),
                 IsPlayer = false
             };
 
@@ -94,31 +94,38 @@ namespace PkMn
                     }
 
                 }
-                Log("{0,-30}{1,-30}", moveText[0], moveText[1]);
-                Log("{0,-30}{1,-30}", moveText[2], moveText[3]);
-                Log("------------------------------------------------------------");
-
+                
                 int moveIndex = 0;
                 string s = null;
-                while ((!int.TryParse(s = Console.ReadLine(), out moveIndex) || moveIndex < 1 || moveIndex > 4) && s.ToLower() != "c") ;
-
                 BattleAction action = new BattleAction();
-                if (s.ToLower() == "c")
+                while (true)
                 {
-                    
-                    action.Type = BattleActionType.ChangeMon;
-                    action.SwitchTo = ChooseMon(trainer.Party);
-                    return action;
+                    Log("{0,-30}{1,-30}", moveText[0], moveText[1]);
+                    Log("{0,-30}{1,-30}", moveText[2], moveText[3]);
+                    Log("------------------------------------------------------------");
+
+                    while ((!int.TryParse(s = Console.ReadLine(), out moveIndex) || moveIndex < 1 || moveIndex > 4) && s.ToLower() != "c") ;
+
+                    if (s.ToLower() == "c")
+                    {
+                        action.SwitchTo = ChooseMon(trainer.Party, true);
+                        if (action.SwitchTo == null)
+                            continue;
+                        action.Type = BattleActionType.ChangeMon;
+                        break;
+                    }
+
+                    action.Type = BattleActionType.UseMove;
+                    action.WhichMove = moveIndex - 1;
+                    break;
                 }
 
-                action.Type = BattleActionType.UseMove;
-                action.WhichMove = moveIndex - 1;
                 return action;
             };
 
             battle.ChooseNextMon += delegate(Trainer trainer)
             {
-                return ChooseMon(trainer.Party);
+                return ChooseMon(trainer.Party, false);
             };
 
             do
@@ -141,12 +148,16 @@ namespace PkMn
             }
             while (battle.Step());
 
+            Log("{0,-10}{1}", rival.Name, string.Join(" ", rival.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
+            Log("{0,-10}{1}", player.Name, string.Join(" ", player.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
+            
+
             Console.ReadLine();
             Console.ReadLine();
 
         }
 
-        static Monster ChooseMon(Monster[] party)
+        static Monster ChooseMon(Monster[] party, bool canCancel)
         {
             int i = 0;
 
@@ -160,8 +171,11 @@ namespace PkMn
 
             int choice = 0;
 
-            while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > party.Length) ;
+            string s;
+            while ((!int.TryParse(s = Console.ReadLine(), out choice) || choice < 1 || choice > party.Length) && !(s == "b" && canCancel)) ;
             Log("------------------------------------------------------------");
+            if (s == "b")
+                return null;
             return party[choice - 1];
         }
 
@@ -172,7 +186,7 @@ namespace PkMn
             {
                 Name = "Matthew",
                 MonNamePrefix = "",
-                Party = random ? Random() : PlayerStatic(),
+                Party = random ? Random(true) : PlayerStatic(),
                 IsPlayer = true
             };
 
@@ -180,7 +194,7 @@ namespace PkMn
             {
                 Name = "Gary",
                 MonNamePrefix = "Enemy ",
-                Party = random ? Random() : RivalStatic(),
+                Party = random ? Random(false) : RivalStatic(),
                 IsPlayer = false
             };
 
@@ -288,7 +302,7 @@ namespace PkMn
                 Log("================================================ {0:mm:ss}", DateTime.Now);
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            if (true && (message.ToLower().Contains("dug a hole") || message.ToLower().Contains("used dig")))
+            if (true && (message.ToLower().Contains("time(s)!") || message.ToLower().Contains("fury")))
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.White;

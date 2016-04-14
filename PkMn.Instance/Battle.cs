@@ -862,12 +862,12 @@ namespace PkMn.Instance
                 if (opponent.Monster.CurrentHP <= 0)
                     break;
             }
-
+            
             //crash
             if (current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2) == 0m && crashEffect != null)
                 HandleMissDamage(current, crashEffect);
 
-            if(hitsToTry > 1 && hitCount > 0)
+            if(hitsToTry > 1 && hitCount > 0 && !immuneToType)
                 OnSendMessage("Hit {0} time(s)!", hitCount);
 
             if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))

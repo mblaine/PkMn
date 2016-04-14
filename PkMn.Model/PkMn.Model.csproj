@@ -48,6 +48,7 @@
     <Compile Include="Enums\ElementCategory.cs" />
     <Compile Include="Enums\EvolutionType.cs" />
     <Compile Include="Enums\ExpGrowthRate.cs" />
+    <Compile Include="Enums\Generator.cs" />
     <Compile Include="Enums\LearnBy.cs" />
     <Compile Include="Enums\MoveEffectType.cs" />
     <Compile Include="Enums\StatType.cs" />
