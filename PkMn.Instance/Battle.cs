@@ -13,7 +13,8 @@ namespace PkMn.Instance
         public delegate Monster ChooseMonEventHandler(Trainer trainer);
         public delegate void SendMessageEventHandler(string message);
         public delegate BattleAction ChooseActionEventHandler(ActiveMonster current, Trainer trainer);
-        public delegate int ChooseMoveEventHandler(Move[] moeves);
+        public delegate int ChooseMoveEventHandler(Move[] moves);
+        public delegate void BattleEventHandler(object sender, BattleEventArgs e);
 
         protected Trainer Player;
         protected Trainer Foe;
@@ -26,6 +27,7 @@ namespace PkMn.Instance
 
         public ChooseMonEventHandler ChooseNextMon;
         public SendMessageEventHandler SendMessage;
+        public SendMessageEventHandler SendDebugMessage;
         public ChooseActionEventHandler ChooseAction;
         public ChooseMoveEventHandler ChooseMoveToMimic;
 
@@ -66,6 +68,12 @@ namespace PkMn.Instance
         {
             if (SendMessage != null)
                 SendMessage(string.Format(message, args));
+        }
+
+        protected void OnSendDebugMessage(string message, params Object[] args)
+        {
+            if (SendDebugMessage != null)
+                SendDebugMessage(string.Format(message, args));
         }
 
         public bool Step()
@@ -381,7 +389,7 @@ namespace PkMn.Instance
                         current.IsSemiInvulnerable = false;
 
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
-                        OnSendMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
+                        OnSendDebugMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
                         if (current.SubstituteHP > 0)
                         {
                             current.SubstituteHP -= confusionDamage;
@@ -643,7 +651,7 @@ namespace PkMn.Instance
             }
 
             //calculate critical hit or not
-            int critRatio = (int)(((decimal)current.Monster.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio) * ((decimal)current.EffectiveStats.CritRatio) / 100m);
+            int critRatio = (int)(((decimal)current.Species.BaseStats.Speed) / 2m * ((decimal)current.SelectedMove.CritRatio) * ((decimal)current.EffectiveStats.CritRatio) / 100m);
             bool isCriticalHit = Rng.Next(0, 256) < Math.Min(255, critRatio);
 
             StatusRequirementEffect req = (StatusRequirementEffect)current.SelectedMove.Effects.Where(e => e is StatusRequirementEffect).FirstOrDefault();
@@ -817,7 +825,7 @@ namespace PkMn.Instance
                 }
 
                 if (damage != 0)
-                    OnSendMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                    OnSendDebugMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
 
                 if(opponent.Monster.CurrentHP == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.OneHitKO))
                     OnSendMessage("One-hit KO!");

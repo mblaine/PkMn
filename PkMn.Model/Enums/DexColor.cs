@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PkMn.Model.Enums
 {
-    public enum Color
+    public enum DexColor
     {
         Black,
         Blue,

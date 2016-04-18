@@ -458,6 +458,7 @@
     <effect type="copy" what="all-moves" pp="5" message="{0}{1} transformed into {2}!" />
     <effect type="copy" what="stats" />
     <effect type="copy" what="stat-stages" />
+	<effect type="copy" what="species" />
   </move>
   <move name="Tri Attack" type="Normal" pp="10" power="80" accuracy="255" />
   <move name="Twineedle" type="Bug" pp="20" power="25" accuracy="255">

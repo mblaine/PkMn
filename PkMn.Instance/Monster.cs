@@ -38,6 +38,31 @@ namespace PkMn.Instance
             get { return Species.ExpRequired[Species.ExpGrowthRate][Level + 1] - Experience; }
         }
 
+        public string StatusText
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case StatusCondition.Burn:
+                        return "BRN";
+                    case StatusCondition.Freeze:
+                        return "FRZ";
+                    case StatusCondition.Paralysis:
+                        return "PAR";
+                    case StatusCondition.Poison:
+                    case StatusCondition.BadlyPoisoned:
+                        return "PSN";
+                    case StatusCondition.Sleep:
+                        return "SLP";
+                    case StatusCondition.Faint:
+                        return "FNT";
+                    default:
+                        return "";
+                }
+            }
+        }
+
         public Monster(string name, int level, Generator generator = Generator.Wild)
         {
             Species = Species.Spp[name];
@@ -159,31 +184,7 @@ namespace PkMn.Instance
 
         public override string ToString()
         {
-            string status = "";
-            switch (Status)
-            {
-                case StatusCondition.Burn:
-                    status = " BRN";
-                    break;
-                case StatusCondition.Freeze:
-                    status = " FRZ";
-                    break;
-                case StatusCondition.Paralysis:
-                    status = " PAR";
-                    break;
-                case StatusCondition.Poison:
-                case StatusCondition.BadlyPoisoned:
-                    status = " PSN";
-                    break;
-                case StatusCondition.Sleep:
-                    status = " SLP";
-                    break;
-                case StatusCondition.Faint:
-                    status = " FNT";
-                    break;
-            }
-
-            return string.Format(":L{0} {1} ({2} / {3}){4}", Level, Name, CurrentHP, Stats.HP, status);
+            return string.Format(":L{0} {1} ({2} / {3}){4}", Level, Name, CurrentHP, Stats.HP, " " + StatusText);
         }
 
     }

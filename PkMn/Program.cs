@@ -76,6 +76,8 @@ namespace PkMn
                 Console.ReadLine();
             };
 
+            battle.SendDebugMessage += battle.SendMessage;
+
             battle.ChooseAction += delegate(ActiveMonster current, Trainer trainer)
             {
                 string[] moveText = new string[4];
@@ -334,21 +336,21 @@ namespace PkMn
             return null;
         }
 
-        public static ConsoleColor ForeColor(Color c)
+        public static ConsoleColor ForeColor(DexColor c)
         {
             switch (c)
             {
-                case Color.Brown:
+                case DexColor.Brown:
                     return ConsoleColor.DarkGray;
-                case Color.Pink:
+                case DexColor.Pink:
                     return ConsoleColor.Magenta;
-                case Color.Purple:
+                case DexColor.Purple:
                     return ConsoleColor.DarkMagenta;
-                case Color.Green:
+                case DexColor.Green:
                     return ConsoleColor.DarkGreen;
-                case Color.Black:
+                case DexColor.Black:
                     return ConsoleColor.White;
-                case Color.Gray:
+                case DexColor.Gray:
                     return ConsoleColor.DarkGray;
                 default:
                     return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), c.ToString(), true);

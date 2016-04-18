@@ -13,7 +13,7 @@ namespace PkMn.Model
 
         public readonly string SpeciesDescription;
         public readonly string EntryText;
-        public readonly Color Color;
+        public readonly DexColor Color;
 
         public readonly string HeightImperial;
         public readonly string HeightMetric;
@@ -23,7 +23,7 @@ namespace PkMn.Model
 
         public DexEntry(Species species, XmlNode node)
         {
-            Color = (Color)Enum.Parse(typeof(Color), node.Attributes["color"].Value, true);
+            Color = (DexColor)Enum.Parse(typeof(DexColor), node.Attributes["color"].Value, true);
             SpeciesDescription= node.Attributes["dex-species"].Value;
             EntryText = node.Attributes["dex-entry"].Value;
 

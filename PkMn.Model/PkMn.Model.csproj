@@ -44,7 +44,7 @@
     <Compile Include="Element.cs" />
     <Compile Include="Enums\BattleActionType.cs" />
     <Compile Include="Enums\CancelMoveReason.cs" />
-    <Compile Include="Enums\Color.cs" />
+    <Compile Include="Enums\DexColor.cs" />
     <Compile Include="Enums\ElementCategory.cs" />
     <Compile Include="Enums\EvolutionType.cs" />
     <Compile Include="Enums\ExpGrowthRate.cs" />

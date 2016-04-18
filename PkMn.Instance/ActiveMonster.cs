@@ -37,6 +37,7 @@ namespace PkMn.Instance
         public Stats StatsOverride;
         public Move[] MovesOverride;
         public int[] CurrentPPOverride;
+        public Species SpeciesOverride;
 
         public Move MoveOverrideTemporary;
         public Move LastMoveUsed;
@@ -76,6 +77,7 @@ namespace PkMn.Instance
         public Element Type2 { get { return Type1Override != null ? Type2Override : (Type2Override ?? Monster.Species.Type2); } }
         public Stats Stats { get { return StatsOverride ?? Monster.Stats; } }
         public int[] CurrentPP { get { return CurrentPPOverride ?? Monster.CurrentPP; } }
+        public Species Species { get { return SpeciesOverride ?? Monster.Species; } }
 
         public Move[] Moves
         {
@@ -143,6 +145,7 @@ namespace PkMn.Instance
             MovesOverride = null;
             CurrentPPOverride = null;
             MoveOverrideTemporary = null;
+            SpeciesOverride = null;
             LastMoveUsed = null;
             AccumulatedDamage = 0;
             DefenseMultiplier = 1;
