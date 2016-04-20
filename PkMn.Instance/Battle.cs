@@ -30,6 +30,7 @@ namespace PkMn.Instance
         public SendMessageEventHandler SendDebugMessage;
         public ChooseActionEventHandler ChooseAction;
         public ChooseMoveEventHandler ChooseMoveToMimic;
+        public event BattleEventHandler BattleEvent;
 
         public int LastDamageDealt;
         public int RewardMoney;
@@ -74,6 +75,12 @@ namespace PkMn.Instance
         {
             if (SendDebugMessage != null)
                 SendDebugMessage(string.Format(message, args));
+        }
+
+        protected void OnBattleEvent(BattleEventArgs e)
+        {
+            if (BattleEvent != null)
+                BattleEvent(this, e);
         }
 
         public bool Step()
@@ -399,7 +406,9 @@ namespace PkMn.Instance
                         }
                         else
                         {
-                            current.Monster.CurrentHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
+                            int newHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
+                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, newHP));
+                            current.Monster.CurrentHP = newHP;
                             current.AccumulatedDamage += confusionDamage;
                         }
                         CancelQueuedMove(current, CancelMoveReason.HurtInConfusion);
@@ -726,7 +735,10 @@ namespace PkMn.Instance
             //restore health
             HealthEffect restoreHealth = (HealthEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.RestoreHealth).FirstOrDefault();
             if (restoreHealth != null)
+            {
+                triedStatusEffect = true;
                 HandleRestoreHealthEffect(current, restoreHealth);
+            }
 
             ExtraDamageEffect crashEffect = (ExtraDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.MissDamage).FirstOrDefault();
 
@@ -819,7 +831,9 @@ namespace PkMn.Instance
                 }
                 else
                 {
-                    opponent.Monster.CurrentHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
+                    int newHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, opponent.Monster.CurrentHP, newHP));
+                    opponent.Monster.CurrentHP = newHP;
                     LastDamageDealt = damage;
                     opponent.AccumulatedDamage += damage;
                 }

@@ -43,6 +43,8 @@
     <Compile Include="DexEntry.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Enums\BattleActionType.cs" />
+    <Compile Include="Enums\BattleEventType.cs" />
+    <Compile Include="Enums\BodyType.cs" />
     <Compile Include="Enums\CancelMoveReason.cs" />
     <Compile Include="Enums\DexColor.cs" />
     <Compile Include="Enums\ElementCategory.cs" />
@@ -91,6 +93,9 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(SolutionDir)\PkMn.Model\Generation-I\*.xml $(SolutionDir)\..\PkMn.Game\PkMn.Game\PkMn.Game\bin\x86\Debug\Generation-I\ /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

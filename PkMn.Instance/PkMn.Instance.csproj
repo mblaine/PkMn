@@ -44,7 +44,7 @@
     <Compile Include="Battle.cs" />
     <Compile Include="BattleAction.cs" />
     <Compile Include="BattleHandlers.cs" />
-    <Compile Include="BattleMessageEventArgs.cs" />
+    <Compile Include="BattleEventArgs.cs" />
     <Compile Include="BattleStats.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

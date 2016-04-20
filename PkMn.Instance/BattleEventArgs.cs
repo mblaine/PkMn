@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PkMn.Model.Enums;
 
 namespace PkMn.Instance
 {
     public class BattleEventArgs : EventArgs
     {
-        public readonly string Message;
-        public readonly ActiveMonster DamageDoneTo;
+        public readonly BattleEventType Type;
+        public readonly ActiveMonster Monster;
         public readonly int HPBefore;
         public readonly int HPAfter;
 
-        public BattleEventArgs(string message, ActiveMonster damageDoneTo, int hpBefore, int hpAfter)
+        public BattleEventArgs(BattleEventType type, ActiveMonster monster, int hpBefore, int hpAfter)
         {
-            Message = message;
-            DamageDoneTo = damageDoneTo;
+            Type = type;
+            Monster = monster;
             HPBefore = hpBefore;
             HPAfter = hpAfter;
         }

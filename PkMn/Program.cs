@@ -64,7 +64,10 @@ namespace PkMn
                 IsPlayer = false
             };
 
-            //player.Party[0].Moves[0] = Move.Moves["Sharpen"];
+            //player.Party[0] = new Monster("Alakazam", 70);
+            //player.Party[0].CurrentHP--;
+            //rival.Party[0] = new Monster("Omastar", 70);
+            //player.Party[0].Moves[0] = Move.Moves["Leech Seed"];
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Ember"];
 
             Battle battle = new Battle(player, rival, false);
