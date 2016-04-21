@@ -406,10 +406,12 @@ namespace PkMn.Instance
                         }
                         else
                         {
+                            int oldHP = current.Monster.CurrentHP;
                             int newHP = Math.Max(0, current.Monster.CurrentHP - confusionDamage);
-                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, newHP));
+                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                             current.Monster.CurrentHP = newHP;
                             current.AccumulatedDamage += confusionDamage;
+                            
                         }
                         CancelQueuedMove(current, CancelMoveReason.HurtInConfusion);
                         return false;
@@ -831,11 +833,13 @@ namespace PkMn.Instance
                 }
                 else
                 {
+                    int oldHP = opponent.Monster.CurrentHP;
                     int newHP = Math.Max(0, opponent.Monster.CurrentHP - damage);
-                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, opponent.Monster.CurrentHP, newHP));
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, oldHP, newHP));
                     opponent.Monster.CurrentHP = newHP;
                     LastDamageDealt = damage;
                     opponent.AccumulatedDamage += damage;
+                    
                 }
 
                 if (damage != 0)
@@ -845,7 +849,7 @@ namespace PkMn.Instance
                     OnSendMessage("One-hit KO!");
 
                 //apply foe effects
-                if (!immuneToType)
+                if (!immuneToType && opponent.Monster.CurrentHP > 0)
                 {
                     foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
                     {

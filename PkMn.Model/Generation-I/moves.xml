@@ -90,7 +90,7 @@
     <effect type="charge" when="before" message="{0}{1} dug a hole!" />
     <effect type="semi-invulnerable" />
   </move>
-  <move name="Disable" type="Normal" pp="20" accuracy="140">
+  <move name="Disable" type="Normal" pp="20" accuracy="140" category="status">
     <effect type="disable" min="0" max="6" />
   </move>
   <move name="Dizzy Punch" type="Normal" pp="10" power="70" accuracy="255" />
@@ -174,7 +174,7 @@
   <move name="Harden" type="Normal" pp="30" accuracy="255" category="status">
     <effect type="stat" stat="Defense" change="1" who="self" />
   </move>
-  <move name="Haze" type="Ice" pp="30" accuracy="255">
+  <move name="Haze" type="Ice" pp="30" accuracy="255" category="status">
     <effect type="reset-stat-stages" who="both" />
     <effect type="reset-status" status="Confusion" who="both" />
 	<effect type="reset-status" status="Badly-Poisoned" who="both" />
@@ -217,7 +217,7 @@
   <move name="Leech Life" type="Bug" pp="15" power="20" accuracy="255">
     <effect type="transfer-health" percent="50" of="damage" />
   </move>
-  <move name="Leech Seed" type="Grass" pp="10" accuracy="229">
+  <move name="Leech Seed" type="Grass" pp="10" accuracy="229" category="status">
     <effect type="leech-seed" />
     <effect type="no-effect" condition="Grass" />
   </move>
@@ -244,7 +244,7 @@
   </move>
   <move name="Mega Kick" type="Normal" pp="5" power="120" accuracy="191" />
   <move name="Mega Punch" type="Normal" pp="20" power="80" accuracy="216" />
-  <move name="Metronome" type="Normal" pp="10" accuracy="255">
+  <move name="Metronome" type="Normal" pp="10" accuracy="255" category="status">
     <effect type="random" />
   </move>
   <move name="Mimic" type="Normal" pp="10" accuracy="255" category="status">
@@ -253,10 +253,10 @@
   <move name="Minimize" type="Normal" pp="20" accuracy="255" category="status">
     <effect type="stat" stat="Evade" change="1" who="self" />
   </move>
-  <move name="Mirror Move" type="Flying" pp="20" accuracy="255">
+  <move name="Mirror Move" type="Flying" pp="20" accuracy="255" category="status">
     <effect type="mirror-move" />
   </move>
-  <move name="Mist" type="Ice" pp="30" accuracy="255">
+  <move name="Mist" type="Ice" pp="30" accuracy="255" category="status">
     <effect type="protect-stat-stages" who="self" message="{0}{1}'s shrouded in mist!" />
   </move>
   <move name="Night Shade" type="Ghost" pp="15" accuracy="255">
@@ -305,17 +305,17 @@
   <move name="Razor Wind" type="Normal" pp="10" power="80" accuracy="191">
     <effect type="charge" when="before" message="{0}{1} made a whirlwind!" />
   </move>
-  <move name="Recover" type="Normal" pp="20" accuracy="255">
+  <move name="Recover" type="Normal" pp="20" accuracy="255" category="status">
     <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Reflect" type="Psychic" pp="20" accuracy="255" category="status">
     <effect type="stat" stat="Defense" who="self" multiplier="2" condition="defense-only" message="{0}{1} gained armor!" />
   </move>
-  <move name="Rest" type="Psychic" pp="10" accuracy="255">
+  <move name="Rest" type="Psychic" pp="10" accuracy="255" category="status">
     <effect type="restore-health" percent="100" of="max" who="self" />
     <effect type="status" status="Sleep" who="self" turn-limit="2" force="true" message="{0}{1} started sleeping!" force-message="{0}{1} fell asleep and became healthy!" />
   </move>
-  <move name="Roar" type="Normal" pp="20" accuracy="255">
+  <move name="Roar" type="Normal" pp="20" accuracy="255" category="status">
     <effect type="end-wild-battle" message="{2}{3} ran away scared!" />
   </move>
   <move name="Rock Slide" type="Rock" pp="10" power="75" accuracy="229" />
@@ -365,7 +365,7 @@
   <move name="SmokeScreen" type="Normal" pp="20" accuracy="255" category="status">
     <effect type="stat" stat="accuracy" who="foe" change="-1" />
   </move>
-  <move name="Softboiled" type="Normal" pp="10" accuracy="255">
+  <move name="Softboiled" type="Normal" pp="10" accuracy="255" category="status">
     <effect type="restore-health" percent="50" of="max" who="self" />
   </move>
   <move name="Solar Beam" type="Grass" pp="10" power="120" accuracy="255">
@@ -379,7 +379,7 @@
   <move name="Spike Cannon" type="Normal" pp="15" power="20" accuracy="255">
     <effect type="multi-hit" min="2" max="5" />
   </move>
-  <move name="Splash" type="Normal" pp="40" accuracy="255">
+  <move name="Splash" type="Normal" pp="40" accuracy="255" category="status">
     <effect type="none" />
   </move>
   <move name="Spore" type="Grass" pp="15" accuracy="255" category="status">
@@ -402,7 +402,7 @@
   <move name="Submission" type="Fighting" pp="25" power="80" accuracy="204">
     <effect type="recoil-damage" percent="25" />
   </move>
-  <move name="Substitute" type="Normal" pp="10" accuracy="255">
+  <move name="Substitute" type="Normal" pp="10" accuracy="255" category="status">
     <effect type="substitute" />
   </move>
   <move name="Super Fang" type="Normal" pp="10" accuracy="229">
@@ -428,7 +428,7 @@
   <move name="Take Down" type="Normal" pp="20" power="90" accuracy="216">
     <effect type="recoil-damage" percent="25" />
   </move>
-  <move name="Teleport" type="Psychic" pp="20" accuracy="255">
+  <move name="Teleport" type="Psychic" pp="20" accuracy="255" category="status">
     <effect type="end-wild-battle" message="{0}{1} ran from battle!" />
   </move>
   <move name="Thrash" type="Normal" pp="20" power="90" accuracy="255">
@@ -453,7 +453,7 @@
   <move name="Toxic" type="Poison" pp="10" accuracy="216" category="status">
     <effect type="status" status="Badly-Poisoned" who="foe" />
   </move>
-  <move name="Transform" type="Normal" pp="10" accuracy="255">
+  <move name="Transform" type="Normal" pp="10" accuracy="255" category="status">
     <effect type="copy" what="type" />
     <effect type="copy" what="all-moves" pp="5" message="{0}{1} transformed into {2}!" />
     <effect type="copy" what="stats" />
@@ -469,7 +469,7 @@
   <move name="Vine Whip" type="Grass" pp="10" power="35" accuracy="255" />
   <move name="Water Gun" type="Water" pp="25" power="40" accuracy="255" />
   <move name="Waterfall" type="Water" pp="15" power="80" accuracy="255" />
-  <move name="Whirlwind" type="Normal" pp="20" accuracy="216">
+  <move name="Whirlwind" type="Normal" pp="20" accuracy="216" category="status">
     <effect type="end-wild-battle" message="{2}{3} was blown away!" />
   </move>
   <move name="Wing Attack" type="Flying" pp="35" power="35" accuracy="255" />

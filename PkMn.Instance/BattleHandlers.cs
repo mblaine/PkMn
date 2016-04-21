@@ -75,21 +75,23 @@ namespace PkMn.Instance
                 int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
                 if (current.Monster.Status == StatusCondition.BadlyPoisoned)
                     damage = damage * current.BadlyPoisonedCount++;
+                int oldHP = current.Monster.CurrentHP;
                 int newHP = Math.Max(0, current.Monster.CurrentHP - damage);
-                OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, newHP));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                 current.Monster.CurrentHP = newHP;
                 current.AccumulatedDamage += damage;
+                OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
             else if (current.Monster.Status == StatusCondition.Burn)
             {
                 OnSendMessage("{0}{1}'s hurt by the burn!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
+                int oldHP = current.Monster.CurrentHP;
                 int newHP = Math.Max(0, current.Monster.CurrentHP - damage);
-                OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, newHP));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                 current.Monster.CurrentHP = newHP;
                 current.AccumulatedDamage += damage;
+                OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
             }
 
             if (current.IsSeeded)
@@ -102,16 +104,19 @@ namespace PkMn.Instance
 
                 OnSendMessage("LEECH SEED saps {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
 
+                int oldHP = current.Monster.CurrentHP;
                 int newHP = Math.Max(0, current.Monster.CurrentHP - damage);
                 OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, newHP));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                 current.Monster.CurrentHP = newHP;
                 
-                int hpRestored = Math.Min(damage, opponent.Monster.Stats.HP - opponent.Monster.CurrentHP);
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, opponent.Monster.CurrentHP, opponent.Monster.CurrentHP + hpRestored));
 
-                OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                oldHP = opponent.Monster.CurrentHP;               
+                int hpRestored = Math.Min(damage, opponent.Monster.Stats.HP - opponent.Monster.CurrentHP);
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, oldHP, oldHP + hpRestored));
                 opponent.Monster.CurrentHP += hpRestored;
+                OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                
             }
         }
 
@@ -419,12 +424,14 @@ namespace PkMn.Instance
         protected void HandleMissDamage(ActiveMonster current, ExtraDamageEffect crashEffect)
         {
             int crashDamage = crashEffect.Value;
+            int oldHP = current.Monster.CurrentHP;
             crashDamage = Math.Min(crashDamage, current.Monster.CurrentHP);
             OnSendMessage(crashEffect.Message ?? "{0}{1} got hurt!", current.Trainer.MonNamePrefix, current.Monster.Name);
-            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, current.Monster.CurrentHP - crashDamage));
-            OnSendDebugMessage("Did {0} damage to {1}{2}", crashDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
+            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP - crashDamage));
             current.Monster.CurrentHP -= crashDamage;
             current.AccumulatedDamage += crashDamage;
+            OnSendDebugMessage("Did {0} damage to {1}{2}", crashDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
+
         }
 
         protected void HandleProtectStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
@@ -502,8 +509,8 @@ namespace PkMn.Instance
                 OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
                 int oldHP = current.Monster.CurrentHP;
                 int newHP = current.Monster.CurrentHP + hpRestored;
-                current.Monster.CurrentHP += hpRestored;
                 OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
+                current.Monster.CurrentHP += hpRestored;
                 
                 OnSendMessage("{0}{1} regained health!", current.Trainer.MonNamePrefix, current.Monster.Name);
             }
@@ -520,11 +527,13 @@ namespace PkMn.Instance
                 int hpRestored = (int)(eff.Percent / 100m * (decimal)damage);
                 if (hpRestored == 0)
                     hpRestored = 1;
+                int oldHP = current.Monster.CurrentHP;
                 hpRestored = Math.Min(hpRestored, current.Monster.Stats.HP - current.Monster.CurrentHP);
                 OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
                 OnSendMessage(eff.Message ?? "Sucked health from {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, current.Monster.CurrentHP + hpRestored));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP + hpRestored));
                 current.Monster.CurrentHP += hpRestored;
+                
             }
         }
 
@@ -535,9 +544,10 @@ namespace PkMn.Instance
             int recoilDamage = (int)(eff.Percent / 100m * (decimal)damage);
             if (recoilDamage == 0)
                 recoilDamage = 1;
+            int oldHP = current.Monster.CurrentHP;
             recoilDamage = Math.Min(recoilDamage, current.Monster.CurrentHP);
             OnSendMessage("{0}{1}'s hit with recoil!", current.Trainer.MonNamePrefix, current.Monster.Name);
-            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, current.Monster.CurrentHP - recoilDamage));
+            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP - recoilDamage));
             current.Monster.CurrentHP -= recoilDamage;
             current.AccumulatedDamage += recoilDamage;
             OnSendDebugMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
@@ -558,10 +568,11 @@ namespace PkMn.Instance
                 OnSendMessage("Too weak to make a SUBSTITUTE!");
                 return;
             }
+            int oldHP = current.Monster.CurrentHP;
             hpCost = Math.Min(hpCost, current.Monster.CurrentHP);
             OnSendMessage("It created a SUBSTITUTE!");
             OnSendDebugMessage("Did {0} damage to {1}{2}", hpCost, current.Trainer.MonNamePrefix, current.Monster.Name);
-            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, current.Monster.CurrentHP, current.Monster.CurrentHP - hpCost));
+            OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP - hpCost));
             current.Monster.CurrentHP -= hpCost;
             current.SubstituteHP = hpCost + 1;
         }
