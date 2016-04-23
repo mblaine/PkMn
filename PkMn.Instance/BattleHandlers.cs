@@ -14,9 +14,9 @@ namespace PkMn.Instance
         {
             if (current.Monster.CurrentHP == 0)
             {
-
-                OnSendMessage("{0}{1} fainted!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonFainted, current, 0, 0));
                 current.Monster.Status = StatusCondition.Faint;
+                OnSendMessage("{0}{1} fainted!", current.Trainer.MonNamePrefix, current.Monster.Name);
 
                 if (!current.AnyMonstersRemaining)
                 {
@@ -49,7 +49,7 @@ namespace PkMn.Instance
                     current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
 
                 current.Reset();
-
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current, 0, 0));
                 if (isPlayer)
                     OnSendMessage("Go {0}!", current.Monster.Name);
                 else

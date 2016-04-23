@@ -33,6 +33,8 @@ namespace PkMn.Model
 
         public readonly BodyType BodyType;
 
+        public readonly Palette Palette;
+
         public readonly DexEntry DexEntry;
 
         protected static Dictionary<string, Species> Load()
@@ -101,6 +103,7 @@ namespace PkMn.Model
             BaseStats = new Stats(node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "stats").First());
 
             BodyType = (BodyType)Enum.Parse(typeof(BodyType), node.Attributes["body-type"].Value, true);
+            Palette = (Palette)Enum.Parse(typeof(Palette), node.Attributes["palette"].Value, true);
         }
 
         public bool IsImmuneToStatus(StatusCondition status)

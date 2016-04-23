@@ -23,7 +23,7 @@ namespace PkMn.Model
 
         public DexEntry(Species species, XmlNode node)
         {
-            Color = (DexColor)Enum.Parse(typeof(DexColor), node.Attributes["color"].Value, true);
+            Color = (DexColor)Enum.Parse(typeof(DexColor), node.Attributes["dex-color"].Value, true);
             SpeciesDescription= node.Attributes["dex-species"].Value;
             EntryText = node.Attributes["dex-entry"].Value;
 

@@ -188,6 +188,7 @@ namespace PkMn.Instance
                         PlayerCurrent.Monster = playerAction.SwitchTo;
                         PlayerCurrent.Reset();
                         PlayerCurrent.Recalc();
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
                         OnSendMessage("Go {0}!", PlayerCurrent.Monster.Name);
                         break;
                     case BattleActionType.UseMove:
@@ -882,7 +883,7 @@ namespace PkMn.Instance
                     else if (typeMultiplier > 1m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
                         OnSendMessage("It's super effective!");
                     else if (typeMultiplier < 1m && !current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.IgnoreTypeEffectiveness))
-                        OnSendMessage("It's not very effective.");
+                        OnSendMessage("It's not very effective...");
                 }
 
                 if (opponent.Monster.CurrentHP <= 0)

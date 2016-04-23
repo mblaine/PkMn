@@ -53,6 +53,7 @@
     <Compile Include="Enums\Generator.cs" />
     <Compile Include="Enums\LearnBy.cs" />
     <Compile Include="Enums\MoveEffectType.cs" />
+    <Compile Include="Enums\Palette.cs" />
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StatusCondition.cs" />
     <Compile Include="Enums\When.cs" />

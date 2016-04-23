@@ -7,6 +7,8 @@ namespace PkMn.Model.Enums
 {
     public enum BattleEventType
     {
-        MonHPChanged
+        MonHPChanged,
+        MonFainted,
+        MonSentOut
     }
 }
