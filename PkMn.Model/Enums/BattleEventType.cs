@@ -9,6 +9,7 @@ namespace PkMn.Model.Enums
     {
         MonHPChanged,
         MonFainted,
+        MonRecalled,
         MonSentOut
     }
 }

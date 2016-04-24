@@ -22,6 +22,7 @@ namespace PkMn.Instance
         public ActiveMonster PlayerCurrent { get; protected set; }
         public ActiveMonster FoeCurrent { get; protected set; }
         protected bool IsWildBattle;
+        protected bool BattleHasBegun;
 
         protected int runCount;
 
@@ -43,26 +44,45 @@ namespace PkMn.Instance
             runCount = 0;
             RewardMoney = 0;
 
-            foreach (Monster mon in Player.Party)
-            {
-                if (mon != null && mon.Status != StatusCondition.Faint)
-                {
-                    PlayerCurrent = new ActiveMonster(Player, mon);
-                    break;
-                }
-            }
+            PlayerCurrent = new ActiveMonster(player);
+            FoeCurrent = new ActiveMonster(foe);
+
+            BattleHasBegun = false;
+        }
+
+        protected void BeginBattle()
+        {
+            BattleHasBegun = true;
+            if (!IsWildBattle)
+                OnSendMessage("{0} wants to fight!", Foe.Name);
 
             foreach (Monster mon in Foe.Party)
             {
                 if (mon != null && mon.Status != StatusCondition.Faint)
                 {
-                    FoeCurrent = new ActiveMonster(Foe, mon);
+                    if(!IsWildBattle)
+                        OnSendMessage("{0} sent out {1}!", Foe.Name, mon.Name);
+                    FoeCurrent.Monster = mon;
+                    if(!IsWildBattle)
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, FoeCurrent, 0, 0));
+                    break;
+                }
+            }
+
+            foreach (Monster mon in Player.Party)
+            {
+                if (mon != null && mon.Status != StatusCondition.Faint)
+                {
+                    OnSendMessage("Go {0}!", mon.Name);
+                    PlayerCurrent.Monster = mon;
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
                     break;
                 }
             }
 
             if (PlayerCurrent == null || FoeCurrent == null)
                 throw new Exception();
+
         }
 
         protected void OnSendMessage(string message, params Object[] args)
@@ -85,6 +105,12 @@ namespace PkMn.Instance
 
         public bool Step()
         {
+            if (!BattleHasBegun)
+            {
+                BeginBattle();
+                return true;
+            }
+
             if (PlayerCurrent.Monster.CurrentHP == 0)
             {
                 HandleFainting(PlayerCurrent, true, FoeCurrent);
@@ -185,11 +211,10 @@ namespace PkMn.Instance
                         throw new Exception();
                     case BattleActionType.ChangeMon:
                         OnSendMessage("Come back {0}!", PlayerCurrent.Monster.Name);
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, PlayerCurrent, 0, 0));
                         PlayerCurrent.Monster = playerAction.SwitchTo;
-                        PlayerCurrent.Reset();
-                        PlayerCurrent.Recalc();
-                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
                         OnSendMessage("Go {0}!", PlayerCurrent.Monster.Name);
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
                         break;
                     case BattleActionType.UseMove:
                         PlayerCurrent.MoveIndex = playerAction.WhichMove;

@@ -133,7 +133,7 @@ namespace PkMn
                 return ChooseMon(trainer.Party, false);
             };
 
-            do
+            while (battle.Step())
             {
                 Log("------------------------------------------------------------");
                 Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
@@ -151,7 +151,7 @@ namespace PkMn
                 Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
                 Log("------------------------------------------------------------");
             }
-            while (battle.Step());
+            
 
             Log("{0,-10}{1}", rival.Name, string.Join(" ", rival.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
             Log("{0,-10}{1}", player.Name, string.Join(" ", player.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
@@ -229,7 +229,7 @@ namespace PkMn
             //battle.FoeCurrent.Monster.Status = StatusCondition.Freeze;
             //battle.PlayerCurrent.ConfusedCount = 10;
 
-            do
+            while (battle.Step())
             {
                 Log("------------------------------------------------------------");
                 Console.ForegroundColor = ForeColor(battle.FoeCurrent.Monster.Species.DexEntry.Color);
@@ -267,7 +267,6 @@ namespace PkMn
                 Log("{0,-30}{1,-30}", moveText[2], moveText[3]);
                 Log("------------------------------------------------------------");
             }
-            while (battle.Step());
 
             if (random)
             {

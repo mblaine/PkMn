@@ -11,7 +11,28 @@ namespace PkMn.Instance
     public class ActiveMonster
     {
         public Trainer Trainer;
-        public Monster Monster;
+        protected Monster monster;
+        public Monster Monster
+        {
+            get
+            {
+                return monster;
+            }
+
+            set
+            {
+                monster = value;
+                if (monster != null)
+                {
+                    if (monster.Status == StatusCondition.BadlyPoisoned)
+                        monster.Status = StatusCondition.Poison;
+                    Reset();
+                    Recalc();
+                }
+            }
+        }
+
+
         public BattleStats StatStages;
         public BattleStats EffectiveStats;
         
@@ -112,16 +133,10 @@ namespace PkMn.Instance
             }
         }
 
-        public ActiveMonster(Trainer trainer, Monster monster)
+        public ActiveMonster(Trainer trainer, Monster monster = null)
         {
             Trainer = trainer;
             Monster = monster;
-
-            if (monster.Status == StatusCondition.BadlyPoisoned)
-                monster.Status = StatusCondition.Poison;
-
-            Reset();
-            Recalc();
         }
 
         public void Reset()

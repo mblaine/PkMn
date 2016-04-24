@@ -48,13 +48,12 @@ namespace PkMn.Instance
                 else
                     current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
 
-                current.Reset();
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current, 0, 0));
                 if (isPlayer)
                     OnSendMessage("Go {0}!", current.Monster.Name);
                 else
                     OnSendMessage("{0} sent out {1}!", current.Trainer.Name, current.Monster.Name);
-                current.Recalc();
+
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current, 0, 0));
 
 
                 //cancel trapping move that isn't rage
