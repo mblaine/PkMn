@@ -5,12 +5,11 @@ using System.Text;
 
 namespace PkMn.Model.Enums
 {
-    public enum BattleEventType
+    public enum AttackType
     {
-        MonHPChanged,
-        MonFainted,
-        MonRecalled,
-        MonSentOut,
-        AttackHit
+        Damaging,
+        DamagingWithEffectChance,
+        NonDamaging,
+        None
     }
 }

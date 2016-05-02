@@ -64,7 +64,7 @@ namespace PkMn.Instance
                         OnSendMessage("{0} sent out {1}!", Foe.Name, mon.Name);
                     FoeCurrent.Monster = mon;
                     if(!IsWildBattle)
-                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, FoeCurrent, 0, 0));
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, FoeCurrent));
                     break;
                 }
             }
@@ -75,7 +75,7 @@ namespace PkMn.Instance
                 {
                     OnSendMessage("Go {0}!", mon.Name);
                     PlayerCurrent.Monster = mon;
-                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent));
                     break;
                 }
             }
@@ -211,10 +211,10 @@ namespace PkMn.Instance
                         throw new Exception();
                     case BattleActionType.ChangeMon:
                         OnSendMessage("Come back {0}!", PlayerCurrent.Monster.Name);
-                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, PlayerCurrent, 0, 0));
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, PlayerCurrent));
                         PlayerCurrent.Monster = playerAction.SwitchTo;
                         OnSendMessage("Go {0}!", PlayerCurrent.Monster.Name);
-                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent, 0, 0));
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent));
                         break;
                     case BattleActionType.UseMove:
                         PlayerCurrent.MoveIndex = playerAction.WhichMove;
@@ -848,6 +848,9 @@ namespace PkMn.Instance
             for (int i = 0; i < hitsToTry; i++)
             {
                 hitCount++;
+
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+
                 if (opponent.SubstituteHP > 0)
                 {
                     opponent.SubstituteHP -= damage;
@@ -870,6 +873,7 @@ namespace PkMn.Instance
 
                 if (damage != 0)
                     OnSendDebugMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
 
                 if(opponent.Monster.CurrentHP == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.OneHitKO))
                     OnSendMessage("One-hit KO!");

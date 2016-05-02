@@ -18,6 +18,19 @@ namespace PkMn
 
         static void Main(string[] args)
         {
+            //var mapping = File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\animations_by_animation.txt").Where(l => l.Length > 0 && l[0] == 'E').ToDictionary(l => l.Split(' ')[1], l => l.Split(' ')[0]);
+
+            //foreach (string line in File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\animations_by_move.txt"))
+            //{
+            //    Match m = Regex.Match(line, @"^\tdb (\$[0-9A-F]{2}),(\$[0-9A-F]{2}),(\$[0-9A-F]{2})");
+            //    if (m.Success)
+            //    {
+            //        Console.WriteLine("\t   {0},{1}", mapping[m.Groups[3].Value], m.Groups[1].Value);
+            //    }
+            //    else
+            //        Console.WriteLine(line);
+            //}
+
             //Automatic(false);
             Interactive(args);
         }

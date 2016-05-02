@@ -24,6 +24,7 @@ namespace PkMn.Model
         public readonly int Priority;
         public readonly int CritRatio;
         public readonly ElementCategory Category;
+        public readonly AttackType AttackType;
 
         public readonly List<MoveEffect> Effects;
 
@@ -121,6 +122,23 @@ namespace PkMn.Model
                         Effects.Add(new MoveEffect(effectType, effect));
                         break;
                 }
+            }
+
+            if (Power > 0 || Effects.Any(e => e.Type == MoveEffectType.CustomDamage))
+            {
+                if (Effects.Count == 0)
+                    AttackType = AttackType.Damaging;
+                else
+                    AttackType = AttackType.DamagingWithEffectChance;
+            }
+            else if (Power <= 0)
+            {
+                if (Effects.Count(e => e.Type == MoveEffectType.Status && ((StatusEffect)e).Who == Who.Foe && ((StatusEffect)e).Status != StatusCondition.Paralysis) == Effects.Count)
+                    AttackType = AttackType.NonDamaging;
+                else if (Effects.Count(e => e.Type == MoveEffectType.Stat && ((StatEffect)e).Who == Who.Foe) == Effects.Count)
+                    AttackType = AttackType.NonDamaging;
+                else
+                    AttackType = AttackType.None;
             }
         }
 

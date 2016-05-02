@@ -14,7 +14,7 @@ namespace PkMn.Instance
         {
             if (current.Monster.CurrentHP == 0)
             {
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonFainted, current, 0, 0));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonFainted, current));
                 current.Monster.Status = StatusCondition.Faint;
                 OnSendMessage("{0}{1} fainted!", current.Trainer.MonNamePrefix, current.Monster.Name);
 
@@ -53,7 +53,7 @@ namespace PkMn.Instance
                 else
                     OnSendMessage("{0} sent out {1}!", current.Trainer.Name, current.Monster.Name);
 
-                OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current, 0, 0));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current));
 
 
                 //cancel trapping move that isn't rage
