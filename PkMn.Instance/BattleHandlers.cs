@@ -134,10 +134,10 @@ namespace PkMn.Instance
 
                     Who who = i == 0 ? Who.Self : Who.Foe;
 
-                    if (who == Who.Foe && opponent.SubstituteHP > 0)
+                    if (eff.Who == Who.Foe && who == Who.Foe && opponent.SubstituteHP > 0)
                     {
                         if (showFailMessage)
-                            OnSendMessage("But, it failed!");
+                            messageBuffer.AppendLine("But, it failed!");
                         continue;
                     }
 
@@ -146,7 +146,7 @@ namespace PkMn.Instance
                         if (i == 1 && mons[i].ProtectStages)
                         {
                             if (showFailMessage)
-                                OnSendMessage("But, it failed!");
+                                messageBuffer.AppendLine("But, it failed!");
                         }
                         else if (eff.Temporary)
                         {
@@ -166,22 +166,25 @@ namespace PkMn.Instance
                                 worked = true;
                             }
                             else
-                                OnSendMessage("But, it failed!");
+                                messageBuffer.AppendLine("But, it failed!");
 
                             if (worked && !string.IsNullOrWhiteSpace(eff.Message))
-                                OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                messageBuffer.AppendLine(string.Format(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
+
+                            if (worked)
+                                ret = true;
                         }
                         else
                         {
                             if ((eff.Change > 0 && mons[i].StatStages[eff.Stat] >= 6) || (eff.Change < 0 && mons[i].StatStages[eff.Stat] <= -6))
                             {
                                 if (showFailMessage)
-                                    OnSendMessage("Nothing happened!");
+                                    messageBuffer.AppendLine("Nothing happened!");
                             }
                             else
                             {
                                 if (!string.IsNullOrWhiteSpace(eff.Message))
-                                    OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
 
                                 if (eff.Stat == StatType.CritRatio)
                                 {
@@ -194,7 +197,7 @@ namespace PkMn.Instance
                                         mons[i].StatStages[eff.Stat] = 6;
                                     else if (mons[i].StatStages[eff.Stat] < -6)
                                         mons[i].StatStages[eff.Stat] = -6;
-                                    OnSendMessage("{0}{1}'s {2} {3}{4}!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell");
+                                    messageBuffer.AppendLine(string.Format("{0}{1}'s {2} {3}{4}!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Stat.ToString().ToUpper(), eff.Change > 1 ? "greatly " : eff.Change < -1 ? "sharply " : "", eff.Change > 0 ? "rose" : "fell"));
                                     mons[i].Recalc(eff.Stat);
                                 }
 
@@ -226,31 +229,35 @@ namespace PkMn.Instance
 
                     Who who = i == 0 ? Who.Self : Who.Foe;
 
-                    if (who == Who.Foe && opponent.SubstituteHP > 0)
+                    if (eff.Who == Who.Foe && who == Who.Foe && opponent.SubstituteHP > 0)
                     {
                         if (move.Category == ElementCategory.Status)
-                            OnSendMessage("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                            messageBuffer.AppendLine(string.Format("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                         continue;
                     }
 
                     if (mons[i] != null && (eff.Who == who || eff.Who == Who.Both) && (i == 0 || hitOpponent))
                     {
-                        ret = true;
                         if (eff.Status == StatusCondition.Faint)
+                        {
                             mons[i].Monster.CurrentHP = 0;
+                            ret = true;
+                        }
                         else if (eff.Status == StatusCondition.Confusion)
                         {
                             if (mons[i].IsConfused)
-                                OnSendMessage("{0}{1} is already confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                messageBuffer.AppendLine(string.Format("{0}{1} is already confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                             else
                             {
-                                OnSendMessage(eff.Message ?? "{0}{1} became confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                messageBuffer.AppendLine(string.Format(eff.Message ?? "{0}{1} became confused!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                 mons[i].ConfusedCount = Rng.Next(2, 6);
+                                ret = true;
                             }
                         }
                         else if (eff.Status == StatusCondition.Flinch)
                         {
                             mons[i].Flinched = true;
+                            ret = true;
                         }
                         else if ((eff.Force || mons[i].Monster.Status == StatusCondition.None) && !mons[i].Species.IsImmuneToStatus(eff.Status))
                         {
@@ -259,35 +266,36 @@ namespace PkMn.Instance
                                 message = eff.ForceMessage;
 
                             mons[i].Monster.Status = eff.Status;
+                            ret = true;
 
                             switch (eff.Status)
                             {
                                 case StatusCondition.Paralysis:
-                                    OnSendMessage(message ?? "{0}{1} was paralyzed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} was paralyzed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                     mons[i].EffectiveStats.Speed = (int)(((decimal)mons[i].EffectiveStats.Speed) * 0.25m);
                                     break;
                                 case StatusCondition.Sleep:
-                                    OnSendMessage(message ?? "{0}{1} fell asleep!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} fell asleep!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                     mons[i].Monster.SleepCounter = eff.TurnLimit > 0 ? eff.TurnLimit : Rng.Next(1, 8);
                                     break;
                                 case StatusCondition.Burn:
-                                    OnSendMessage(message ?? "{0}{1} was burned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} was burned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                     mons[i].EffectiveStats.Attack = (int)(((decimal)mons[i].EffectiveStats.Attack) * 0.5m);
                                     break;
                                 case StatusCondition.BadlyPoisoned:
-                                    OnSendMessage(message ?? "{0}{1} was badly poisoned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} was badly poisoned!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                     break;
                                 case StatusCondition.Freeze:
-                                    OnSendMessage(message ?? "{0}{1} was frozen!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} was frozen!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                                     break;
                                 default:
-                                    OnSendMessage(message ?? "{0}{1} was {2}ed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Status.ToString().ToLower());
+                                    messageBuffer.AppendLine(string.Format(message ?? "{0}{1} was {2}ed!", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name, eff.Status.ToString().ToLower()));
                                     break;
                             }
 
                         }
                         else if (move.Category == ElementCategory.Status)
-                            OnSendMessage("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                            messageBuffer.AppendLine(string.Format("It didn't affect {0}{1}.", mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
                     }
                 }
             }
@@ -295,11 +303,12 @@ namespace PkMn.Instance
             return ret;
         }
 
-        protected void HandleDisableEffect(ActiveMonster current, ActiveMonster opponent)
+        protected bool HandleDisableEffect(ActiveMonster current, ActiveMonster opponent)
         {
             if (opponent.DisabledCount > 0)
             {
-                OnSendMessage("But, it failed!");
+                messageBuffer.AppendLine("But, it failed!");
+                return false;
             }
             else
             {
@@ -307,7 +316,8 @@ namespace PkMn.Instance
 
                 if (enabled.Length <= 0)
                 {
-                    OnSendMessage("But, it failed!");
+                    messageBuffer.AppendLine("But, it failed!");
+                    return false;
                 }
                 else
                 {
@@ -326,7 +336,8 @@ namespace PkMn.Instance
 
                     opponent.DisabledCount = Rng.Next(disableEffect.Min, disableEffect.Max + 1);
 
-                    OnSendMessage("{0}{1}'s {2} was disabled!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, disabledMove.Name.ToUpper());
+                    messageBuffer.AppendLine(string.Format("{0}{1}'s {2} was disabled!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name, disabledMove.Name.ToUpper()));
+                    return true;
                 }
             }
         }
@@ -352,6 +363,7 @@ namespace PkMn.Instance
             foreach (StatusEffect eff in current.QueuedMove.Effects.Where(e => e.Type == MoveEffectType.Status).Cast<StatusEffect>().Where(e => e.Condition == "lock-in-end"))
             {
                 HandleStatusEffect(current, current.QueuedMove, opponent, eff, moveHit);
+                ClearMessageBuffer();
             }
 
             current.QueuedMoveLimit = -1;
@@ -359,12 +371,13 @@ namespace PkMn.Instance
             current.QueuedMove = null;
         }
 
-        protected void HandleResetStatusEffect(ActiveMonster current, StatusEffect eff, ActiveMonster opponent)
+        protected bool HandleResetStatusEffect(ActiveMonster current, StatusEffect eff, ActiveMonster opponent)
         {
             if (eff.Type != MoveEffectType.ResetStatus)
-                return;
+                return false;
 
             ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+            bool ret = false;
 
             for (int i = 0; i < mons.Length; i++)
             {
@@ -373,19 +386,27 @@ namespace PkMn.Instance
                 if (eff.Who == Who.Both || eff.Who == who)
                 {
                     if (eff.Status == StatusCondition.Confusion)
+                    {
                         mons[i].ConfusedCount = 0;
+                        ret = true;
+                    }
                     else if (eff.Status == StatusCondition.Flinch)
+                    {
                         mons[i].Flinched = false;
+                        ret = true;
+                    }
                     else if (eff.Status == StatusCondition.BadlyPoisoned && mons[i].Monster.Status == StatusCondition.BadlyPoisoned)
                     {
                         mons[i].Monster.Status = StatusCondition.Poison;
                         mons[i].BadlyPoisonedCount = 0;
+                        ret = true;
                     }
                     else if (eff.Status == mons[i].Monster.Status)
                     {
                         if (i == 1 && (mons[i].Monster.Status == StatusCondition.Sleep || mons[i].Monster.Status == StatusCondition.Freeze))
                             mons[i].MoveCancelled = true;
                         mons[i].Monster.Status = StatusCondition.None;
+                        ret = true;
                     }
                     else if (eff.Status == StatusCondition.All)
                     {
@@ -395,9 +416,12 @@ namespace PkMn.Instance
                         mons[i].Flinched = false;
                         mons[i].Monster.Status = StatusCondition.None;
                         mons[i].BadlyPoisonedCount = 0;
+                        ret = true;
                     }
                 }
             }
+
+            return ret;
         }
 
         protected void HandleResetStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
@@ -433,9 +457,11 @@ namespace PkMn.Instance
 
         }
 
-        protected void HandleProtectStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
+        protected bool HandleProtectStatStageEffect(ActiveMonster current, StatStageEffect eff, ActiveMonster opponent)
         {
             ActiveMonster[] mons = new ActiveMonster[] { current, opponent };
+
+            bool ret = false;
 
             for (int i = 0; i < mons.Length; i++)
             {
@@ -444,13 +470,18 @@ namespace PkMn.Instance
                 if (eff.Who == Who.Both || eff.Who == who)
                 {
                     if (mons[i].ProtectStages)
-                        OnSendMessage("But, it failed!");
+                        messageBuffer.AppendLine("But, it failed!");
                     else if (!string.IsNullOrEmpty(eff.Message))
-                        OnSendMessage(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name);
+                    {
+                        messageBuffer.AppendLine(string.Format(eff.Message, mons[i].Trainer.MonNamePrefix, mons[i].Monster.Name));
+                        ret = true;
+                    }
 
                     current.ProtectStages = true;
                 }
             }
+
+            return ret;
         }
 
         protected void HandleCopyEffect(ActiveMonster current, CopyEffect copy, ActiveMonster opponent)
@@ -508,10 +539,11 @@ namespace PkMn.Instance
                 OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, current.Trainer.MonNamePrefix, current.Monster.Name);
                 int oldHP = current.Monster.CurrentHP;
                 int newHP = current.Monster.CurrentHP + hpRestored;
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                 current.Monster.CurrentHP += hpRestored;
                 
-                OnSendMessage("{0}{1} regained health!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                messageBuffer.AppendLine(string.Format("{0}{1} regained health!", current.Trainer.MonNamePrefix, current.Monster.Name));
             }
             //nothing else to implement
         }

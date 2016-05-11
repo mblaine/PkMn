@@ -25,6 +25,7 @@ namespace PkMn.Instance
         protected bool BattleHasBegun;
 
         protected int runCount;
+        protected StringBuilder messageBuffer;
 
         public ChooseMonEventHandler ChooseNextMon;
         public SendMessageEventHandler SendMessage;
@@ -48,6 +49,7 @@ namespace PkMn.Instance
             FoeCurrent = new ActiveMonster(foe);
 
             BattleHasBegun = false;
+            messageBuffer = new StringBuilder();
         }
 
         protected void BeginBattle()
@@ -101,6 +103,16 @@ namespace PkMn.Instance
         {
             if (BattleEvent != null)
                 BattleEvent(this, e);
+        }
+
+        protected void ClearMessageBuffer()
+        {
+            if (messageBuffer.Length > 0)
+            {
+                foreach(string line in messageBuffer.ToString().Split(new char[]{'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries))
+                    OnSendMessage(line);
+                messageBuffer.Clear();
+            }
         }
 
         public bool Step()
@@ -454,7 +466,7 @@ namespace PkMn.Instance
                 if (current.QueuedMove == null)
                 {
                     if (!string.IsNullOrWhiteSpace(beforeEffect.Message))
-                        OnSendMessage(beforeEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+                        messageBuffer.AppendLine(string.Format(beforeEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name));
                     current.QueuedMove = current.SelectedMove;
                     if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.SemiInvulnerable))
                         current.IsSemiInvulnerable = true;
@@ -488,7 +500,7 @@ namespace PkMn.Instance
             if (current.SelectedMove != null && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.RestoreHealth) && current.Monster.CurrentHP == current.Monster.Stats.HP)
             {
                 OnSendMessage("{0}{1} used {2}!", current.Trainer.MonNamePrefix, current.Monster.Name, current.SelectedMove.Name.ToUpper());
-                OnSendMessage("But, it failed.");
+                messageBuffer.AppendLine("But, it failed.");
                 current.DeductPP();
                 return false;
             }
@@ -587,7 +599,15 @@ namespace PkMn.Instance
             current.LastMoveUsed = current.SelectedMove;
 
             if (!PreMoveChecks(current, opponent))
+            {
+                if(current.QueuedMove != null && current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.Charge))
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackCharged, current, current.SelectedMove));
+                else
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonStatusUpdate, current));
+                ClearMessageBuffer();
                 return true;
+            }
 
             MoveEffect alwaysAvailable = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.NeverDeductPP).FirstOrDefault();
             if (alwaysAvailable != null && !string.IsNullOrEmpty(alwaysAvailable.Message))
@@ -609,6 +629,7 @@ namespace PkMn.Instance
             //no effect
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.None))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 OnSendMessage("No effect.");
                 return true;
             }
@@ -618,6 +639,7 @@ namespace PkMn.Instance
             {
                 if (opponent.Type1 == eff.Condition || opponent.Type2 == eff.Condition)
                 {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                     OnSendMessage("{0}{1} evaded attack!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                     return true;
                 }
@@ -625,6 +647,7 @@ namespace PkMn.Instance
 
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Substitute))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 HandleSubstituteEffect(current);
                 return true;
             }
@@ -633,6 +656,7 @@ namespace PkMn.Instance
             MoveEffect leechSeed = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LeechSeed).FirstOrDefault();
             if (leechSeed != null && opponent.IsSeeded)
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                 OnSendMessage("{0}{1} evaded attack!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 return true;
             }
@@ -642,11 +666,13 @@ namespace PkMn.Instance
             {
                 if (opponent.LastMoveUsed == null || opponent.LastMoveUsed == current.SelectedMove)
                 {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                     OnSendMessage("The MIRROR MOVE failed!");
                     return true;
                 }
                 else
                 {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                     current.MoveOverrideTemporary = opponent.LastMoveUsed;
                     bool ret = ExecuteMove(current, opponent);
                     current.MoveOverrideTemporary = null;
@@ -657,6 +683,7 @@ namespace PkMn.Instance
             //metronome
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Random))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 string[] moves = Move.Moves.Values.Where(m => m != current.SelectedMove && !m.Effects.Any(e => e.Type == MoveEffectType.NeverDeductPP)).Select(m => m.Name).ToArray();
                 current.MoveOverrideTemporary = Move.Moves[moves[Rng.Next(0, moves.Length)]];
                 bool ret = ExecuteMove(current, opponent);
@@ -665,15 +692,17 @@ namespace PkMn.Instance
             }
 
             bool triedStatusEffect = false;
+            bool didStatusEffect = false;
 
             //reset statuses
             foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatus))
             {
                 if (!string.IsNullOrEmpty(eff.Message))
-                    OnSendMessage(eff.Message);
+                    messageBuffer.AppendLine(eff.Message);
 
                 triedStatusEffect = true;
-                HandleResetStatusEffect(current, eff, opponent);
+                if (HandleResetStatusEffect(current, eff, opponent))
+                    didStatusEffect = true;
             }
 
             //reset stages
@@ -684,7 +713,8 @@ namespace PkMn.Instance
             foreach (StatStageEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ProtectStatStages))
             {
                 triedStatusEffect = true;
-                HandleProtectStatStageEffect(current, eff, opponent);
+                if (HandleProtectStatStageEffect(current, eff, opponent))
+                    didStatusEffect = true;
             }
 
             //calculate critical hit or not
@@ -713,13 +743,15 @@ namespace PkMn.Instance
             current.IsSemiInvulnerable = false;
 
             //trapping the enemy
-            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
+            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove) && current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2) != 0m)
                 CancelQueuedMove(opponent, CancelMoveReason.Trapped);
 
             //force run away
             MoveEffect endWildBattle = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.EndWildBattle).FirstOrDefault();
             if (moveHit && endWildBattle != null)
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+
                 if (IsWildBattle)
                 {
                     OnSendMessage(endWildBattle.Message ?? "The battle ended!", current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
@@ -742,13 +774,15 @@ namespace PkMn.Instance
                 if ((moveHit && !immuneToType) || eff.Who == Who.Both || eff.Who == Who.Self)
                     triedStatusEffect = true;
 
-                HandleStatEffect(current, null, eff, moveHit);
+                if (HandleStatEffect(current, null, eff, moveHit))
+                    didStatusEffect = true;
             }
 
             //handle pre-damage-calc effects
             foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => e.Temporary))
             {
                 HandleStatEffect(current, opponent, eff, moveHit);
+                ClearMessageBuffer();
             }
             
             //handle self status condition effects
@@ -757,7 +791,8 @@ namespace PkMn.Instance
                 if ((moveHit && !immuneToType) || eff.Who == Who.Both || (eff.Who == Who.Self && eff.Status != StatusCondition.Faint))
                     triedStatusEffect = true;
 
-                HandleStatusEffect(current, current.SelectedMove, null, eff, moveHit);
+                if (HandleStatusEffect(current, current.SelectedMove, null, eff, moveHit))
+                    didStatusEffect = true;
             }
 
             //restore health
@@ -773,9 +808,10 @@ namespace PkMn.Instance
             //handle miss
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 LastDamageDealt = 0;
-               
+                ClearMessageBuffer();
                 if (lockInEffect != null && lockInEffect.IgnoreMissOnLock && current.QueuedMove == null)
                 {
                     HandleLockInBeginning(current, lockInEffect, opponent);
@@ -796,17 +832,20 @@ namespace PkMn.Instance
             //seeded
             if (leechSeed != null)
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 opponent.IsSeeded = true;
                 OnSendMessage("{0}{1} was seeded!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                ClearMessageBuffer();
                 return true;
             }
 
             //transform, mimic, conversion
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Copy))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                 foreach (CopyEffect copy in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Copy).Cast<CopyEffect>())
                     HandleCopyEffect(current, copy, opponent);
-
+                ClearMessageBuffer();
                 return true;
             }
 
@@ -814,7 +853,8 @@ namespace PkMn.Instance
             if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Disable))
             {
                 triedStatusEffect = true;
-                HandleDisableEffect(current, opponent);
+                if (HandleDisableEffect(current, opponent))
+                    didStatusEffect = true;
             }
 
             int hitsToTry = 1;
@@ -840,6 +880,7 @@ namespace PkMn.Instance
 
             if (damage == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && !(((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end" && (current.QueuedMove == null || current.QueuedMoveLimit > 1))))
             {
+                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 moveHit = false;
             }
@@ -849,7 +890,29 @@ namespace PkMn.Instance
             {
                 hitCount++;
 
-                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                //apply foe effects
+                if (!immuneToType && opponent.Monster.CurrentHP > 0)
+                {
+                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
+                    {
+                        if (HandleStatEffect(null, opponent, eff, moveHit))
+                            didStatusEffect = true;
+                    }
+
+                    foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Status))
+                    {
+                        if (HandleStatusEffect(null, current.SelectedMove, opponent, eff, moveHit))
+                            didStatusEffect = true;
+                    }
+                }
+
+                if ((current.SelectedMove.AttackType != AttackType.NonDamaging && damage > 0) || didStatusEffect)
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                else
+                {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                    ClearMessageBuffer();
+                }
 
                 if (opponent.SubstituteHP > 0)
                 {
@@ -871,32 +934,24 @@ namespace PkMn.Instance
                     
                 }
 
+                ClearMessageBuffer();
+
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonStatusUpdate, current));
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonStatusUpdate, opponent));
+
                 if (damage != 0)
                     OnSendDebugMessage("Did {0} damage to {1}{2}", damage, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
-
 
                 if(opponent.Monster.CurrentHP == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.OneHitKO))
                     OnSendMessage("One-hit KO!");
 
-                //apply foe effects
-                if (!immuneToType && opponent.Monster.CurrentHP > 0)
-                {
-                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
-                    {
-                        HandleStatEffect(null, opponent, eff, moveHit);
-                    }
-
-                    foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.Status))
-                    {
-                        HandleStatusEffect(null, current.SelectedMove, opponent, eff, moveHit);
-                    }
-                }
 
                 //handle rage building
                 if (damage > 0 && opponent.QueuedMove != null)
                 {
                     foreach (StatEffect eff in opponent.QueuedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => e.Condition == "on-damaged"))
                         HandleStatEffect(opponent, current, eff, moveHit, false);
+                    ClearMessageBuffer();
                 }
 
                 //only display messages on first hit
@@ -926,7 +981,7 @@ namespace PkMn.Instance
             if(hitsToTry > 1 && hitCount > 0 && !immuneToType)
                 OnSendMessage("Hit {0} time(s)!", hitCount);
 
-            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove))
+            if (moveHit && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove) && current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2) != 0m)
             {
                 opponent.MoveCancelled = true;
                 if(opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.Charge && ((MultiEffect)e).When == When.After))
@@ -968,15 +1023,20 @@ namespace PkMn.Instance
             //handle move lock-in
             if (lockInEffect != null)
             {
-                if (moveHit && current.QueuedMove == null)
+                if (moveHit && current.QueuedMove == null && current.SelectedMove.Type.GetEffectiveness(opponent.Type1, opponent.Type2) != 0m)
+                {
                     HandleLockInBeginning(current, lockInEffect, opponent);
+                }
 
-                current.QueuedMoveLimit--;
+                if (current.QueuedMove != null)
+                {
+                    current.QueuedMoveLimit--;
 
-                if (current.QueuedMoveLimit <= 0)
-                    HandleLockInEnding(current, opponent, moveHit);                    
-                else if (lockInEffect.ConstantDamage)
-                    current.QueuedMoveDamage = damage;
+                    if (current.QueuedMoveLimit <= 0)
+                        HandleLockInEnding(current, opponent, moveHit);
+                    else if (lockInEffect.ConstantDamage)
+                        current.QueuedMoveDamage = damage;
+                }
             }
             else if (lockInEffect == null)
                 current.QueuedMove = null;

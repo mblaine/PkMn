@@ -11,6 +11,9 @@ namespace PkMn.Model.Enums
         MonFainted,
         MonRecalled,
         MonSentOut,
-        AttackHit
+        MonStatusUpdate,
+        AttackHit,
+        AttackMissed,
+        AttackCharged
     }
 }

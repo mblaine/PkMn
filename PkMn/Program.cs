@@ -20,12 +20,16 @@ namespace PkMn
         {
             //var mapping = File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\animations_by_animation.txt").Where(l => l.Length > 0 && l[0] == 'E').ToDictionary(l => l.Split(' ')[1], l => l.Split(' ')[0]);
 
-            //foreach (string line in File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\animations_by_move.txt"))
+            //foreach (string line in File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\anim2.txt"))
             //{
-            //    Match m = Regex.Match(line, @"^\tdb (\$[0-9A-F]{2}),(\$[0-9A-F]{2}),(\$[0-9A-F]{2})");
+            //    //Match m = Regex.Match(line, @"^\tdb (\$[0-9A-F]{2}),(\$[0-9A-F]{2}),(\$[0-9A-F]{2})");
+            //    Match m = Regex.Match(line, @"(^ +EF_[^,]+),\$([0-9A-Fa-f]+)$");
             //    if (m.Success)
             //    {
-            //        Console.WriteLine("\t   {0},{1}", mapping[m.Groups[3].Value], m.Groups[1].Value);
+            //        byte b = Convert.ToByte(m.Groups[2].Value, 16);
+            //        int sprite = (b >> 6) & 0x3;
+            //        int delay = b & 63;
+            //        Console.WriteLine("{0},{1},{2}", m.Groups[1].Value, delay, sprite);
             //    }
             //    else
             //        Console.WriteLine(line);
@@ -77,11 +81,16 @@ namespace PkMn
                 IsPlayer = false
             };
 
+
+            //player.Party[0] = new Monster("Vaporeon", 70);
+            //rival.Party[0] = new Monster("Gastly", 70);
+            //player.Party[0].Moves[0] = Move.Moves["Defense Curl"];
+
             //player.Party[0] = new Monster("Alakazam", 70);
             //player.Party[0].CurrentHP--;
             //rival.Party[0] = new Monster("Omastar", 70);
-            //player.Party[0].Moves[0] = Move.Moves["Leech Seed"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Ember"];
+            player.Party[0].Moves[0] = Move.Moves["Wrap"];
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Agility"];
 
             Battle battle = new Battle(player, rival, false);
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;

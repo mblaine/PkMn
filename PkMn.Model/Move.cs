@@ -124,7 +124,7 @@ namespace PkMn.Model
                 }
             }
 
-            if (Power > 0 || Effects.Any(e => e.Type == MoveEffectType.CustomDamage))
+            if (Power > 0 || Effects.Any(e => e.Type == MoveEffectType.CustomDamage) || Effects.Any(e => e.Type == MoveEffectType.OneHitKO))
             {
                 if (Effects.Count == 0)
                     AttackType = AttackType.Damaging;
