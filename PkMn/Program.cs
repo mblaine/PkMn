@@ -82,15 +82,16 @@ namespace PkMn
             };
 
 
-            //player.Party[0] = new Monster("Vaporeon", 70);
+            //player.Party[0] = new Monster("Mewtwo", 100);
             //rival.Party[0] = new Monster("Gastly", 70);
             //player.Party[0].Moves[0] = Move.Moves["Defense Curl"];
 
             //player.Party[0] = new Monster("Alakazam", 70);
             //player.Party[0].CurrentHP--;
             //rival.Party[0] = new Monster("Omastar", 70);
-            player.Party[0].Moves[0] = Move.Moves["Wrap"];
-            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Agility"];
+            //player.Party[0].Moves[0] = Move.Moves["Dig"];
+            //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
+            //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Wrap"];
 
             Battle battle = new Battle(player, rival, false);
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
@@ -103,8 +104,9 @@ namespace PkMn
 
             battle.SendDebugMessage += battle.SendMessage;
 
-            battle.ChooseAction += delegate(ActiveMonster current, Trainer trainer)
+            battle.ChooseAction += delegate(ActiveMonster current, Trainer trainer, bool canAttack)
             {
+                Console.WriteLine(canAttack);
                 string[] moveText = new string[4];
                 Move[] playerMoves = battle.PlayerCurrent.Moves;
                 for (int i = 0; i < 4; i++)
@@ -309,7 +311,7 @@ namespace PkMn
         }
 
         //public static bool firstAttack = true;
-        public static BattleAction Battle_ChooseAction(ActiveMonster current, Trainer trainer)
+        public static BattleAction Battle_ChooseAction(ActiveMonster current, Trainer trainer, bool canAttack)
         {
             BattleAction ret = new BattleAction();
 

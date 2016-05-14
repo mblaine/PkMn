@@ -113,7 +113,7 @@ namespace PkMn.Instance
             }
         }
 
-        public bool CanSelectAMove
+        public bool HasSelectableMove
         {
             get
             {
@@ -123,6 +123,18 @@ namespace PkMn.Instance
                          return true;
                  return false;
             }
+        }
+
+        public bool CancelOpponentsMove
+        {
+            get
+            {
+                Move m = QueuedMove ?? MoveOverrideTemporary ?? null;
+                if (m == null)
+                    return false;
+                return m.Effects.Any(e => e.Type == MoveEffectType.CancelEnemyMove);
+            }
+
         }
 
         public bool AnyMonstersRemaining
