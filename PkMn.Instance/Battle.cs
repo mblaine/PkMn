@@ -10,7 +10,7 @@ namespace PkMn.Instance
 {
     public partial class Battle
     {
-        public delegate Monster ChooseMonEventHandler(Trainer trainer);
+        public delegate Monster ChooseMonEventHandler(Trainer trainer, bool optional);
         public delegate void SendMessageEventHandler(string message);
         public delegate BattleAction ChooseActionEventHandler(ActiveMonster current, Trainer trainer, bool canAttack);
         public delegate int ChooseMoveEventHandler(Move[] moves);
@@ -23,6 +23,7 @@ namespace PkMn.Instance
         public ActiveMonster FoeCurrent { get; protected set; }
         protected bool IsWildBattle;
         protected bool BattleHasBegun;
+        protected bool Shift;
 
         protected int runCount;
         protected StringBuilder messageBuffer;
@@ -35,13 +36,15 @@ namespace PkMn.Instance
         public event BattleEventHandler BattleEvent;
 
         public int LastDamageDealt;
+        public Element LastDamageDealtType;
         public int RewardMoney;
 
-        public Battle(Trainer player, Trainer foe, bool isWildBattle)
+        public Battle(Trainer player, Trainer foe, bool isWildBattle, bool shift)
         {
             Player = player;
             Foe = foe;
             IsWildBattle = isWildBattle;
+            Shift = shift;
             runCount = 0;
             RewardMoney = 0;
 
@@ -67,6 +70,8 @@ namespace PkMn.Instance
                     FoeCurrent.Monster = mon;
                     if(!IsWildBattle)
                         OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, FoeCurrent));
+                    else
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonSpawned, FoeCurrent));
                     break;
                 }
             }
@@ -393,6 +398,7 @@ namespace PkMn.Instance
                 else
                 {
                     OnSendMessage("{0}{1} is fast asleep!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.StatusAilment, current, StatusCondition.Sleep));
                     CancelQueuedMove(current, CancelMoveReason.Asleep);
                     return false;
                 }
@@ -427,6 +433,7 @@ namespace PkMn.Instance
                 else
                 {
                     OnSendMessage("{0}{1} is confused!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.StatusAilment, current, StatusCondition.Confusion));
 
                     if (Rng.Next(0, 256) < 128)
                     {
@@ -535,7 +542,7 @@ namespace PkMn.Instance
                         customDamage = Rng.Next(1, (int)(1.5m * (decimal)current.Monster.Level) + 1);
                         break;
                     case "last-damage-if-normal-or-fighting": //Counter...
-                        customDamage = opponent.SelectedMove.Type == Element.Elements["Normal"] | opponent.SelectedMove.Type == Element.Elements["Fighting"] ? (int)(customEffect.Multiplier * (decimal)LastDamageDealt) : 0;
+                        customDamage = LastDamageDealtType == Element.Elements["Normal"] || LastDamageDealtType == Element.Elements["Fighting"] ? (int)(customEffect.Multiplier * (decimal)LastDamageDealt) : 0;
                         break;
                     case "accumulated-on-lock-end": //Bide...
                         customDamage = current.QueuedMoveLimit == 1 ? (int)(customEffect.Multiplier * (decimal)current.AccumulatedDamage) : 0;
@@ -695,6 +702,7 @@ namespace PkMn.Instance
 
             bool triedStatusEffect = false;
             bool didStatusEffect = false;
+            bool alreadySentHitEvent = false;
 
             //reset statuses
             foreach (StatusEffect eff in current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.ResetStatus))
@@ -752,15 +760,15 @@ namespace PkMn.Instance
             MoveEffect endWildBattle = current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.EndWildBattle).FirstOrDefault();
             if (moveHit && endWildBattle != null)
             {
-                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
-
                 if (IsWildBattle)
                 {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
                     OnSendMessage(endWildBattle.Message ?? "The battle ended!", current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                     return false;
                 }
                 else
                 {
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                     OnSendMessage("But, it failed!");
                     return true;
                 }
@@ -802,7 +810,11 @@ namespace PkMn.Instance
             if (restoreHealth != null)
             {
                 triedStatusEffect = true;
-                HandleRestoreHealthEffect(current, restoreHealth);
+                if (HandleRestoreHealthEffect(current, restoreHealth))
+                {
+                    didStatusEffect = true;
+                    alreadySentHitEvent = true;
+                }
             }
 
             ExtraDamageEffect crashEffect = (ExtraDamageEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.MissDamage).FirstOrDefault();
@@ -813,6 +825,7 @@ namespace PkMn.Instance
                 OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 LastDamageDealt = 0;
+                LastDamageDealtType = null;
                 ClearMessageBuffer();
                 if (lockInEffect != null && lockInEffect.IgnoreMissOnLock && current.QueuedMove == null)
                 {
@@ -908,11 +921,16 @@ namespace PkMn.Instance
                     }
                 }
 
+
                 if ((current.SelectedMove.AttackType != AttackType.NonDamaging && damage > 0) || didStatusEffect)
-                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                {
+                    if (!alreadySentHitEvent)
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                }
                 else
                 {
-                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                    if (!alreadySentHitEvent)
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                     ClearMessageBuffer();
                 }
 
@@ -922,6 +940,7 @@ namespace PkMn.Instance
                     if(damage > 0)
                         OnSendMessage("The SUBSTITUTE took damage for {0}{1}!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                     LastDamageDealt = 0;
+                    LastDamageDealtType = null;
                     if (opponent.SubstituteHP <= 0)
                         OnSendMessage("{0}{1}'s SUBSTITUTE broke!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
                 }
@@ -932,6 +951,7 @@ namespace PkMn.Instance
                     OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, oldHP, newHP));
                     opponent.Monster.CurrentHP = newHP;
                     LastDamageDealt = damage;
+                    LastDamageDealtType = current.SelectedMove.Type; ;
                     opponent.AccumulatedDamage += damage;
                     
                 }

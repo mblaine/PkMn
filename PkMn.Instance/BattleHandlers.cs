@@ -35,18 +35,42 @@ namespace PkMn.Instance
 
                 if (isPlayer)
                 {
-                    Monster mon = ChooseNextMon(current.Trainer);
+                    Monster mon = ChooseNextMon(current.Trainer, false);
 
                     while (mon.CurrentHP <= 0)
                     {
                         OnSendMessage("There's no will to fight!");
-                        mon = ChooseNextMon(current.Trainer);
+                        mon = ChooseNextMon(current.Trainer, false);
                     }
 
                     current.Monster = mon;
                 }
                 else
+                {
                     current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
+
+                    if (Shift)
+                    {
+                        OnSendMessage("{0} is about to use {1}!", current.Trainer.Name, current.Monster.Name);
+                        OnSendMessage("Will {0} change Pokémon?", opponent.Trainer.Name);
+                        Monster mon = ChooseNextMon(opponent.Trainer, true);
+
+                        while (mon != null && mon != opponent.Monster && mon.CurrentHP <= 0)
+                        {
+                            OnSendMessage("There's no will to fight!");
+                            mon = ChooseNextMon(current.Trainer, true);
+                        }
+
+                        if (mon != null && mon != opponent.Monster)
+                        {
+                            OnSendMessage("Come back {0}!", opponent.Monster.Name);
+                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, opponent));
+                            opponent.Monster = mon;
+                            OnSendMessage("Go {0}!", opponent.Monster.Name);
+                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, opponent));
+                        }
+                    }
+                }
 
                 if (isPlayer)
                     OnSendMessage("Go {0}!", current.Monster.Name);
@@ -507,8 +531,6 @@ namespace PkMn.Instance
             {
                 current.MovesOverride = (Move[])opponent.Moves.Clone();
                 current.CurrentPPOverride = new int[] { 5, 5, 5, 5 };
-                if (!string.IsNullOrEmpty(copy.Message))
-                    OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Monster.Species.Name.ToUpper());
             }
             else if (copy.What == "stat-stages")
             {
@@ -522,13 +544,16 @@ namespace PkMn.Instance
             else if (copy.What == "species")
             {
                 current.SpeciesOverride = opponent.Species;
+                OnBattleEvent(new BattleEventArgs(BattleEventType.MonTransformed, current));
+                if (!string.IsNullOrEmpty(copy.Message))
+                    OnSendMessage(copy.Message, current.Trainer.MonNamePrefix, current.Monster.Name, opponent.Monster.Species.Name.ToUpper());
             }
         }
 
-        protected void HandleRestoreHealthEffect(ActiveMonster current, HealthEffect eff)
+        protected bool HandleRestoreHealthEffect(ActiveMonster current, HealthEffect eff)
         {
             if (eff.Type != MoveEffectType.RestoreHealth)
-                return;
+                return false;
 
             if (eff.Of == "max" && eff.Who == Who.Self)
             {
@@ -544,8 +569,10 @@ namespace PkMn.Instance
                 current.Monster.CurrentHP += hpRestored;
                 
                 messageBuffer.AppendLine(string.Format("{0}{1} regained health!", current.Trainer.MonNamePrefix, current.Monster.Name));
+                return true;
             }
             //nothing else to implement
+            return false;
         }
 
         protected void HandleTransferHealthEffect(ActiveMonster current, HealthEffect eff, ActiveMonster opponent, int damage)

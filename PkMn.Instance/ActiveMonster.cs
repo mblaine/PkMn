@@ -32,7 +32,6 @@ namespace PkMn.Instance
             }
         }
 
-
         public BattleStats StatStages;
         public BattleStats EffectiveStats;
         

@@ -14,6 +14,7 @@ namespace PkMn.Instance
         public readonly int HPBefore;
         public readonly int HPAfter;
         public readonly Move Move;
+        public readonly StatusCondition Status;
 
         public BattleEventArgs(BattleEventType type, ActiveMonster monster)
         {
@@ -35,5 +36,13 @@ namespace PkMn.Instance
             HPBefore = hpBefore;
             HPAfter = hpAfter;
         }
+
+        public BattleEventArgs(BattleEventType type, ActiveMonster monster, StatusCondition status)
+        {
+            Type = type;
+            Monster = monster;
+            Status = status;
+        }
+
     }
 }

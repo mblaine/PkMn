@@ -93,7 +93,7 @@ namespace PkMn
             //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Wrap"];
 
-            Battle battle = new Battle(player, rival, false);
+            Battle battle = new Battle(player, rival, false, true);
             battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
 
             battle.SendMessage += delegate(string message)
@@ -152,9 +152,9 @@ namespace PkMn
                 return action;
             };
 
-            battle.ChooseNextMon += delegate(Trainer trainer)
+            battle.ChooseNextMon += delegate(Trainer trainer, bool optional)
             {
-                return ChooseMon(trainer.Party, false);
+                return ChooseMon(trainer.Party, optional);
             };
 
             while (battle.Step())
@@ -243,7 +243,7 @@ namespace PkMn
             //rival.Party[0].Moves[2] = Move.Moves["Fly"];
             //rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
-            Battle battle = new Battle(player, rival, false);
+            Battle battle = new Battle(player, rival, false, true);
             battle.ChooseNextMon += Battle_ChooseMon;
             battle.SendMessage += Battle_SendMessage;
             battle.ChooseAction += Battle_ChooseAction;
@@ -352,8 +352,11 @@ namespace PkMn
             sb.AppendLine();
         }
 
-        public static Monster Battle_ChooseMon(Trainer trainer)
+        public static Monster Battle_ChooseMon(Trainer trainer, bool optional)
         {
+            if (optional)
+                return null;
+
             foreach (Monster mon in trainer.Party)
             {
                 if (mon != null && mon.CurrentHP > 0 && mon.Status != StatusCondition.Faint)
