@@ -16,6 +16,7 @@ namespace PkMn.Model.Enums
         Confusion,
         Flinch,
         Faint,
+        Seeded,
         All,
         None
     }

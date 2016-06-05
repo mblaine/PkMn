@@ -448,8 +448,11 @@ namespace PkMn.Instance
                         {
                             current.SubstituteHP -= confusionDamage;
                             OnSendMessage("The SUBSTITUTE took damage for {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                            if (opponent.SubstituteHP <= 0)
-                                OnSendMessage("{0}{1}'s SUBSTITUTE broke!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                            if (current.SubstituteHP <= 0)
+                            {
+                                OnSendMessage("{0}{1}'s SUBSTITUTE broke!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                                OnBattleEvent(new BattleEventArgs(BattleEventType.SubstituteBroke, current));
+                            }
                         }
                         else
                         {
@@ -623,11 +626,13 @@ namespace PkMn.Instance
                 OnSendMessage(alwaysAvailable.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
 
             //...used move!
+            bool isRecurringAttack = false;
             LockInEffect lockInEffect = (LockInEffect)current.SelectedMove.Effects.Where(e => e.Type == MoveEffectType.LockInMove).FirstOrDefault();
             if (current.QueuedMove != null && lockInEffect != null && !string.IsNullOrEmpty(lockInEffect.Message))
             {
                 if (!current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.CustomDamage && ((CustomDamageEffect)e).Calculation == "accumulated-on-lock-end") || current.QueuedMoveLimit == 1)
                     OnSendMessage(lockInEffect.Message, current.Trainer.MonNamePrefix, current.Monster.Name);
+                isRecurringAttack = true;
             }
             else
             {
@@ -925,7 +930,7 @@ namespace PkMn.Instance
                 if ((current.SelectedMove.AttackType != AttackType.NonDamaging && damage > 0) || didStatusEffect)
                 {
                     if (!alreadySentHitEvent)
-                        OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                        OnBattleEvent(new BattleEventArgs(isRecurringAttack ? BattleEventType.RecurringAttackHit : BattleEventType.AttackHit, current, current.SelectedMove));
                 }
                 else
                 {
@@ -942,7 +947,10 @@ namespace PkMn.Instance
                     LastDamageDealt = 0;
                     LastDamageDealtType = null;
                     if (opponent.SubstituteHP <= 0)
+                    {
                         OnSendMessage("{0}{1}'s SUBSTITUTE broke!", opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.SubstituteBroke, opponent));
+                    }
                 }
                 else
                 {

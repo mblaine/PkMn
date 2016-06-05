@@ -15,8 +15,10 @@ namespace PkMn.Model.Enums
         MonStatusUpdate,
         MonTransformed,
         AttackHit,
+        RecurringAttackHit,
         AttackMissed,
         AttackCharged,
-        StatusAilment
+        StatusAilment,
+        SubstituteBroke
     }
 }

@@ -95,6 +95,7 @@ namespace PkMn.Instance
             if (current.Monster.Status == StatusCondition.Poison || current.Monster.Status == StatusCondition.BadlyPoisoned)
             {
                 OnSendMessage("{0}{1}'s hurt by poison!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnBattleEvent(new BattleEventArgs(BattleEventType.StatusAilment, current, StatusCondition.Poison));
                 int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
                 if (current.Monster.Status == StatusCondition.BadlyPoisoned)
                     damage = damage * current.BadlyPoisonedCount++;
@@ -108,6 +109,8 @@ namespace PkMn.Instance
             else if (current.Monster.Status == StatusCondition.Burn)
             {
                 OnSendMessage("{0}{1}'s hurt by the burn!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnBattleEvent(new BattleEventArgs(BattleEventType.StatusAilment, current, StatusCondition.Burn));
+
                 int damage = (int)(((decimal)current.Monster.Stats.HP) / 16m);
                 int oldHP = current.Monster.CurrentHP;
                 int newHP = Math.Max(0, current.Monster.CurrentHP - damage);
@@ -125,20 +128,21 @@ namespace PkMn.Instance
                 if (current.Monster.Status == StatusCondition.BadlyPoisoned)
                     damage = damage * current.BadlyPoisonedCount;
 
-                OnSendMessage("LEECH SEED saps {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
+                OnBattleEvent(new BattleEventArgs(BattleEventType.StatusAilment, current, StatusCondition.Seeded));
 
                 int oldHP = current.Monster.CurrentHP;
                 int newHP = Math.Max(0, current.Monster.CurrentHP - damage);
                 OnSendDebugMessage("Did {0} damage to {1}{2}", damage, current.Trainer.MonNamePrefix, current.Monster.Name);
                 OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, newHP));
                 current.Monster.CurrentHP = newHP;
-                
 
                 oldHP = opponent.Monster.CurrentHP;               
                 int hpRestored = Math.Min(damage, opponent.Monster.Stats.HP - opponent.Monster.CurrentHP);
                 OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, opponent, oldHP, oldHP + hpRestored));
                 opponent.Monster.CurrentHP += hpRestored;
                 OnSendDebugMessage("Restored {0} HP to {1}{2}", hpRestored, opponent.Trainer.MonNamePrefix, opponent.Monster.Name);
+
+                OnSendMessage("LEECH SEED saps {0}{1}!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 
             }
         }
