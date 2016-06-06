@@ -615,28 +615,30 @@ namespace PkMn.Instance
             OnSendDebugMessage("Did {0} damage to {1}{2}", recoilDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
         }
 
-        protected void HandleSubstituteEffect(ActiveMonster current)
+        protected bool HandleSubstituteEffect(ActiveMonster current)
         {
             if (current.SubstituteHP > 0)
             {
-                OnSendMessage("{0}{1} has a SUBSTITUTE!", current.Trainer.MonNamePrefix, current.Monster.Name);
-                return;
+                
+                messageBuffer.AppendFormat("{0}{1} has a SUBSTITUTE!", current.Trainer.MonNamePrefix, current.Monster.Name).AppendLine();
+                return false;
             }
 
             int hpCost = current.Monster.Stats.HP / 4;
 
             if (current.Monster.CurrentHP < hpCost)
             {
-                OnSendMessage("Too weak to make a SUBSTITUTE!");
-                return;
+                messageBuffer.AppendLine("Too weak to make a SUBSTITUTE!");
+                return false;
             }
             int oldHP = current.Monster.CurrentHP;
             hpCost = Math.Min(hpCost, current.Monster.CurrentHP);
-            OnSendMessage("It created a SUBSTITUTE!");
+            messageBuffer.AppendLine("It created a SUBSTITUTE!");
             OnSendDebugMessage("Did {0} damage to {1}{2}", hpCost, current.Trainer.MonNamePrefix, current.Monster.Name);
             OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP - hpCost));
             current.Monster.CurrentHP -= hpCost;
             current.SubstituteHP = hpCost + 1;
+            return true;
         }
     }
 }

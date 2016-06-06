@@ -661,8 +661,11 @@ namespace PkMn.Instance
 
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Substitute))
             {
-                OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
-                HandleSubstituteEffect(current);
+                if (HandleSubstituteEffect(current))
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
+                else
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                ClearMessageBuffer();
                 return true;
             }
 
@@ -913,7 +916,7 @@ namespace PkMn.Instance
                 //apply foe effects
                 if (!immuneToType && opponent.Monster.CurrentHP > 0)
                 {
-                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only"))
+                    foreach (StatEffect eff in current.SelectedMove.Effects.Where(e => e is StatEffect).Cast<StatEffect>().Where(e => (string.IsNullOrWhiteSpace(e.Condition) || e.Condition == "defense-only") && !e.Temporary))
                     {
                         if (HandleStatEffect(null, opponent, eff, moveHit))
                             didStatusEffect = true;

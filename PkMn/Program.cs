@@ -89,7 +89,7 @@ namespace PkMn
             //player.Party[0] = new Monster("Alakazam", 70);
             //player.Party[0].CurrentHP--;
             //rival.Party[0] = new Monster("Omastar", 70);
-            //player.Party[0].Moves[0] = Move.Moves["Dig"];
+            //player.Party[0].Moves[0] = Move.Moves["Self-Destruct"];
             //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Wrap"];
 
