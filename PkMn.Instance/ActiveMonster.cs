@@ -28,6 +28,7 @@ namespace PkMn.Instance
                         monster.Status = StatusCondition.Poison;
                     Reset();
                     Recalc();
+                    HPOnSwitchIn = monster.CurrentHP;
                 }
             }
         }
@@ -68,6 +69,8 @@ namespace PkMn.Instance
         public int SpecialDefenseMultiplier;
 
         public bool ProtectStages;
+
+        public int HPOnSwitchIn;
 
         public Move SelectedMove
         {

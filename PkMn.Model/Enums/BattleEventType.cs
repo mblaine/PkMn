@@ -14,6 +14,8 @@ namespace PkMn.Model.Enums
         MonSpawned,
         MonStatusUpdate,
         MonTransformed,
+        MonCrashed,
+        MonHurtItself,
         AttackHit,
         RecurringAttackHit,
         AttackMissed,

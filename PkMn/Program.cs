@@ -35,8 +35,8 @@ namespace PkMn
             //        Console.WriteLine(line);
             //}
 
-            //Automatic(false);
-            Interactive(args);
+            Automatic(true);
+            //Interactive(args);
         }
 
         static Monster[] PlayerStatic()

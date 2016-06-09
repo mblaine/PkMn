@@ -80,7 +80,7 @@ namespace PkMn.Instance
             {
                 if (mon != null && mon.Status != StatusCondition.Faint)
                 {
-                    OnSendMessage("Go {0}!", mon.Name);
+                    OnSendMessage(GetPlayerSentOutText(), mon.Name);
                     PlayerCurrent.Monster = mon;
                     OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent));
                     break;
@@ -229,10 +229,10 @@ namespace PkMn.Instance
                     case BattleActionType.UseItem:
                         throw new Exception();
                     case BattleActionType.ChangeMon:
-                        OnSendMessage("Come back {0}!", PlayerCurrent.Monster.Name);
+                        OnSendMessage(GetPlayerRecalledText(), PlayerCurrent.Monster.Name);
                         OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, PlayerCurrent));
                         PlayerCurrent.Monster = playerAction.SwitchTo;
-                        OnSendMessage("Go {0}!", PlayerCurrent.Monster.Name);
+                        OnSendMessage(GetPlayerSentOutText(), PlayerCurrent.Monster.Name);
                         OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, PlayerCurrent));
                         break;
                     case BattleActionType.UseMove:
@@ -330,6 +330,43 @@ namespace PkMn.Instance
                 return two;
 
             return one.EffectiveStats.Speed > two.EffectiveStats.Speed ? one : one.EffectiveStats.Speed < two.EffectiveStats.Speed ? two : Rng.Next(0, 2) == 0 ? one : two;
+        }
+
+        protected string GetPlayerSentOutText()
+        {
+            if (FoeCurrent != null && FoeCurrent.Monster != null)
+                FoeCurrent.HPOnSwitchIn = FoeCurrent.Monster.CurrentHP;
+
+            if(FoeCurrent != null && FoeCurrent.Monster != null && FoeCurrent.Monster.CurrentHP > 0)
+            {
+                decimal hpRemaining = ((decimal)FoeCurrent.Monster.CurrentHP) / ((decimal)FoeCurrent.Monster.Stats.HP);
+                if (hpRemaining < 0.1m)
+                    return "The enemy's weak! Get'm! {0}!";
+                if (hpRemaining < 0.4m)
+                    return "Get'm! {0}!";
+                if (hpRemaining < 0.7m)
+                    return "Do it! {0}!";
+            }
+
+            return "Go! {0}!";
+        }
+
+        protected string GetPlayerRecalledText()
+        {
+            if (FoeCurrent != null && FoeCurrent.Monster != null)
+            {
+                decimal hpChange = FoeCurrent.HPOnSwitchIn - FoeCurrent.Monster.CurrentHP;
+                decimal percentChange = hpChange / ((decimal)FoeCurrent.Monster.Stats.HP);
+
+                if (hpChange <= 0)
+                    return "{0} enough! Come back!";
+                if (percentChange >= 0.7m)
+                    return "{0} good! Come back!";
+                if (percentChange >= 0.3m)
+                    return "{0} OK! Come back!";
+            }
+
+            return "{0}! Come back!";
         }
 
         protected void CancelQueuedMove(ActiveMonster current, CancelMoveReason reason)
@@ -441,6 +478,8 @@ namespace PkMn.Instance
                         if (current.QueuedMove != null && !current.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove))
                             current.QueuedMove = null;
                         current.IsSemiInvulnerable = false;
+
+                        OnBattleEvent(new BattleEventArgs(BattleEventType.MonHurtItself, current));
 
                         int confusionDamage = (int)((2m * current.Monster.Level / 5m + 2m) / 50m * current.EffectiveStats.Attack / current.EffectiveStats.Defense * 40m + 2m);
                         OnSendDebugMessage("Did {0} damage to {1}{2}", confusionDamage, current.Trainer.MonNamePrefix, current.Monster.Name);
@@ -831,6 +870,7 @@ namespace PkMn.Instance
             if (!moveHit && !(current.SelectedMove.Category == ElementCategory.Status && triedStatusEffect))
             {
                 OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                alreadySentHitEvent = true;
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 LastDamageDealt = 0;
                 LastDamageDealtType = null;
@@ -906,6 +946,7 @@ namespace PkMn.Instance
                 OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
                 OnSendMessage("{0}{1}'s attack missed!", current.Trainer.MonNamePrefix, current.Monster.Name);
                 moveHit = false;
+                alreadySentHitEvent = true;
             }
 
             //hit
@@ -929,7 +970,6 @@ namespace PkMn.Instance
                     }
                 }
 
-
                 if ((current.SelectedMove.AttackType != AttackType.NonDamaging && damage > 0) || didStatusEffect)
                 {
                     if (!alreadySentHitEvent)
@@ -939,6 +979,7 @@ namespace PkMn.Instance
                 {
                     if (!alreadySentHitEvent)
                         OnBattleEvent(new BattleEventArgs(BattleEventType.AttackMissed, current, current.SelectedMove));
+                    alreadySentHitEvent = true;
                     ClearMessageBuffer();
                 }
 

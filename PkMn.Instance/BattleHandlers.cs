@@ -33,6 +33,9 @@ namespace PkMn.Instance
                     return;
                 }
 
+                bool playerShifted = false;
+                Monster playerNextMon = null;
+
                 if (isPlayer)
                 {
                     Monster mon = ChooseNextMon(current.Trainer, false);
@@ -53,31 +56,36 @@ namespace PkMn.Instance
                     {
                         OnSendMessage("{0} is about to use {1}!", current.Trainer.Name, current.Monster.Name);
                         OnSendMessage("Will {0} change Pokémon?", opponent.Trainer.Name);
-                        Monster mon = ChooseNextMon(opponent.Trainer, true);
+                        playerNextMon = ChooseNextMon(opponent.Trainer, true);
 
-                        while (mon != null && mon != opponent.Monster && mon.CurrentHP <= 0)
+                        while (playerNextMon != null && playerNextMon != opponent.Monster && playerNextMon.CurrentHP <= 0)
                         {
                             OnSendMessage("There's no will to fight!");
-                            mon = ChooseNextMon(current.Trainer, true);
+                            playerNextMon = ChooseNextMon(current.Trainer, true);
                         }
 
-                        if (mon != null && mon != opponent.Monster)
+                        if (playerNextMon != null && playerNextMon != opponent.Monster)
                         {
-                            OnSendMessage("Come back {0}!", opponent.Monster.Name);
-                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, opponent));
-                            opponent.Monster = mon;
-                            OnSendMessage("Go {0}!", opponent.Monster.Name);
-                            OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, opponent));
+                            playerShifted = true;
                         }
                     }
                 }
 
                 if (isPlayer)
-                    OnSendMessage("Go {0}!", current.Monster.Name);
+                    OnSendMessage(GetPlayerSentOutText(), current.Monster.Name);
                 else
                     OnSendMessage("{0} sent out {1}!", current.Trainer.Name, current.Monster.Name);
 
                 OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, current));
+
+                if (playerShifted)
+                {
+                    OnSendMessage(GetPlayerRecalledText(), opponent.Monster.Name);
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, opponent));
+                    opponent.Monster = playerNextMon;
+                    OnSendMessage(GetPlayerSentOutText(), opponent.Monster.Name);
+                    OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, opponent));
+                }
 
 
                 //cancel trapping move that isn't rage
@@ -478,6 +486,7 @@ namespace PkMn.Instance
             int oldHP = current.Monster.CurrentHP;
             crashDamage = Math.Min(crashDamage, current.Monster.CurrentHP);
             OnSendMessage(crashEffect.Message ?? "{0}{1} got hurt!", current.Trainer.MonNamePrefix, current.Monster.Name);
+            OnBattleEvent(new BattleEventArgs(BattleEventType.MonCrashed, current));
             OnBattleEvent(new BattleEventArgs(BattleEventType.MonHPChanged, current, oldHP, oldHP - crashDamage));
             current.Monster.CurrentHP -= crashDamage;
             current.AccumulatedDamage += crashDamage;
