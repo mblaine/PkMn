@@ -50,11 +50,11 @@ namespace PkMn.Instance
                 }
                 else
                 {
-                    current.Monster = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
+                    Monster aboutToUse = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
 
                     if (Shift)
                     {
-                        OnSendMessage("{0} is about to use {1}!", current.Trainer.Name, current.Monster.Name);
+                        OnSendMessage("{0} is about to use {1}!", current.Trainer.Name, aboutToUse.Name);
                         OnSendMessage("Will {0} change Pokémon?", opponent.Trainer.Name);
                         playerNextMon = ChooseNextMon(opponent.Trainer, true);
 
@@ -69,6 +69,11 @@ namespace PkMn.Instance
                             playerShifted = true;
                         }
                     }
+
+                    if (current.Monster.CurrentHP <= 0)
+                        current.Monster.Status = StatusCondition.Faint;
+
+                    current.Monster = aboutToUse;
                 }
 
                 if (isPlayer)

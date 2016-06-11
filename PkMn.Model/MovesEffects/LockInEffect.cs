@@ -18,14 +18,12 @@ namespace PkMn.Model.MoveEffects
         public LockInEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
-
-            ConstantDamage = attrs.Contains("constant-damage") ? bool.Parse(node.Attributes["constant-damage"].Value) : false;
-            if (attrs.Contains("ignore-cancel"))
+            ConstantDamage = node.Attributes.Contains("constant-damage") ? bool.Parse(node.Attributes["constant-damage"].Value) : false;
+            if (node.Attributes.Contains("ignore-cancel"))
                 IgnoreCancel = node.Attributes["ignore-cancel"].Value.Split(',').Select(s => (CancelMoveReason)Enum.Parse(typeof(CancelMoveReason), s, true)).ToArray();
             else
                 IgnoreCancel = null;
-            IgnoreMissOnLock = attrs.Contains("ignore-miss-on-lock") ? bool.Parse(node.Attributes["ignore-miss-on-lock"].Value) : false;
+            IgnoreMissOnLock = node.Attributes.Contains("ignore-miss-on-lock") ? bool.Parse(node.Attributes["ignore-miss-on-lock"].Value) : false;
         }
     }
 }

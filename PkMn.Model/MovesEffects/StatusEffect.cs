@@ -23,15 +23,14 @@ namespace PkMn.Model.MoveEffects
         public StatusEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
             Status = (StatusCondition)Enum.Parse(typeof(StatusCondition), node.Attributes["status"].Value.Replace("-", ""), true);
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
-            Chance = attrs.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
-            TurnLimit = attrs.Contains("turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
+            Chance = node.Attributes.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
+            TurnLimit = node.Attributes.Contains("turn-limit") ? int.Parse(node.Attributes["turn-limit"].Value) : 0;
             Reset = type == MoveEffectType.ResetStatus;
-            ForceMessage = attrs.Contains("force-message") ? node.Attributes["force-message"].Value : null;
-            Force = attrs.Contains("force") ? bool.Parse(node.Attributes["force"].Value) : false;
-            Condition = attrs.Contains("condition") ? node.Attributes["condition"].Value : null;
+            ForceMessage = node.Attributes.Contains("force-message") ? node.Attributes["force-message"].Value : null;
+            Force = node.Attributes.Contains("force") ? bool.Parse(node.Attributes["force"].Value) : false;
+            Condition = node.Attributes.Contains("condition") ? node.Attributes["condition"].Value : null;
         }
     }
 }

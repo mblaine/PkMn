@@ -22,7 +22,7 @@ namespace PkMn.Model
         {
             Name = node.Attributes["name"].Value;
             Type = (EvolutionType)Enum.Parse(typeof(EvolutionType), node.Attributes["type"].Value, true);
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "condition"))
+            if (node.Attributes.Contains("condition"))
                 Condition = node.Attributes["condition"].Value;
         }
 

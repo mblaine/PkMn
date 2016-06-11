@@ -18,7 +18,7 @@ namespace PkMn.Model.MoveEffects
             : base(type, node)
         {
             What = node.Attributes["what"].Value;
-            PP = node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "pp") ? int.Parse(node.Attributes["pp"].Value) : 0;
+            PP = node.Attributes.Contains("pp") ? int.Parse(node.Attributes["pp"].Value) : 0;
         }
     }
 }

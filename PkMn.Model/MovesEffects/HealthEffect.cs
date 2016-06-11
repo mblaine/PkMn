@@ -21,7 +21,7 @@ namespace PkMn.Model.MoveEffects
         {
             Percent = decimal.Parse(node.Attributes["percent"].Value);
             Of = node.Attributes["of"].Value;
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "who"))
+            if (node.Attributes.Contains("who"))
                 Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
             RestoreOnly = type == MoveEffectType.RestoreHealth;
         }

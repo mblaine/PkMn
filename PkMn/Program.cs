@@ -35,8 +35,8 @@ namespace PkMn
             //        Console.WriteLine(line);
             //}
 
-            Automatic(true);
-            //Interactive(args);
+            //Automatic(true);
+            Interactive(args);
         }
 
         static Monster[] PlayerStatic()
@@ -81,6 +81,7 @@ namespace PkMn
                 IsPlayer = false
             };
 
+            Trainer.ReadFromFile("parties.xml", out player, out rival);
 
             //player.Party[0] = new Monster("Mewtwo", 100);
             //rival.Party[0] = new Monster("Gastly", 70);
@@ -226,6 +227,8 @@ namespace PkMn
                 Party = random ? Random(false) : RivalStatic(),
                 IsPlayer = false
             };
+
+            Trainer.SaveToFile("parties.xml", player, rival);
 
             //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //player.Party[0].Stats.Speed = 200;

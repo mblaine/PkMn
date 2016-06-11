@@ -19,10 +19,9 @@ namespace PkMn.Model.MoveEffects
             : base(type, node)
         {
             Calculation = node.Attributes["calculation"].Value;
-            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
 
-            Value = attrs.Contains("value") ? int.Parse(node.Attributes["value"].Value) : 0;
-            Multiplier = attrs.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
+            Value = node.Attributes.Contains("value") ? int.Parse(node.Attributes["value"].Value) : 0;
+            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
         }
     }
 }

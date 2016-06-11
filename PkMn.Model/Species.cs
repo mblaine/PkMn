@@ -79,7 +79,7 @@ namespace PkMn.Model
             Name = node.Attributes["name"].Value;
             Type1 = Element.Elements[node.Attributes["type-1"].Value];
             
-            if(node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "type-2"))
+            if(node.Attributes.Contains("type-2"))
                 Type2 = Element.Elements[node.Attributes["type-2"].Value];
 
             CatchRate = int.Parse(node.Attributes["catch-rate"].Value);

@@ -18,12 +18,10 @@ namespace PkMn.Model.MoveEffects
         public MultiEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
+            Min = node.Attributes.Contains("min") ? int.Parse(node.Attributes["min"].Value) : int.MaxValue - 1;
+            Max = node.Attributes.Contains("max") ? int.Parse(node.Attributes["max"].Value) : int.MaxValue - 1;
 
-            Min = attrs.Contains("min") ? int.Parse(node.Attributes["min"].Value) : int.MaxValue - 1;
-            Max = attrs.Contains("max") ? int.Parse(node.Attributes["max"].Value) : int.MaxValue - 1;
-
-            When = attrs.Contains("when") ? (When)Enum.Parse(typeof(When), node.Attributes["when"].Value, true) : Enums.When.NA;
+            When = node.Attributes.Contains("when") ? (When)Enum.Parse(typeof(When), node.Attributes["when"].Value, true) : Enums.When.NA;
         }
     }
 }

@@ -49,22 +49,22 @@ namespace PkMn.Model
             Name = node.Attributes["name"].Value;
             Type = Element.Elements[node.Attributes["type"].Value];
             PP = int.Parse(node.Attributes["pp"].Value);
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "power"))
+            if (node.Attributes.Contains("power"))
                 Power = int.Parse(node.Attributes["power"].Value);
             else
                 Power = 0;
             Accuracy = int.Parse(node.Attributes["accuracy"].Value);
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "category"))
+            if (node.Attributes.Contains("category"))
                 Category = (ElementCategory)Enum.Parse(typeof(ElementCategory), node.Attributes["category"].Value, true);
             else
                 Category = Type.Category;
 
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "priority"))
+            if (node.Attributes.Contains("priority"))
                 Priority = int.Parse(node.Attributes["priority"].Value);
             else
                 Priority = 0;
 
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "crit-ratio"))
+            if (node.Attributes.Contains("crit-ratio"))
                 CritRatio = int.Parse(node.Attributes["crit-ratio"].Value);
             else
                 CritRatio = 1;

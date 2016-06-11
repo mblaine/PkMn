@@ -17,7 +17,7 @@ namespace PkMn.Model.MoveEffects
         public MoveEffect(MoveEffectType type, XmlNode node)
         {
             Type = type;
-            if (node.Attributes.Cast<XmlAttribute>().Any(a => a.Name == "message"))
+            if (node.Attributes.Contains("message"))
                 Message = node.Attributes["message"].Value;
             else
                 Message = null;

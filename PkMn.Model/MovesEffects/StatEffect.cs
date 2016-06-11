@@ -30,17 +30,15 @@ namespace PkMn.Model.MoveEffects
             Stat = (StatType)Enum.Parse(typeof(StatType), node.Attributes["stat"].Value.Replace("-", ""), true);
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
 
-            string[] attrs = node.Attributes.Cast<XmlAttribute>().Select(a => a.Name).ToArray();
+            Change = node.Attributes.Contains("change") ? int.Parse(node.Attributes["change"].Value) : 0;
+            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
 
-            Change = attrs.Contains("change") ? int.Parse(node.Attributes["change"].Value) : 0;
-            Multiplier = attrs.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
-
-            Chance = attrs.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
-            Temporary = attrs.Contains("temporary") ? bool.Parse(node.Attributes["temporary"].Value) : false;
-            Condition = attrs.Contains("condition") ? node.Attributes["condition"].Value : null;
-            Limit = attrs.Contains("limit") ? int.Parse(node.Attributes["limit"].Value) : int.MaxValue;
-            IgnoreIfCritical = attrs.Contains("ignore-if-critical") ? bool.Parse(node.Attributes["ignore-if-critical"].Value) : false;
-            Constant = attrs.Contains("constant") ? int.Parse(node.Attributes["constant"].Value) : 0;
+            Chance = node.Attributes.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
+            Temporary = node.Attributes.Contains("temporary") ? bool.Parse(node.Attributes["temporary"].Value) : false;
+            Condition = node.Attributes.Contains("condition") ? node.Attributes["condition"].Value : null;
+            Limit = node.Attributes.Contains("limit") ? int.Parse(node.Attributes["limit"].Value) : int.MaxValue;
+            IgnoreIfCritical = node.Attributes.Contains("ignore-if-critical") ? bool.Parse(node.Attributes["ignore-if-critical"].Value) : false;
+            Constant = node.Attributes.Contains("constant") ? int.Parse(node.Attributes["constant"].Value) : 0;
         }
     }
 }
