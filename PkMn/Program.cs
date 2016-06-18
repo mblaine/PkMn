@@ -83,7 +83,7 @@ namespace PkMn
 
             Trainer.ReadFromFile("parties.xml", out player, out rival);
 
-            //player.Party[0] = new Monster("Mewtwo", 100);
+            //player.Party[0] = new Monster("Raichu", 70);
             //rival.Party[0] = new Monster("Gastly", 70);
             //player.Party[0].Moves[0] = Move.Moves["Defense Curl"];
 

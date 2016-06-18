@@ -9,6 +9,8 @@ namespace PkMn.Model
 {
     public class Stats
     {
+        public static StatType[] StatTypes = new StatType[] { StatType.HP, StatType.Attack, StatType.Defense, StatType.Special, StatType.Speed };
+
         public int HP;
         public int Attack;
         public int Defense;

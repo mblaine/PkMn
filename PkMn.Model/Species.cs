@@ -111,6 +111,17 @@ namespace PkMn.Model
             return Type1.Immunity.Contains(status) || (Type2 != null && Type2.Immunity.Contains(status));
         }
 
+        public List<Species> GetAncestors()
+        {
+            List<Species> ancestors = Species.Spp.Values.Where(s => s.Evolutions.Any(e => e.Species == this)).ToList();
+
+            List<Species> ancestors2 = new List<Species>();
+            foreach (Species s in ancestors)
+                ancestors2.AddRange(s.GetAncestors());
+            ancestors.AddRange(ancestors2);
+            return ancestors;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

@@ -137,25 +137,7 @@ namespace PkMn.Instance
             }
             else
             {
-                if (generator == Generator.Trainer)
-                {
-                    IV.Attack = 9;
-                    IV.Defense = 8;
-                    IV.Speed = 8;
-                    IV.Special = 8;
-                }
-                else
-                {
-                    IV.Attack = Rng.Next(16);
-                    IV.Defense = Rng.Next(16);
-                    IV.Speed = Rng.Next(16);
-                    IV.Special = Rng.Next(16);
-                }
-
-                IV.HP = (IV.Attack & 0x1) << 3
-                    | (IV.Defense & 0x1) << 2
-                    | (IV.Special & 0x1) << 1
-                    | (IV.Speed & 0x1);
+                GenerateIVs(generator);
             }
 
             EV = new Stats();
@@ -231,17 +213,54 @@ namespace PkMn.Instance
 
         }
 
-        public void RecalcStats()
+        public void RecalcExperience()
         {
-            Stats.HP = (int)Math.Floor(((Species.BaseStats.HP + IV.HP) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.HP)) / 4m)) * Level / 100m) + Level + 10;
-            Stats.Attack = (int)Math.Floor(((Species.BaseStats.Attack + IV.Attack) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Attack)) / 4m)) * Level / 100m) + 5;
-            Stats.Defense = (int)Math.Floor(((Species.BaseStats.Defense + IV.Defense) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Defense)) / 4m)) * Level / 100m) + 5;
-            Stats.Special = (int)Math.Floor(((Species.BaseStats.Special + IV.Special) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Special)) / 4m)) * Level / 100m) + 5;
-            Stats.Speed = (int)Math.Floor(((Species.BaseStats.Speed + IV.Speed) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Speed)) / 4m)) * Level / 100m) + 5;
+            Experience = Species.ExpRequired[Species.ExpGrowthRate][Level];
+        }
+
+        public void RecalcStats(StatType? stat = null)
+        {
+            if (stat == null || stat == StatType.HP)
+                Stats.HP = (int)Math.Floor(((Species.BaseStats.HP + IV.HP) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.HP)) / 4m)) * Level / 100m) + Level + 10;
+
+            if (stat == null || stat == StatType.Attack)
+                Stats.Attack = (int)Math.Floor(((Species.BaseStats.Attack + IV.Attack) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Attack)) / 4m)) * Level / 100m) + 5;
+            if (stat == null || stat == StatType.Defense)
+                Stats.Defense = (int)Math.Floor(((Species.BaseStats.Defense + IV.Defense) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Defense)) / 4m)) * Level / 100m) + 5;
+            if (stat == null || stat == StatType.Special)
+                Stats.Special = (int)Math.Floor(((Species.BaseStats.Special + IV.Special) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Special)) / 4m)) * Level / 100m) + 5;
+            if (stat == null || stat == StatType.Speed)
+                Stats.Speed = (int)Math.Floor(((Species.BaseStats.Speed + IV.Speed) * 2m + Math.Floor(Math.Ceiling((decimal)Math.Sqrt(EV.Speed)) / 4m)) * Level / 100m) + 5;
+        }
+
+        public void GenerateIVs(Generator generator)
+        {
+            if (generator == Generator.Trainer)
+            {
+                IV.Attack = 9;
+                IV.Defense = 8;
+                IV.Speed = 8;
+                IV.Special = 8;
+            }
+            else
+            {
+                IV.Attack = Rng.Next(16);
+                IV.Defense = Rng.Next(16);
+                IV.Speed = Rng.Next(16);
+                IV.Special = Rng.Next(16);
+            }
+
+            IV.HP = (IV.Attack & 0x1) << 3
+                | (IV.Defense & 0x1) << 2
+                | (IV.Special & 0x1) << 1
+                | (IV.Speed & 0x1);
         }
 
         public void GenerateMoves(Generator generator)
         {
+            for (int i = 0; i < Moves.Length; i++)
+                Moves[i] = null;
+
             Learnset[] learnset = Species.Learnset.Where(l => l.LearnBy == LearnBy.Level).OrderBy(l => l.Condition).ToArray();
 
             for (int i = 0; i < learnset.Length; i++)

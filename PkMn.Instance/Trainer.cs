@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using PkMn.Model;
+using PkMn.Model.Enums;
 
 namespace PkMn.Instance
 {
@@ -26,10 +27,31 @@ namespace PkMn.Instance
 
             XmlNode[] monsters = node.ChildNodes.Cast<XmlNode>().Where(n => n.Name == "monster").ToArray();
 
+            List<string> remainingMonsters = Species.Spp.Select(p => p.Key).ToList();
+            foreach(string sp in monsters.Where( m => m.Attributes.Contains("species") && m.Attributes["species"].Value != "Random").Select(m => m.Attributes["species"].Value))
+            {
+                if (remainingMonsters.Contains(sp))
+                    remainingMonsters.Remove(sp);
+            }
+
             Party = new Monster[monsters.Length];
 
             for (int i = 0; i < monsters.Length; i++)
-                Party[i] = new Monster(monsters[i]);
+            {
+                if (monsters[i].Attributes["species"].Value == "Random")
+                {
+                    int level = 5;
+                    if (monsters[i].Attributes.Contains("level"))
+                        level = int.Parse(monsters[i].Attributes["level"].Value);
+
+                    Party[i] = new Monster(remainingMonsters[Rng.Next(1, remainingMonsters.Count)], level, IsPlayer ? Generator.SimulatePlayer : Generator.Trainer);
+
+                    if (remainingMonsters.Contains(Party[i].Species.Name))
+                        remainingMonsters.Remove(Party[i].Species.Name);
+                }
+                else
+                    Party[i] = new Monster(monsters[i], IsPlayer ? Generator.SimulatePlayer : Generator.Trainer);
+            }
         }
 
         public XmlNode ToXml(XmlDocument doc)
