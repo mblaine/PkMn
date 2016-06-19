@@ -20,5 +20,10 @@ namespace PkMn.Model.MoveEffects
             Status = (StatusCondition)Enum.Parse(typeof(StatusCondition), node.Attributes["status"].Value, true);
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} must be {1} for attack to hit", Who, Status == StatusCondition.Sleep ? "asleep" : Status.ToString().ToLower());
+        }
     }
 }

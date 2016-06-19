@@ -150,7 +150,20 @@ namespace PkMn.Model
 
         public override string ToString()
         {
-            return string.Format("{0} ({1}) - PP: {2} Power: {3} Accuracy: {4}", Name, Type.Name, PP, Power, Accuracy);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0} ({1}) - PP: {2}, Power: {3}, Accuracy: {4}%", Name, Type.Name, PP, Power, Math.Round(((decimal)Accuracy) / 255m * 100m, 0)).AppendLine();
+
+            if (CritRatio > 1)
+                sb.AppendLine("Increased critical hit chance");
+
+            if (Priority > 0)
+                sb.AppendLine("Increased attack order priority");
+            else if (Priority < 0)
+                sb.AppendLine("Decreasted attack order priority");
+
+            foreach (MoveEffect effect in Effects)
+                sb.AppendLine(effect.ToString());
+            return sb.ToString();
         }
     }
 }

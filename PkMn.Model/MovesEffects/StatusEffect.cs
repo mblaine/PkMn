@@ -32,5 +32,63 @@ namespace PkMn.Model.MoveEffects
             Force = node.Attributes.Contains("force") ? bool.Parse(node.Attributes["force"].Value) : false;
             Condition = node.Attributes.Contains("condition") ? node.Attributes["condition"].Value : null;
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (Type == MoveEffectType.Status)
+            {
+                sb.AppendFormat("{0}% chance to ", Math.Round(((decimal)Chance) / 255m * 100m, 0));
+
+                switch (Status)
+                {
+                    case StatusCondition.BadlyPoisoned:
+                        sb.AppendFormat("badly poison {0}", Who.ToString().ToLower());
+                        break;
+                    case StatusCondition.Confusion:
+                        sb.AppendFormat("confuse {0}", Who.ToString().ToLower());
+                        break;
+                    case StatusCondition.Paralysis:
+                        sb.AppendFormat("paralyze {0}", Who.ToString().ToLower());
+                        break;
+                    case StatusCondition.Faint:
+                    case StatusCondition.Flinch:
+                        sb.AppendFormat("cause {0} to {1}", Who.ToString().ToLower(), Status.ToString().ToLower());
+                        break;
+                    case StatusCondition.Sleep:
+                        sb.AppendFormat("{0} {1} to fall asleep", Force ? "force" : "cause", Who.ToString().ToLower());
+                        break;
+                    default:
+                        sb.AppendFormat("{0} {1}", Status.ToString().ToLower(), Who.ToString().ToLower());
+                        break;
+                }
+
+                if (!string.IsNullOrWhiteSpace(Condition))
+                    sb.AppendFormat(" on {0}", Condition.Replace('-', ' '));
+            }
+            else if (Type == MoveEffectType.ResetStatus)
+            {
+                switch (Status)
+                {
+                    case StatusCondition.BadlyPoisoned:
+                        sb.AppendFormat("Converts badly poisoned to just poisoned for {0}", Who.ToString().ToLower());
+                        break;
+                    case StatusCondition.Confusion:
+                        sb.AppendFormat("Removes confusion from {0}", Who.ToString().ToLower());
+                        break;
+                    case StatusCondition.All:
+                        sb.AppendFormat("Removes all status conditions from {0}", Who.ToString().ToLower());
+                        break;
+                    default:
+                        sb.AppendFormat("Removes status {0} from {1}", Status.ToString().ToLower(), Who.ToString().ToLower());
+                        break;
+                }
+            }
+            else
+                sb.Append(base.ToString());
+
+            return sb.ToString();
+        }
     }
 }

@@ -18,5 +18,10 @@ namespace PkMn.Model.MoveEffects
         {
             Condition = Element.Elements[node.Attributes["condition"].Value];
         }
+
+        public override string ToString()
+        {
+            return string.Format("Move will not affect {0} types", Condition.Name.ToLower());
+        }
     }
 }

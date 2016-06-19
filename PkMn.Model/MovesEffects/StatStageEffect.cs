@@ -20,5 +20,15 @@ namespace PkMn.Model.MoveEffects
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
             Protect = type == MoveEffectType.ProtectStatStages;
         }
+
+        public override string ToString()
+        {
+            if (Type == MoveEffectType.ProtectStatStages)
+                return string.Format("Protects against lowering of {0}'s stat stages", Who.ToString().ToLower());
+            else if (Type == MoveEffectType.ResetStatStages)
+                return string.Format("Resets stat stages of {0}", Who.ToString().ToLower());
+            else
+                return base.ToString();
+        }
     }
 }

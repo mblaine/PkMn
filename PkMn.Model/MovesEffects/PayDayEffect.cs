@@ -18,5 +18,10 @@ namespace PkMn.Model.MoveEffects
         {
             Multiplier = decimal.Parse(node.Attributes["multiplier"].Value);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Causes {0} x the attacker's level to drop as money to be picked up by the winner of the battle", Multiplier);
+        }
     }
 }

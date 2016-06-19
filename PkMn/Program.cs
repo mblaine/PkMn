@@ -35,6 +35,18 @@ namespace PkMn
             //        Console.WriteLine(line);
             //}
 
+            //string line;
+            //while (true)
+            //{
+            //    line = Console.ReadLine();
+            //    if (line.ToLower() == "quit")
+            //        break;
+            //    if (Move.Moves.ContainsKey(line))
+            //        Console.WriteLine(Move.Moves[line]);
+            //    else
+            //        Console.WriteLine("--nope--");
+            //}
+
             //Automatic(true);
             Interactive(args);
         }

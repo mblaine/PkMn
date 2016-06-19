@@ -20,5 +20,15 @@ namespace PkMn.Model.MoveEffects
             What = node.Attributes["what"].Value;
             PP = node.Attributes.Contains("pp") ? int.Parse(node.Attributes["pp"].Value) : 0;
         }
+
+        public override string ToString()
+        {
+            if (What == "all-moves")
+                return "Copies all of the foe's moves";
+            else if (What == "move")
+                return "Copies ones of the foe's moves";
+            else
+                return string.Format("Copies the foe's {0}", What.Replace('-', ' '));
+        }
     }
 }

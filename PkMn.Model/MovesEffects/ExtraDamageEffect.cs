@@ -20,5 +20,15 @@ namespace PkMn.Model.MoveEffects
             Value = node.Attributes.Contains("value") ? int.Parse(node.Attributes["value"].Value) : 0;
             Percent = node.Attributes.Contains("percent") ? decimal.Parse(node.Attributes["percent"].Value) : 0m;
         }
+
+        public override string ToString()
+        {
+            if (Type == MoveEffectType.RecoilDamage)
+                return string.Format("Attacker receives {0}% of damage as recoil", Percent);
+            else if (Type == MoveEffectType.MissDamage)
+                return string.Format("Attacker receives {0} hp of damage if it misses", Value);
+            else
+                return base.ToString();
+        }
     }
 }

@@ -25,5 +25,15 @@ namespace PkMn.Model.MoveEffects
                 Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
             RestoreOnly = type == MoveEffectType.RestoreHealth;
         }
+
+        public override string ToString()
+        {
+            if (Type == MoveEffectType.TransferHealth)
+                return string.Format("Transfers {0}% of damage as health", Percent);
+            else if (Type == MoveEffectType.RestoreHealth)
+                return string.Format("Restores {0}% of max hp", Percent);
+            else
+                return base.ToString();
+        }
     }
 }
