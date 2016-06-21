@@ -38,30 +38,35 @@ namespace PkMn.Instance
 
                 if (isPlayer)
                 {
-                    Monster mon = ChooseNextMon(current.Trainer, false);
+                    Monster mon = PlayerChooseNextMon(current.Trainer, false);
 
                     while (mon.CurrentHP <= 0)
                     {
                         OnSendMessage("There's no will to fight!");
-                        mon = ChooseNextMon(current.Trainer, false);
+                        mon = PlayerChooseNextMon(current.Trainer, false);
                     }
 
                     current.Monster = mon;
                 }
                 else
                 {
-                    Monster aboutToUse = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
+                    Monster aboutToUse = null;
+
+                    if (FoeChooseNextMon != null)
+                        aboutToUse = FoeChooseNextMon(current.Trainer, false);
+                    else
+                        aboutToUse = current.Trainer.Party.Where(m => m != null && m.CurrentHP > 0 && m.Status != StatusCondition.Faint).FirstOrDefault();
 
                     if (Shift)
                     {
                         OnSendMessage("{0} is about to use {1}!", current.Trainer.Name, aboutToUse.Name);
                         OnSendMessage("Will {0} change Pokémon?", opponent.Trainer.Name);
-                        playerNextMon = ChooseNextMon(opponent.Trainer, true);
+                        playerNextMon = PlayerChooseNextMon(opponent.Trainer, true);
 
                         while (playerNextMon != null && playerNextMon != opponent.Monster && playerNextMon.CurrentHP <= 0)
                         {
                             OnSendMessage("There's no will to fight!");
-                            playerNextMon = ChooseNextMon(current.Trainer, true);
+                            playerNextMon = PlayerChooseNextMon(current.Trainer, true);
                         }
 
                         if (playerNextMon != null && playerNextMon != opponent.Monster)
@@ -530,7 +535,17 @@ namespace PkMn.Instance
         {
             if (copy.What == "move")
             {
-                int copyIndex = ChooseMoveToMimic(opponent.Moves);
+                int copyIndex;
+                if (current.Trainer.IsPlayer)
+                    copyIndex = PlayerChooseMoveToMimic(opponent.Moves);
+                else
+                {
+                    if (FoeChooseMove != null)
+                        copyIndex = FoeChooseMove(opponent.Moves);
+                    else
+                        copyIndex = Rng.Next(0, opponent.Moves.Count(m => m != null));
+                }
+
                 if (current.MovesOverride != null && current.MovesOverride.Length > 1)
                     current.MovesOverride[current.MoveIndex] = opponent.Moves[copyIndex];
                 else

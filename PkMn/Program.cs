@@ -18,35 +18,6 @@ namespace PkMn
 
         static void Main(string[] args)
         {
-            //var mapping = File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\animations_by_animation.txt").Where(l => l.Length > 0 && l[0] == 'E').ToDictionary(l => l.Split(' ')[1], l => l.Split(' ')[0]);
-
-            //foreach (string line in File.ReadAllLines(@"C:\Users\Matthew\Desktop\pkmn\anim2.txt"))
-            //{
-            //    //Match m = Regex.Match(line, @"^\tdb (\$[0-9A-F]{2}),(\$[0-9A-F]{2}),(\$[0-9A-F]{2})");
-            //    Match m = Regex.Match(line, @"(^ +EF_[^,]+),\$([0-9A-Fa-f]+)$");
-            //    if (m.Success)
-            //    {
-            //        byte b = Convert.ToByte(m.Groups[2].Value, 16);
-            //        int sprite = (b >> 6) & 0x3;
-            //        int delay = b & 63;
-            //        Console.WriteLine("{0},{1},{2}", m.Groups[1].Value, delay, sprite);
-            //    }
-            //    else
-            //        Console.WriteLine(line);
-            //}
-
-            //string line;
-            //while (true)
-            //{
-            //    line = Console.ReadLine();
-            //    if (line.ToLower() == "quit")
-            //        break;
-            //    if (Move.Moves.ContainsKey(line))
-            //        Console.WriteLine(Move.Moves[line]);
-            //    else
-            //        Console.WriteLine("--nope--");
-            //}
-
             //Automatic(true);
             Interactive(args);
         }
@@ -77,23 +48,31 @@ namespace PkMn
 
         static void Interactive(string[] args)
         {
-            Trainer player = new Trainer()
-            {
-                Name = "Matthew",
-                MonNamePrefix = "",
-                Party = Random(true),
-                IsPlayer = true
-            };
+            Trainer player;
+            
 
-            Trainer rival = new Trainer()
-            {
-                Name = "Gary",
-                MonNamePrefix = "Enemy ",
-                Party = Random(false),
-                IsPlayer = false
-            };
+            Trainer rival;
 
-            Trainer.ReadFromFile("parties.xml", out player, out rival);
+            if (File.Exists("parties.xml"))
+                Trainer.ReadFromFile("parties.xml", out player, out rival);
+            else
+            {
+                player = new Trainer()
+                {
+                    Name = "Ash",
+                    MonNamePrefix = "",
+                    Party = Random(true),
+                    IsPlayer = true
+                };
+
+                rival = new Trainer()
+                {
+                    Name = "Gary",
+                    MonNamePrefix = "Enemy ",
+                    Party = Random(false),
+                    IsPlayer = false
+                };
+            }
 
             //player.Party[0] = new Monster("Raichu", 70);
             //rival.Party[0] = new Monster("Gastly", 70);
@@ -107,7 +86,7 @@ namespace PkMn
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Wrap"];
 
             Battle battle = new Battle(player, rival, false, true);
-            battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
+            battle.PlayerChooseMoveToMimic += Battle_ChooseMoveToMimic;
 
             battle.SendMessage += delegate(string message)
             {
@@ -117,7 +96,7 @@ namespace PkMn
 
             battle.SendDebugMessage += battle.SendMessage;
 
-            battle.ChooseAction += delegate(ActiveMonster current, Trainer trainer, bool canAttack)
+            battle.PlayerChooseAction += delegate(ActiveMonster current, Trainer trainer, bool canAttack)
             {
                 Console.WriteLine(canAttack);
                 string[] moveText = new string[4];
@@ -165,7 +144,7 @@ namespace PkMn
                 return action;
             };
 
-            battle.ChooseNextMon += delegate(Trainer trainer, bool optional)
+            battle.PlayerChooseNextMon += delegate(Trainer trainer, bool optional)
             {
                 return ChooseMon(trainer.Party, optional);
             };
@@ -259,10 +238,10 @@ namespace PkMn
             //rival.Party[0].Moves[3] = Move.Moves["Growl"];
 
             Battle battle = new Battle(player, rival, false, true);
-            battle.ChooseNextMon += Battle_ChooseMon;
+            battle.PlayerChooseNextMon += Battle_ChooseMon;
             battle.SendMessage += Battle_SendMessage;
-            battle.ChooseAction += Battle_ChooseAction;
-            battle.ChooseMoveToMimic += Battle_ChooseMoveToMimic;
+            battle.PlayerChooseAction += Battle_ChooseAction;
+            battle.PlayerChooseMoveToMimic += Battle_ChooseMoveToMimic;
             //battle.PlayerCurrent.Monster.Status = StatusCondition.BadlyPoisoned;
             //battle.PlayerCurrent.BadlyPoisonedCount = 2;
             //battle.FoeCurrent.Monster.Status = StatusCondition.Freeze;
@@ -325,15 +304,12 @@ namespace PkMn
             return Rng.Next(0, moves.Count(m => m != null));
         }
 
-        //public static bool firstAttack = true;
         public static BattleAction Battle_ChooseAction(ActiveMonster current, Trainer trainer, bool canAttack)
         {
             BattleAction ret = new BattleAction();
 
             ret.Type = BattleActionType.UseMove;
             ret.WhichMove = Rng.Next(0, current.Moves.Count(m => m != null));
-            //ret.WhichMove = firstAttack ? 0 : 1;
-            //firstAttack = false;
             return ret;
         }
 

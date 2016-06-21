@@ -10,11 +10,9 @@ namespace PkMn.Instance
 {
     public partial class Battle
     {
-        public delegate Monster ChooseMonEventHandler(Trainer trainer, bool optional);
-        public delegate void SendMessageEventHandler(string message);
         public delegate BattleAction ChooseActionEventHandler(ActiveMonster current, Trainer trainer, bool canAttack);
+        public delegate Monster ChooseMonEventHandler(Trainer trainer, bool optional);
         public delegate int ChooseMoveEventHandler(Move[] moves);
-        public delegate void BattleEventHandler(object sender, BattleEventArgs e);
 
         protected Trainer Player;
         protected Trainer Foe;
@@ -28,12 +26,14 @@ namespace PkMn.Instance
         protected int runCount;
         protected StringBuilder messageBuffer;
 
-        public ChooseMonEventHandler ChooseNextMon;
-        public SendMessageEventHandler SendMessage;
-        public SendMessageEventHandler SendDebugMessage;
-        public ChooseActionEventHandler ChooseAction;
-        public ChooseMoveEventHandler ChooseMoveToMimic;
-        public event BattleEventHandler BattleEvent;
+        public ChooseMonEventHandler PlayerChooseNextMon;
+        public ChooseMonEventHandler FoeChooseNextMon;
+        public Action<string> SendMessage;
+        public Action<string> SendDebugMessage;
+        public ChooseActionEventHandler PlayerChooseAction;
+        public ChooseMoveEventHandler PlayerChooseMoveToMimic;
+        public ChooseMoveEventHandler FoeChooseMove;
+        public EventHandler<BattleEventArgs> BattleEvent;
 
         public int LastDamageDealt;
         public Element LastDamageDealtType;
@@ -148,10 +148,11 @@ namespace PkMn.Instance
             bool foeHasMove = FoeCurrent.HasSelectableMove;
 
             bool playerCanAttack = PlayerCurrent.QueuedMove == null && PlayerCurrent.MoveOverrideTemporary == null;
+            bool foeCanAttack = FoeCurrent.QueuedMove == null && FoeCurrent.MoveOverrideTemporary == null;
 
             if (playerCanAttack || PlayerCurrent.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove && ((LockInEffect)e).IgnoreCancel == null))
             {
-                playerAction = ChooseAction(PlayerCurrent, Player, playerCanAttack && playerHasMove && !FoeCurrent.CancelOpponentsMove);
+                playerAction = PlayerChooseAction(PlayerCurrent, Player, playerCanAttack && playerHasMove && !FoeCurrent.CancelOpponentsMove);
 
                 if (!playerHasMove && playerAction.Type == BattleActionType.UseMove)
                     PlayerCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
@@ -181,7 +182,7 @@ namespace PkMn.Instance
                                 OnSendMessage("There's no will to fight!");
                         }
 
-                        playerAction = ChooseAction(PlayerCurrent, Player, true);
+                        playerAction = PlayerChooseAction(PlayerCurrent, Player, true);
                     }
                 }
 
@@ -244,8 +245,13 @@ namespace PkMn.Instance
             if (!foeHasMove)
                 FoeCurrent.MoveOverrideTemporary = Move.Moves["Struggle"];
 
-            if(FoeCurrent.QueuedMove == null && FoeCurrent.MoveOverrideTemporary == null)
-                FoeCurrent.MoveIndex = Rng.Next(0, FoeCurrent.Moves.Count(m => m != null));
+            if (foeCanAttack)
+            {
+                if (FoeChooseMove != null)
+                    FoeCurrent.MoveIndex = FoeChooseMove(FoeCurrent.Moves);
+                else
+                    FoeCurrent.MoveIndex = Rng.Next(0, FoeCurrent.Moves.Count(m => m != null));
+            }
 
             ActiveMonster first = WhoGoesFirst(PlayerCurrent, FoeCurrent);
             ActiveMonster second = first == PlayerCurrent ? FoeCurrent : PlayerCurrent;

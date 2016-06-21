@@ -179,8 +179,8 @@ namespace PkMn.Instance
             else
                 RecalcStats();
 
-            CurrentHP = int.Parse(node.Attributes["current-hp"].Value);
-            Status = (StatusCondition)Enum.Parse(typeof(StatusCondition), node.Attributes["status"].Value, true);
+            CurrentHP = node.Attributes.Contains("current-hp") ? int.Parse(node.Attributes["current-hp"].Value) : Stats.HP;
+            Status = node.Attributes.Contains("status") ? (StatusCondition)Enum.Parse(typeof(StatusCondition), node.Attributes["status"].Value, true) : StatusCondition.None;
             SleepCounter = node.Attributes.Contains("sleep-counter") ? int.Parse(node.Attributes["sleep-counter"].Value) : 0;
 
             Moves = new Move[4];

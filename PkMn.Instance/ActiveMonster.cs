@@ -109,7 +109,7 @@ namespace PkMn.Instance
                 if (MovesOverride == null)
                     return Monster.Moves;
                 else if (MovesOverride.Length == 1)
-                    return Monster.Moves.Select(m => m.Effects.Any(e => e.Type == MoveEffectType.Copy && ((CopyEffect)e).What == "move") ? MovesOverride[0] : m).ToArray();
+                    return Monster.Moves.Select(m => m != null && m.Effects.Any(e => e.Type == MoveEffectType.Copy && ((CopyEffect)e).What == "move") ? MovesOverride[0] : m).ToArray();
                 else
                     return MovesOverride;
             }
