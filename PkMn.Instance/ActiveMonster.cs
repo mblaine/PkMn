@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PkMn.Model;
 using PkMn.Model.Enums;
 using PkMn.Model.MoveEffects;
