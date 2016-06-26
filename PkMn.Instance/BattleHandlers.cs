@@ -96,7 +96,6 @@ namespace PkMn.Instance
                     OnBattleEvent(new BattleEventArgs(BattleEventType.MonSentOut, opponent));
                 }
 
-
                 //cancel trapping move that isn't rage
                 if (opponent.QueuedMove != null && opponent.QueuedMove.Effects.Any(e => e.Type == MoveEffectType.LockInMove && ((LockInEffect)e).ConstantDamage))
                 {

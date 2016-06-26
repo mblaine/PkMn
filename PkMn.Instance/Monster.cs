@@ -69,25 +69,7 @@ namespace PkMn.Instance
             IV = new Stats();
             EV = new Stats();
 
-            if (generator == Generator.Trainer)
-            {
-                IV.Attack = 9;
-                IV.Defense = 8;
-                IV.Speed = 8;
-                IV.Special = 8;
-            }
-            else
-            {
-                IV.Attack = Rng.Next(16);
-                IV.Defense = Rng.Next(16);
-                IV.Speed = Rng.Next(16);
-                IV.Special = Rng.Next(16);
-            }
-
-            IV.HP = (IV.Attack & 0x1) << 3
-                | (IV.Defense & 0x1) << 2
-                | (IV.Special & 0x1) << 1
-                | (IV.Speed & 0x1);
+            GenerateIVs(generator);
 
             Stats = new Stats();
 

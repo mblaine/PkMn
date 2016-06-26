@@ -10,6 +10,10 @@ namespace PkMn
 {
     class Program
     {
+        //this class was used as a test and is generally a mess;
+        //all of the game logic is in the other two projects;
+        //this demonstrates how the libraries can be used
+
         private static DateTime? lastMessage = null;
         private static StringBuilder sb = new StringBuilder();
 
@@ -19,37 +23,12 @@ namespace PkMn
             Interactive(args);
         }
 
-        static Monster[] PlayerStatic()
-        {
-            return new Monster[] { new Monster("Persian", 55)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
-        }
-
-        static Monster[] RivalStatic()
-        {
-            return new Monster[] { new Monster("Gengar", 55)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
-        }
-
-        static Monster[] Random(bool isPlayer)
-        {
-            Monster[] ret = new Monster[6];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 70, isPlayer ? Generator.SimulatePlayer : Generator.Trainer);
-            }
-
-            Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
-
-            return ret;
-        }
-
         static void Interactive(string[] args)
         {
             Trainer player;
-            
-
             Trainer rival;
 
+            //load or generate parties
             if (File.Exists("parties.xml"))
                 Trainer.ReadFromFile("parties.xml", out player, out rival);
             else
@@ -82,8 +61,14 @@ namespace PkMn
             //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //rival.Party[0].Moves[0] = rival.Party[0].Moves[1] = rival.Party[0].Moves[2] = rival.Party[0].Moves[3] = Move.Moves["Wrap"];
 
+            //initialize battle
             Battle battle = new Battle(player, rival, false, true);
-            battle.PlayerChooseMoveToMimic += Battle_ChooseMoveToMimic;
+            
+            //attach event handlers and callback functions
+            battle.PlayerChooseMoveToMimic += delegate(Move[] moves)
+            {
+                return Rng.Next(0, moves.Count(m => m != null));
+            };
 
             battle.SendMessage += delegate(string message)
             {
@@ -95,7 +80,6 @@ namespace PkMn
 
             battle.PlayerChooseAction += delegate(ActiveMonster current, Trainer trainer, bool canAttack)
             {
-                Console.WriteLine(canAttack);
                 string[] moveText = new string[4];
                 Move[] playerMoves = battle.PlayerCurrent.Moves;
                 for (int i = 0; i < 4; i++)
@@ -112,7 +96,7 @@ namespace PkMn
                     }
 
                 }
-                
+
                 int moveIndex = 0;
                 string s = null;
                 BattleAction action = new BattleAction();
@@ -146,6 +130,7 @@ namespace PkMn
                 return ChooseMon(trainer.Party, optional);
             };
 
+            //the main loop - call Battle.Step() until it returns false, meaning the battle is over
             while (battle.Step())
             {
                 Log("------------------------------------------------------------");
@@ -164,11 +149,9 @@ namespace PkMn
                 Log("Effective: " + battle.PlayerCurrent.EffectiveStats);
                 Log("------------------------------------------------------------");
             }
-            
 
             Log("{0,-10}{1}", rival.Name, string.Join(" ", rival.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
             Log("{0,-10}{1}", player.Name, string.Join(" ", player.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
-            
 
             Console.ReadLine();
             Console.ReadLine();
@@ -197,9 +180,32 @@ namespace PkMn
             return party[choice - 1];
         }
 
+        static Monster[] PlayerStatic()
+        {
+            return new Monster[] { new Monster("Persian", 55)};//, new Monster("Raichu", 36), new Monster("Ivysaur", 29), new Monster("Beedrill", 30), null, null };
+        }
+
+        static Monster[] RivalStatic()
+        {
+            return new Monster[] { new Monster("Gengar", 55)};//, new Monster("Hypno", 36), new Monster("Onix", 36), null, null };
+        }
+
+        static Monster[] Random(bool isPlayer)
+        {
+            Monster[] ret = new Monster[6];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i] = new Monster(Species.Spp.Select(p => p.Value).ToArray()[Rng.Next(1, 151)].Name, 70, isPlayer ? Generator.SimulatePlayer : Generator.Trainer);
+            }
+
+            Log(">>> " + string.Join(", ", ret.Select(r => r.Name)));
+
+            return ret;
+        }
+
         static void Automatic(bool random)
         {
-
             Trainer player = new Trainer()
             {
                 Name = "Matthew",
@@ -216,7 +222,7 @@ namespace PkMn
                 IsPlayer = false
             };
 
-            Trainer.SaveToFile("parties.xml", player, rival);
+            //Trainer.SaveToFile("parties.xml", player, rival);
 
             //player.Party[0].CurrentPP[0] = player.Party[0].CurrentPP[1] = player.Party[0].CurrentPP[2] = player.Party[0].CurrentPP[3] = 1;
             //player.Party[0].Stats.Speed = 200;
@@ -290,7 +296,8 @@ namespace PkMn
                     Log(">>> " + string.Join(" ", t.Party.Select(p => p == null ? "___" : p.Status == StatusCondition.Faint ? "(X)" : p.Status != StatusCondition.None ? "(-)" : "( )")));
                 }
 
-                File.WriteAllText(Path.Combine(@"C:\Users\Matthew\AppData\Roaming\PkMn\Logs", string.Format("{0:yyyy-MM-dd_HH-mm-ss}.txt", DateTime.Now)), sb.ToString());
+                Directory.CreateDirectory("Logs");
+                File.WriteAllText(Path.Combine(@"Logs", string.Format("{0:yyyy-MM-dd_HH-mm-ss}.txt", DateTime.Now)), sb.ToString());
             }
 
             Console.ReadLine();

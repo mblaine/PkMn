@@ -41,7 +41,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\PkMn.Instance\PkMn.Instance.csproj">
       <Project>{018FBBFC-30F5-4A8A-8D76-BEF8FE9AB90D}</Project>

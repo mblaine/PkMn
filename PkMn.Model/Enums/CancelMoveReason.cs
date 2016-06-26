@@ -9,7 +9,6 @@ namespace PkMn.Model.Enums
         Frozen,
         Trapped,
         MoveDisabled,
-        All
-       
+        All  
     }
 }

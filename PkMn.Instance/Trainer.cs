@@ -44,6 +44,9 @@ namespace PkMn.Instance
                     if (monsters[i].Attributes.Contains("level"))
                         level = int.Parse(monsters[i].Attributes["level"].Value);
 
+                    if(remainingMonsters.Count <= 0)
+                        remainingMonsters = Species.Spp.Select(p => p.Key).ToList();
+
                     Party[i] = new Monster(remainingMonsters[Rng.Next(1, remainingMonsters.Count)], level, IsPlayer ? Generator.SimulatePlayer : Generator.Trainer);
 
                     if (remainingMonsters.Contains(Party[i].Species.Name))

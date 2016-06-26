@@ -25,14 +25,17 @@ namespace PkMn.Instance
         protected int runCount;
         protected StringBuilder messageBuffer;
 
+        //required
         public ChooseMonEventHandler PlayerChooseNextMon;
-        public ChooseMonEventHandler FoeChooseNextMon;
-        public Action<string> SendMessage;
-        public Action<string> SendDebugMessage;
         public ChooseActionEventHandler PlayerChooseAction;
         public ChooseMoveEventHandler PlayerChooseMoveToMimic;
-        public ChooseMoveEventHandler FoeChooseMove;
+
+        //optional
         public EventHandler<BattleEventArgs> BattleEvent;
+        public Action<string> SendMessage;
+        public Action<string> SendDebugMessage;
+        public ChooseMonEventHandler FoeChooseNextMon;
+        public ChooseMoveEventHandler FoeChooseMove;
 
         public int LastDamageDealt;
         public Element LastDamageDealtType;
@@ -109,6 +112,9 @@ namespace PkMn.Instance
                 BattleEvent(this, e);
         }
 
+        //there are events (damage being dealt, statuses being applied) that it cauculates whether
+        //or not they happened in a different order than the game would display that information;
+        //this is so the appropriate events can be raised in between certain text being emitted
         protected void ClearMessageBuffer()
         {
             if (messageBuffer.Length > 0)
@@ -227,7 +233,7 @@ namespace PkMn.Instance
                 switch (playerAction.Type)
                 {
                     case BattleActionType.UseItem:
-                        throw new Exception();
+                        throw new Exception("Items are not implemented");
                     case BattleActionType.ChangeMon:
                         OnSendMessage(GetPlayerRecalledText(), PlayerCurrent.Monster.Name);
                         OnBattleEvent(new BattleEventArgs(BattleEventType.MonRecalled, PlayerCurrent));
@@ -445,6 +451,7 @@ namespace PkMn.Instance
                     return false;
                 }
             }
+
             //handle current pkmn frozen
             else if (current.Monster.Status == StatusCondition.Freeze)
             {
@@ -456,6 +463,7 @@ namespace PkMn.Instance
                 CancelQueuedMove(current, CancelMoveReason.Frozen);
                 return false;
             }
+
             //handle current pkmn paralyzed
             else if (current.Monster.Status == StatusCondition.Paralysis && Rng.Next(0, 256) < 63)
             {
@@ -622,6 +630,7 @@ namespace PkMn.Instance
             if (def == 0)
                 def = 1;
 
+            //same type attack bonus
             decimal STAB = 1m;
             if (current.SelectedMove.Type == current.Type1 || current.SelectedMove.Type == current.Type2)
                 STAB = 1.5m;
@@ -684,7 +693,7 @@ namespace PkMn.Instance
                 current.DeductPP();
             }
 
-            //no effect
+            //no effect whatsoever
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.None))
             {
                 OnBattleEvent(new BattleEventArgs(BattleEventType.AttackHit, current, current.SelectedMove));
@@ -703,6 +712,7 @@ namespace PkMn.Instance
                 }
             }
 
+            //substitue
             if (current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.Substitute))
             {
                 if (HandleSubstituteEffect(current))
@@ -1023,7 +1033,6 @@ namespace PkMn.Instance
 
                 if(opponent.Monster.CurrentHP == 0 && current.SelectedMove.Effects.Any(e => e.Type == MoveEffectType.OneHitKO))
                     OnSendMessage("One-hit KO!");
-
 
                 //handle rage building
                 if (damage > 0 && opponent.QueuedMove != null)
