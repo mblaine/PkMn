@@ -4654,7 +4654,7 @@
       <move name="Bite" by="level" condition="40" />
       <move name="Leer" by="level" condition="42" />
       <move name="Fire Spin" by="level" condition="44" />
-      <move name="Rage" by="level" condition="48" />	
+      <move name="Rage" by="level" condition="48" />
       <move name="Flamethrower" by="level" condition="54" />
       <move name="Toxic" by="tm" condition="6" />
       <move name="Body Slam" by="tm" condition="8" />

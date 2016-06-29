@@ -177,7 +177,7 @@
   <move name="Haze" type="Ice" pp="30" accuracy="255" category="status">
     <effect type="reset-stat-stages" who="both" />
     <effect type="reset-status" status="Confusion" who="both" />
-	<effect type="reset-status" status="Badly-Poisoned" who="both" />
+    <effect type="reset-status" status="Badly-Poisoned" who="both" />
     <effect type="reset-status" status="all" who="foe" message="ALL STATUS changes are eliminated!" />
   </move>
   <move name="Headbutt" type="Normal" pp="15" power="70" accuracy="255">
@@ -458,7 +458,7 @@
     <effect type="copy" what="all-moves" pp="5" />
     <effect type="copy" what="stats" />
     <effect type="copy" what="stat-stages" />
-	<effect type="copy" what="species" message="{0}{1} transformed into {2}!" />
+    <effect type="copy" what="species" message="{0}{1} transformed into {2}!" />
   </move>
   <move name="Tri Attack" type="Normal" pp="10" power="80" accuracy="255" />
   <move name="Twineedle" type="Bug" pp="20" power="25" accuracy="255">
