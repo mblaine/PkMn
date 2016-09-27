@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model.MoveEffects
 {
@@ -29,7 +30,7 @@ namespace PkMn.Model.MoveEffects
             Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);
 
             Change = node.Attributes.Contains("change") ? int.Parse(node.Attributes["change"].Value) : 0;
-            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
+            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value, CultureInfo.InvariantCulture) : 1m;
 
             Chance = node.Attributes.Contains("chance") ? int.Parse(node.Attributes["chance"].Value) : 256;
             Temporary = node.Attributes.Contains("temporary") ? bool.Parse(node.Attributes["temporary"].Value) : false;

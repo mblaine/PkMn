@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model
 {
@@ -37,7 +38,7 @@ namespace PkMn.Model
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
                     if (childNode.Name == "effectiveness")
-                        type.Effectiveness[t[childNode.Attributes["type"].Value]] = decimal.Parse(childNode.Attributes["multiplier"].Value);
+                        type.Effectiveness[t[childNode.Attributes["type"].Value]] = decimal.Parse(childNode.Attributes["multiplier"].Value, CultureInfo.InvariantCulture);
                     else if (childNode.Name == "immunity")
                         type.Immunity.Add((StatusCondition)Enum.Parse(typeof(StatusCondition), childNode.Attributes["status"].Value, true));
                 }
