@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model.MoveEffects
 {
@@ -17,7 +18,7 @@ namespace PkMn.Model.MoveEffects
         public HealthEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            Percent = decimal.Parse(node.Attributes["percent"].Value);
+            Percent = decimal.Parse(node.Attributes["percent"].Value, CultureInfo.InvariantCulture);
             Of = node.Attributes["of"].Value;
             if (node.Attributes.Contains("who"))
                 Who = (Who)Enum.Parse(typeof(Who), node.Attributes["who"].Value, true);

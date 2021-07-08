@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model.MoveEffects
 {
@@ -13,7 +14,7 @@ namespace PkMn.Model.MoveEffects
         public PayDayEffect(MoveEffectType type, XmlNode node)
             : base(type, node)
         {
-            Multiplier = decimal.Parse(node.Attributes["multiplier"].Value);
+            Multiplier = decimal.Parse(node.Attributes["multiplier"].Value, CultureInfo.InvariantCulture);
         }
 
         public override string ToString()

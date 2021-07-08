@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model.MoveEffects
 {
@@ -15,7 +16,7 @@ namespace PkMn.Model.MoveEffects
             : base(type, node)
         {
             Value = node.Attributes.Contains("value") ? int.Parse(node.Attributes["value"].Value) : 0;
-            Percent = node.Attributes.Contains("percent") ? decimal.Parse(node.Attributes["percent"].Value) : 0m;
+            Percent = node.Attributes.Contains("percent") ? decimal.Parse(node.Attributes["percent"].Value, CultureInfo.InvariantCulture) : 0m;
         }
 
         public override string ToString()

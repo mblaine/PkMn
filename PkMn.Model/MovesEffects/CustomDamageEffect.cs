@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml;
 using PkMn.Model.Enums;
+using System.Globalization;
 
 namespace PkMn.Model.MoveEffects
 {
@@ -18,7 +19,7 @@ namespace PkMn.Model.MoveEffects
             Calculation = node.Attributes["calculation"].Value;
 
             Value = node.Attributes.Contains("value") ? int.Parse(node.Attributes["value"].Value) : 0;
-            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value) : 1m;
+            Multiplier = node.Attributes.Contains("multiplier") ? decimal.Parse(node.Attributes["multiplier"].Value, CultureInfo.InvariantCulture) : 1m;
         }
 
         public override string ToString()
